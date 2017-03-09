@@ -1,6 +1,6 @@
 /**
 * Пакет простого калькулятора
-* @author Timur Kapkaev (tim.kap@yandex.ru)
+* @author Timur Kapkaev (timur.kap@yandex.ru)
 * @version $Id$
 * @since 08.03.2017
 */

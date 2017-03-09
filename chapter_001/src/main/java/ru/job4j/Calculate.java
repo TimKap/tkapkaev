@@ -9,10 +9,7 @@ package ru.job4j;
 public class Calculate {
 	/**
 	* Вывод строки "Hello world"
-	* @author Timur Kapkaev
-	* @since 08.03.2017
 	* @param args  массив аргументов командной строки
-	* @return  возвращаемый параметр отсутствует
 	*/
 	public static void main (String[] args) {
 		System.out.println("Hello world");

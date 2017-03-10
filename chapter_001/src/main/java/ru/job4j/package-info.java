@@ -1,5 +1,5 @@
 /**
-* Пакет простого калькулятора
+* Пакет простого калькулятора.
 * @author Timur Kapkaev (timur.kap@yandex.ru)
 * @version $Id$
 * @since 08.03.2017

@@ -21,4 +21,15 @@ public class MaxTest {
 		int expected = 1;
 		assertThat(result, is(expected));
 	}
+
+	/**
+	* Тест поиска максимального значения из трех возможных.
+	*/
+	@Test
+	public void whenMaxOneAndThreeAndMinusFourThenThree() {
+		Max operation = new Max();
+		int result = operation.max(1, 3, -4);
+		int expected = 3;
+		assertThat(result, is(expected));
+	}
 }

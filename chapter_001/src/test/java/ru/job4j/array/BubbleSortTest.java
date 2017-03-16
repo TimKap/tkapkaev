@@ -19,6 +19,7 @@ public class BubbleSortTest {
 		BubbleSort anyElements = new BubbleSort();
 		int[] expected = {1, 2, 3, 5, 7};
 		int[] result = anyElements.sort(new int[] {5, 1, 2, 7, 3});
+
 		assertThat(result, is(expected));
 	}
 

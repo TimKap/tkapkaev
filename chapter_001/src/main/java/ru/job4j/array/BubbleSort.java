@@ -14,9 +14,10 @@ public class BubbleSort {
 	public int[] sort(int[] array) {
 		boolean fl = true;
 		int buf;
+		int k = 0;
 		while (fl) {
 			fl = false;
-			for (int i = 0; i < array.length - 1; i++) {
+			for (int i = 0; i < array.length - 1 - k; i++) {
 				if (array[i] > array[i + 1]) {
 					buf = array[i];
 					array[i] = array[i + 1];
@@ -24,7 +25,7 @@ public class BubbleSort {
 					fl = true;
 				}
 			}
-
+			k++;
 		}
 		return array;
 	}

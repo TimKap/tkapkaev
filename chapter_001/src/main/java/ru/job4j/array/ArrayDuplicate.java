@@ -1,4 +1,4 @@
-package ru.job4j.array;
+ package ru.job4j.array;
 import java.util.Arrays;
 /**
 * Class ArrayDuplicate уборка повторяющихся слов из массива.
@@ -13,39 +13,27 @@ public class ArrayDuplicate {
 	* @return массив без повторяющихся элементов
 	*/
 	public String[] remove(String[] array) {
-		/* Проход по массиву array.length раз */
-		for (int i = 0; i < array.length; i++) {
-			/* Слово для которого осуществляется поиск повторений */
-			String comparedWord = array[i];
-			if (comparedWord == null) {
-				continue;
-			} else {
-				/* Перебор элементов массива с заменой копий слова comparedWord*/
-				for (int j = i + 1; j < array.length; j++) {
-					if (comparedWord.equals(array[j])) {
-						array[j] = null;
+
+		/* предполагаемое число неповторяющихся элементов массива*/
+		int k = array.length;
+		/*Внешний цикл - задает элемент с которым будут сравниваться оставшиеся элементы массива*/
+		for (int i = 0; i < k - 1; i++) {
+			int j = i + 1;
+			/* Цикл, обеспечивающий сравнение выбранного элемента с оставшимися элементами массива*/
+			while (j < k) {
+				String buf;
+				if (array[i].equals(array[j])) {
+					/*Поместить повторяющийся элемент в конец массива и уменьшить число предполагаемых неповторяющихся элементов массива*/
+					buf = array[j];
+					array[j] = array[k - 1];
+					array[k - 1] = buf;
+					k--;
+				} else {
+					j++;
 					}
-				}
 			}
-		}
-		/*Сжатие массива (устранение "пробелов - null элементов" между эелементами массива)*/
-		int lastNullPosition = array.length;
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] != null) {
-				if (lastNullPosition != array.length) {
-					array[lastNullPosition] = array[i];
-					array[i] = null;
-					lastNullPosition++;
-				}
-			} else {
-				/* "Пустой" элемент найден. С этого места начать подвижку элементов массива.*/
-				if (lastNullPosition == array.length) {
-					lastNullPosition = i;
-				}
 
-			}
 		}
-		return Arrays.copyOf(array, lastNullPosition);
-
+		return Arrays.copyOf(array, k);
 	}
 }

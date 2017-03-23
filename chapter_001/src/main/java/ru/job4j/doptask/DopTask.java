@@ -16,8 +16,6 @@ public class DopTask {
 		int[] union = new int[ar1.length + ar2.length];
 		int i = 0, j = 0;
 		for (int k = 0; k < union.length; k++) {
-
-
 			if (i < ar1.length && j < ar2.length) {
 				/*Попарно сравнить элементы из двух массивов. В объединенный массив записать меньший элемент.
 				  Перейти к следующему элементу в массиве из которого была выолнена запись
@@ -26,16 +24,8 @@ public class DopTask {
 					union[k] = ar2[j];
 					j++;
 				} else {
-					if (ar1[i] == ar2[j]) {
-						union[k] = ar1[i];
-						union[k + 1] = union[k];
-						k++;
-						i++;
-						j++;
-					} else {
-						union[k] = ar1[i];
-						i++;
-					}
+					union[k] = ar1[i];
+					i++;
 				}
 			} else {
 				/* Один из массивов закончился.*/

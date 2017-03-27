@@ -45,6 +45,14 @@
 			</execution>
 		</executions>
 		</plugin>
+		<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>3.3</version>
+		<configuration>
+			<compilerVersion>1.8</compilerVersion>
+		</configuration>
+		</plugin>
 	</plugins>
 </build> 
 
@@ -56,5 +64,6 @@
 
      <modules>
         <module>chapter_001</module>
+		<module>chapter_002</module>
      </modules>
 </project>

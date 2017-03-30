@@ -108,7 +108,7 @@ public class Doctor extends Profession {
 	* @param patient - пациент
 	* @return заболевание
 	*/
-	public Ilness diagnostic(Patient patient) {
+	public Ilness diagnostik(Patient patient) {
 		patient.setIlness(new Ilness("Заболевание из области" + this.getSpecialization()));
 		return patient.getIlness();
 	}
@@ -117,7 +117,7 @@ public class Doctor extends Profession {
 	* проведение доктором операции.
 	* @param patient - пациент
 	*/
-	public void operation(Patient patient) {
+	public void makeOperation(Patient patient) {
 		patient.setIlness(null);
 	}
 

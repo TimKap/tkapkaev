@@ -46,12 +46,12 @@ public class Teacher extends Profession {
 
 	/**
 	* Проверка контрольной работы.
-    * @param kontrolnaja - документ с контррольной работой.
+    * @param doc - документ с контррольной работой.
 	* @return оценка за работу
 	*/
-	public int checkWork(Document kontrolnaja) {
-		kontrolnaja.setMark(1 + (int) (Math.random() * 5D));
-		return kontrolnaja.getMark();
+	public int checkWork(Document doc) {
+		doc.setMark(1 + (int) (Math.random() * 5D));
+		return doc.getMark();
 	}
 
 }

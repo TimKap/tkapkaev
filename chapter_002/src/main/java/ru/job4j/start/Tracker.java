@@ -66,6 +66,12 @@ public class Tracker {
 			System.arraycopy(items, i + 1, items, i, position - i - 1);
 			items[position - 1] = null;
 			position--;
+		} else {
+			if (i == (position - 1)) {
+				items[position - 1] = null;
+				position--;
+			}
+
 		}
 	}
 
@@ -110,7 +116,6 @@ public class Tracker {
 				break;
 			}
 		}
-
 		return result;
 	}
 }

@@ -41,7 +41,7 @@ public class FindItemById implements Action {
     public void execute() {
         String id;
         Item item;
-        id = input.ask("Print id of item which you wont to find");
+        id = input.ask("Print id of item which you wont to find ");
         item = tracker.findById(id);
         if (item != null) {
             showItem(item);

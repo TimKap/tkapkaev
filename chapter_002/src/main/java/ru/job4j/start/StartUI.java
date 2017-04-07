@@ -9,7 +9,7 @@ public class StartUI {
     /** Определяет способ ввода данных в приложение.*/
     private final Input input;
     /** ИТрекер.*/
-    private final Tracker tracker;
+    private  final Tracker tracker;
     /** Меню трекера.*/
     private final  MenuTracker menu;
 
@@ -22,6 +22,47 @@ public class StartUI {
         this.input = input;
         tracker = new Tracker();
         menu = new MenuTracker(tracker, input);
+    }
+
+    /**
+     * Конструктор класса StartUI.
+     * @param input - способ ввода данных в приложение
+     * @param tracker - установка трекера
+     * */
+    public StartUI(Input input, Tracker tracker) {
+
+        this.input = input;
+        this.tracker = tracker;
+        menu = new MenuTracker(tracker, input);
+    }
+
+    /**
+     * Возвращает трекер из пользовательского интерфейса.
+     * @return трекер
+     * */
+    public Tracker getTracker() {
+        return tracker;
+    }
+
+    /**
+     * Метод для теста работы пользовательского интерфейса пользователя.
+     * */
+    public void init() {
+        do {
+            menu.showMenu();
+        }
+        while (menu.select() != MenuTracker.EXIT);
+    }
+
+    /**
+     * Метод для теста работы пользовательского интерфейса пользователя.
+     * */
+    public void initWithoutMenu() {
+        int i = 0;
+        do {
+            i++;
+        }
+        while (menu.select() != MenuTracker.EXIT);
     }
 
 

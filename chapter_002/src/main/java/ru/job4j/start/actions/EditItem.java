@@ -38,7 +38,7 @@ public class EditItem implements Action {
             String description;
             description = input.ask("Print description of new Item");
             long create;
-            create = Long.parseLong(input.ask("Print time of creation new Item"));
+            create = Long.valueOf(input.ask("Print time of creation new Item"));
             updatedItem = new Item(name, description, create);
             updatedItem.setId(item.getId());
             tracker.update(updatedItem);

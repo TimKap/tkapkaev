@@ -106,13 +106,13 @@ public class StartUITest {
 
         String expected = "-----------------------------\r\n"
                 +
-                "Name: " + "Item2" + "     Data: " + "2" + "\r\n"
+                String.format("Name: %s     Data: %s\r\n", "Item2", "2")
                 +
-                "test" + "\r\n"
+                String.format("%s\r\n", "test")
                 +
-                "ID: " + tracker.findAll()[1].getId() + "\r\n"
+                String.format("ID: %s\r\n", tracker.findAll()[1].getId())
                 +
-                "-----------------------------" + "\r\n";
+                "-----------------------------\r\n";
         /*Вывод заявки на экран*/
         ui.initWithoutMenu();
         assertThat(out.toString(), is(expected));
@@ -138,23 +138,23 @@ public class StartUITest {
 
         String expected = "-----------------------------\r\n"
                 +
-                "Name: " + "Item1" + "     Data: " + "1" + "\r\n"
+                String.format("Name: %s     Data: %s\r\n", "Item1", "1")
                 +
-                "test" + "\r\n"
+                String.format("%s\r\n", "test")
                 +
-                "ID: " + tracker.findAll()[0].getId() + "\r\n"
-                +
-                "-----------------------------" + "\r\n"
+                String.format("ID: %s\r\n", tracker.findAll()[0].getId())
                 +
                 "-----------------------------\r\n"
                 +
-                "Name: " + "Item1" + "     Data: " + "3" + "\r\n"
+                "-----------------------------\r\n"
                 +
-                "test" + "\r\n"
+                String.format("Name: %s     Data: %s\r\n", "Item1", "3")
                 +
-                "ID: " + tracker.findAll()[2].getId() + "\r\n"
+                String.format("%s\r\n", "test")
                 +
-                "-----------------------------" + "\r\n";
+                String.format("ID: %s\r\n", tracker.findAll()[2].getId())
+                +
+                "-----------------------------\r\n";
         /*Вывод заявки на экран*/
         ui.initWithoutMenu();
         assertThat(out.toString(), is(expected));
@@ -180,33 +180,33 @@ public class StartUITest {
 
         String expected = "-----------------------------\r\n"
                 +
-                "Name: " + "Item1" + "     Data: " + "1" + "\r\n"
+                String.format("Name: %s     Data: %s\r\n", "Item1", "1")
                 +
-                "test" + "\r\n"
+                String.format("%s\r\n", "test")
                 +
-                "ID: " + tracker.findAll()[0].getId() + "\r\n"
-                +
-                "-----------------------------" + "\r\n"
+                String.format("ID: %s\r\n", tracker.findAll()[0].getId())
                 +
                 "-----------------------------\r\n"
                 +
-                "Name: " + "Item2" + "     Data: " + "2" + "\r\n"
+                "-----------------------------\r\n"
                 +
-                "test" + "\r\n"
+                String.format("Name: %s     Data: %s\r\n", "Item2", "2")
                 +
-                "ID: " + tracker.findAll()[1].getId() + "\r\n"
+                String.format("%s\r\n", "test")
                 +
-                "-----------------------------" + "\r\n"
+                String.format("ID: %s\r\n", tracker.findAll()[1].getId())
                 +
                 "-----------------------------\r\n"
                 +
-                "Name: " + "Item3" + "     Data: " + "3" + "\r\n"
+                "-----------------------------\r\n"
                 +
-                "test" + "\r\n"
+                String.format("Name: %s     Data: %s\r\n", "Item3", "3")
                 +
-                "ID: " + tracker.findAll()[2].getId() + "\r\n"
+                String.format("%s\r\n", "test")
                 +
-                "-----------------------------" + "\r\n";
+                String.format("ID: %s\r\n", tracker.findAll()[2].getId())
+                +
+                "-----------------------------\r\n";
         /*Вывод заявки на экран*/
         ui.initWithoutMenu();
         assertThat(out.toString(), is(expected));

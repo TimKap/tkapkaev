@@ -29,9 +29,9 @@ public class ShowAllItems implements Action  {
      * */
     private void showItem(Item item) {
         System.out.println("-----------------------------");
-        System.out.println("Name: " + item.getName() + "     Data: " + item.getCreate());
+        System.out.printf("Name: %s     Data: %s\r\n", item.getName(), item.getCreate());
         System.out.println(item.getDescription());
-        System.out.println("ID: " + item.getId());
+        System.out.printf("ID: %s\r\n", item.getId());
         System.out.println("-----------------------------");
     }
 

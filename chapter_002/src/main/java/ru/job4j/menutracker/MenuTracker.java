@@ -59,10 +59,25 @@ public class MenuTracker {
      */
     public void select() {
 		int key;
-		key = Integer.valueOf(input.ask("Select"));
-		if (key < EXIT) {
-			actions[key].execute();
-		}
+		boolean invalid = true;
+		int i = 0;
+		do {
+			try {
+				i++;
+				key = Integer.valueOf(input.ask("Select"));
+				if (key > EXIT) {
+					throw new OutOfRangeMenuException();
+				}
+				actions[key].execute();
+				invalid = false;
+			} catch (NumberFormatException e) {
+				System.out.println("Please enter validate data again");
+			} catch (OutOfRangeMenuException e) {
+				System.out.println("Please choose correct action");
+
+			}
+		} while (invalid && (i < 3));
+
 	}
 
 	/**
@@ -70,11 +85,13 @@ public class MenuTracker {
 	 * @param item - заявка.
 	 * */
 	private void showItem(Item item) {
-		System.out.println("-----------------------------");
-		System.out.printf("Name: %s     Data: %s\r\n", item.getName(), item.getCreate());
-		System.out.println(item.getDescription());
-		System.out.printf("ID: %s\r\n", item.getId());
-		System.out.println("-----------------------------");
+		if (item != null) {
+			System.out.println("-----------------------------");
+			System.out.printf("Name: %s     Data: %s\r\n", item.getName(), item.getCreate());
+			System.out.println(item.getDescription());
+			System.out.printf("ID: %s\r\n", item.getId());
+			System.out.println("-----------------------------");
+		}
 	}
 
 	/**
@@ -97,8 +114,24 @@ public class MenuTracker {
 			String description;
 			description = input.ask("Print description of new Item");
 			long create;
-			create = Long.valueOf(input.ask("Print time of creation new Item"));
-			tracker.add(new Item(name, description, create));
+			boolean invalid = true;
+			int i = 0;
+			do {
+				try {
+					i++;
+					create = Long.valueOf(input.ask("Print time of creation new Item"));
+					invalid = false;
+					try {
+						tracker.add(new Item(name, description, create));
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("Can't add item. Tracker is full");
+						i = 3;
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Please enter correct date");
+				}
+			} while (invalid && i < 3);
+
 		}
 
 		/**
@@ -125,10 +158,12 @@ public class MenuTracker {
 		* Исполнение действий пункта меню.
 		*/
 		public void execute() {
-			for (Item item : tracker.findAll()) {
-				if (item != null) {
+			if (tracker.findAll().length != 0) {
+				for (Item item : tracker.findAll()) {
 					showItem(item);
 				}
+			} else {
+				System.out.println("Tracker is empty");
 			}
 		}
 
@@ -167,10 +202,22 @@ public class MenuTracker {
 				String description;
 				description = input.ask("Print description of new Item");
 				long create;
-				create = Long.valueOf(input.ask("Print time of creation new Item"));
-				updatedItem = new Item(name, description, create);
-				updatedItem.setId(item.getId());
-				tracker.update(updatedItem);
+				int i = 0;
+				boolean invalid = true;
+				do {
+					try {
+						i++;
+						create = Long.valueOf(input.ask("Print time of creation new Item"));
+						invalid = false;
+						updatedItem = new Item(name, description, create);
+						updatedItem.setId(item.getId());
+						tracker.update(updatedItem);
+					} catch (NumberFormatException e) {
+						System.out.println("Please enter correct date");
+					}
+				} while (invalid && (i < 3));
+			} else {
+				System.out.println("Item nod founded");
 			}
 		}
 
@@ -205,6 +252,8 @@ public class MenuTracker {
 			item = tracker.findById(id);
 			if (item != null) {
 				tracker.delete(item);
+			} else {
+				System.out.println("Item nod founded");
 			}
 		}
 
@@ -238,6 +287,8 @@ public class MenuTracker {
 			item = tracker.findById(id);
 			if (item != null) {
 				showItem(item);
+			} else {
+				System.out.println("Item nod founded");
 			}
 		}
 
@@ -269,10 +320,14 @@ public class MenuTracker {
 			Item[] items;
 			name = input.ask("Print name of item which you wont to find");
 			items = tracker.findByName(name);
-
-			for (Item item : items) {
-				showItem(item);
+			if (items.length != 0) {
+				for (Item item : items) {
+					showItem(item);
+				}
+			} else {
+				System.out.println("Items nod founded");
 			}
+
 		}
 
 		/**

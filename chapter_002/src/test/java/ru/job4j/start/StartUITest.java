@@ -3,6 +3,7 @@ package ru.job4j.start;
 import org.junit.Test;
 import ru.job4j.models.Item;
 
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import java.io.ByteArrayOutputStream;
@@ -211,6 +212,5 @@ public class StartUITest {
         ui.initWithoutMenu();
         assertThat(out.toString(), is(expected));
     }
-
 
 }

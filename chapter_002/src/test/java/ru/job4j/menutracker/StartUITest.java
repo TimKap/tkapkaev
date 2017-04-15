@@ -211,4 +211,161 @@ public class StartUITest {
         ui.initWithoutMenu();
         assertThat(out.toString(), is(expected));
     }
+    /**
+     * Тест для выбора пункта меню: ввод некорректных данных при выборе пункта меню.
+     * */
+    @Test
+    public void whenSelectMeuUserInsertInvalidDataThenTrySelectAgain() {
+        Tracker tracker = new Tracker();
+        StubInput userActions = new StubInput(new String[] {"gjhg", "10", "0", "Tom", "test", "1", "y"});
+        StartUI ui = new StartUI(userActions, tracker);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        String expected = "Please enter validate data again\r\n"
+                        + "Please choose correct action\r\n";
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+
+    }
+    /**
+     * Тест для добавления новой заявки: Неправильный ввод времени при создании заявки. Переполнение списка заявок.
+     * */
+    @Test
+    public void whenInsertInvalidTimeAndListOfItemsIsFullTheTryInsertNewTimeAndgetMessage() {
+
+        String[] actions = new String[70];
+        actions[0] = "0";
+        actions[1] = "Tom";
+        actions[2] = "test";
+        actions[3] = "jadksjdsal";
+        actions[4] = "1";
+        actions[5] = "n";
+
+        for (int i = 0; i < 10; i++) {
+            actions[6 + 5 * i] = "0";
+            actions[6 + 5 * i + 1] = "Tom";
+            actions[6 + 5 * i + 2] = "test";
+            actions[6 + 5 * i + 3] = "1";
+            if (i == 9) {
+                actions[6 + 5 * i + 4] = "y";
+            } else {
+                actions[6 + 5 * i + 4] = "n";
+            }
+        }
+        StubInput userActions = new StubInput(actions);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        String expected = "Please enter correct date\r\n"
+                 + "Can't add item. Tracker is full\r\n";
+
+        StartUI ui = new StartUI(userActions);
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+    }
+    /**
+     * Тест для вывода всех заявок: Вывод пустого списка заявок.
+     * */
+    @Test
+    public void whenShowAllEmptyListOfItemsThenGetMessage() {
+        StubInput userActions = new StubInput(new String[] {"1", "y"});
+        StartUI ui = new StartUI(userActions);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        String expected = "Tracker is empty\r\n";
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+    }
+    /**
+     * Тест для редактирования заявки: Неп заявки с введенным ID. Неправильно введенная дата при добавлении заявки.
+     */
+    @Test
+    public void whenEditAndInsertInvalidDataThenGetMessage() {
+        Tracker tracker = new Tracker();
+        tracker.add(new Item("Tom", "test",  1));
+        StubInput userActions = new StubInput(new String[] {"2", "100", "n", "2", tracker.findAll()[0].getId(), "Lee", "test2", "aaaa", "2", "y"});
+        StartUI ui = new StartUI(userActions, tracker);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        String expected =  "Item nod founded\r\n"
+                          +
+                           "Please enter correct date\r\n";
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+
+        expected = "Lee";
+        result = tracker.findAll()[0].getName();
+
+        assertThat(result, is(expected));
+
+    }
+
+    /**
+     * Тест для удаления заявки из трекера. В трекере отсутствует заявка с заявленным ID.
+     * */
+    @Test
+    public void whenDeleteItemWithUnexpectedIdThenGetMessage() {
+        Tracker tracker = new Tracker();
+        tracker.add(new Item("Tom", "test",  1));
+
+        StubInput userActions = new StubInput(new String[] {"3", "1", "y"});
+        StartUI ui = new StartUI(userActions, tracker);
+        String expected = "Item nod founded\r\n";
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+
+    }
+
+    /**
+     * Тест для поиска заявки по ID. В трекере отсутствует заявка с заявленным ID.
+     * */
+    @Test
+    public void whenFindByIdItemWithUnexpectedIdThenGetMessage() {
+
+        Tracker tracker = new Tracker();
+        tracker.add(new Item("Tom", "test",  1));
+        StubInput userActions = new StubInput(new String[] {"4", "1", "y"});
+        StartUI ui = new StartUI(userActions, tracker);
+        String expected = "Item nod founded\r\n";
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+
+    }
+
+    /**
+     * Тест для поиска заявки по Имени. В трекере отсутствует заявка с заявленным Именем.
+     * */
+    @Test
+    public void whenFindByNameItemWithUnexpectedNameThenGetMessage() {
+
+        Tracker tracker = new Tracker();
+        tracker.add(new Item("Tom", "test",  1));
+        StubInput userActions = new StubInput(new String[] {"5", "Tm", "y"});
+        StartUI ui = new StartUI(userActions, tracker);
+        String expected = "Items nod founded\r\n";
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+
+        ui.initWithoutMenu();
+        String result = out.toString();
+        assertThat(result, is(expected));
+
+    }
+
 }

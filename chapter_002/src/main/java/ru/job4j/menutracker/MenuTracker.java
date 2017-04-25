@@ -97,7 +97,14 @@ public class MenuTracker {
 	/**
 	 * Class AddItem описывает пункт меню Добавление заявки.
 	 * */
-	private class AddItem implements UserAction {
+	private class AddItem extends BaseAction {
+
+		/**
+		 * Конструктор класса AddItem.
+		 * */
+		private AddItem() {
+			super("Add new item");
+		}
     	/**
 		* Ключ пункта меню Добавление заявки.
 		* @return  ключ меню
@@ -133,19 +140,18 @@ public class MenuTracker {
 			} while (invalid && i < 3);
 
 		}
-
-		/**
-		* Информация о пункте меню.
-		* @return информация о пункте мею в формате строки
-		*/
-		public String info() {
-			return String.format("%s. %s", key(), "Add new item");
-		}
 	}
 	/**
 	 * Class ShowAllItems описывает пункт меню Вывод всех заявок.
 	 * */
-	private class ShowAllItems implements UserAction {
+	private class ShowAllItems extends BaseAction {
+
+		/**
+		 * Конструктор класса ShowAllItems.
+		 * */
+		private ShowAllItems() {
+			super("Show all items");
+		}
 		/**
 		* Ключ пункта меню Вывести все заявки.
 		* @return ключ меню
@@ -166,19 +172,19 @@ public class MenuTracker {
 				System.out.println("Tracker is empty");
 			}
 		}
-
-		/**
-		* Информация о пункте меню.
-		* @return информация о пункте мею в формате строки
-		*/
-		public String info() {
-			return String.format("%s. %s", key(), "Show all items");
-		}
 	}
 	/**
 	 * Class EditItem описывает пункт меню Редактирование заявки.
 	 * */
-	private class EditItem implements UserAction {
+	private class EditItem extends BaseAction {
+
+		/**
+		 * Конструктор класса EditItem.
+		 * */
+		private EditItem() {
+			super("Edit item");
+		}
+
 		/**
 		* Ключ пункта меню Редактирование заявки.
 		* @return ключ меню
@@ -220,20 +226,17 @@ public class MenuTracker {
 				System.out.println("Item nod founded");
 			}
 		}
-
-		/**
-		* Информация о пункте меню.
-		* @return информация о пункте мею в формате строки
-		*/
-		public String info() {
-			return String.format("%s. %s", key(), "Edit item");
-		}
-
 	}
 	/**
 	 * Class DeleteItem описывает пункт меню Удаление заявки.
 	 * */
-	private class DeleteItem implements UserAction {
+	private class DeleteItem extends BaseAction {
+		/**
+		 * Конструктор класса DeleteItem.
+		 * */
+		private DeleteItem() {
+			super("Delete item");
+		}
 		/**
 		* Ключ пункта меню Удаление заявки.
 		* @return ключ меню
@@ -256,19 +259,17 @@ public class MenuTracker {
 				System.out.println("Item nod founded");
 			}
 		}
-
-		/**
-		* Информация о пункте меню.
-		* @return информация о пункте мею в формате строки
-		*/
-		public String info() {
-			return String.format("%s. %s", key(), "Delete item item");
-		}
 	}
 	/**
 	 * Class FindItemById описывает пункт меню Поиск заявки по Id.
 	 * */
-	private class FindItemById implements UserAction {
+	private class FindItemById extends BaseAction {
+		/**
+		 * Конструктор класса FindItemById.
+		 * */
+		private FindItemById() {
+			super("Find item by Id");
+		}
 		/**
 		* Ключ пункта меню Поиска заявки по Id.
 		* @return ключ меню
@@ -291,19 +292,18 @@ public class MenuTracker {
 				System.out.println("Item nod founded");
 			}
 		}
-
-		/**
-		* Информация о пункте меню.
-		* @return информация о пункте мею в формате строки
-		*/
-		public String info() {
-			return String.format("%s. %s", key(), "Find item by Id");
-		}
 	}
 	/**
 	 * Class FindItemsByName описывает пункт меню Поиск заявок по имени.
 	 * */
-	private class FindItemsByName implements UserAction {
+	private class FindItemsByName extends BaseAction {
+		/**
+		 * Конструктор класса FindItemsByName.
+		 * */
+		private FindItemsByName() {
+			super("Find items by name");
+		}
+
 		/**
 		* Ключ пункта меню Поиска заявок по имени.
 		* @return ключ меню
@@ -330,12 +330,5 @@ public class MenuTracker {
 
 		}
 
-		/**
-		* Информация о пункте меню.
-		* @return информация о пункте мею в формате строки
-		*/
-		public String info() {
-			return String.format("%s. %s", key(), "Find items by name");
-		}
 	}
 }

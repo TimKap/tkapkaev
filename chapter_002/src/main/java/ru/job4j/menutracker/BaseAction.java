@@ -10,19 +10,26 @@ public abstract class BaseAction implements UserAction {
 
     /** Название действия. */
     private String name;
+    /** Ключ для действия. */
+    private int key;
 
     /**
      * Конструктор класса.
      * @param name - название деймствия
+     * @param key - ключ для действия
      * */
-    public BaseAction(String name) {
+    public BaseAction(String name, int key) {
+
         this.name = name;
+        this.key = key;
     }
 
     /** Вернуть назначенный ключ пункту меню.
      * @return ключ пункта меню
      * */
-    public abstract int key();
+    public int key() {
+        return key;
+    };
 
     /** Выполнить действие.*/
     public abstract void execute();

@@ -103,15 +103,9 @@ public class MenuTracker {
 		 * Конструктор класса AddItem.
 		 * */
 		private AddItem() {
-			super("Add new item");
+			super("Add new item", 0);
 		}
-    	/**
-		* Ключ пункта меню Добавление заявки.
-		* @return  ключ меню
-		*/
-		public int key() {
-			return 0;
-		}
+
 		/**
 		* Исполнение действий пункта меню.
 		*/
@@ -150,14 +144,7 @@ public class MenuTracker {
 		 * Конструктор класса ShowAllItems.
 		 * */
 		private ShowAllItems() {
-			super("Show all items");
-		}
-		/**
-		* Ключ пункта меню Вывести все заявки.
-		* @return ключ меню
-		*/
-		public int key() {
-			return 1;
+			super("Show all items", 1);
 		}
 
 		/**
@@ -182,15 +169,7 @@ public class MenuTracker {
 		 * Конструктор класса EditItem.
 		 * */
 		private EditItem() {
-			super("Edit item");
-		}
-
-		/**
-		* Ключ пункта меню Редактирование заявки.
-		* @return ключ меню
-		*/
-		public int key() {
-			return 2;
+			super("Edit item", 2);
 		}
 
 		/**
@@ -235,14 +214,7 @@ public class MenuTracker {
 		 * Конструктор класса DeleteItem.
 		 * */
 		private DeleteItem() {
-			super("Delete item");
-		}
-		/**
-		* Ключ пункта меню Удаление заявки.
-		* @return ключ меню
-		*/
-		public int key() {
-			return 3;
+			super("Delete item", 3);
 		}
 
 		/**
@@ -268,14 +240,7 @@ public class MenuTracker {
 		 * Конструктор класса FindItemById.
 		 * */
 		private FindItemById() {
-			super("Find item by Id");
-		}
-		/**
-		* Ключ пункта меню Поиска заявки по Id.
-		* @return ключ меню
-		*/
-		public int key() {
-			return 4;
+			super("Find item by Id", 4);
 		}
 
 		/**
@@ -301,15 +266,7 @@ public class MenuTracker {
 		 * Конструктор класса FindItemsByName.
 		 * */
 		private FindItemsByName() {
-			super("Find items by name");
-		}
-
-		/**
-		* Ключ пункта меню Поиска заявок по имени.
-		* @return ключ меню
-		*/
-		public int key() {
-			return 5;
+			super("Find items by name", 5);
 		}
 
 		/**

@@ -1,24 +1,24 @@
 package ru.job4j.chess.figures;
+
 import ru.job4j.chess.Cell;
 import ru.job4j.chess.exceptions.ImposibleMoveException;
 
 /**
- * Class Bishop описывает шахматную фигуру слона.
- * @author Timur Kapkaev (timur.kap@yandedx.ru)
+ * Class Queen описывают фигуру королевы.
+ * @author Timur Kapkaev (timur.kap@yandex.ru)
  * @version $Id$
- * @since 14.05.2017
+ * @since 15.05.2017
  */
-public class Bishop extends Figure {
-    /**
-     * Конструктор класса Bishop.
+public class Queen extends Figure {
+    /** Конструктор класса Queen.
      * @param position - расположение слона на шахматной доск
      * */
-    public Bishop(Cell position) {
-         super(position);
+    public Queen(Cell position) {
+        super(position);
     }
 
     /**
-     * Ход слоном.
+     * Ход королевой.
      * @param dist - ячейка, в которую осуществляется ход
      * @return траектория перемещения фигуры, составленная из ячеек
      * @throws ImposibleMoveException - фигура не в состоянии выполнить указанное перемещение
@@ -34,10 +34,12 @@ public class Bishop extends Figure {
         if (!dist.validCoordinate()) {
             throw exception;
         }
-        /* Проверка хода по диагонали */
-        if (!position.isFormsDiagonal(dist)) {
+        /* Проверка хода по вертикали или горизонтали, а так же по диагонали*/
+        if (!position.isFormsHorizontalLine(dist) & !position.isFormsVerticalLine(dist)) {
+            if (!position.isFormsDiagonal(dist)) {
                 throw exception;
             }
+        }
 
         /* Траектория перемещения фигуры */
         return position.trajectoryLine(dist);
@@ -48,7 +50,7 @@ public class Bishop extends Figure {
      * @return фигура с новым положением
      * */
     public Figure clone(Cell dist) {
-        return new Bishop(dist);
+        return new Queen(dist);
     }
 
 }

@@ -1,24 +1,25 @@
 package ru.job4j.chess.figures;
+
 import ru.job4j.chess.Cell;
 import ru.job4j.chess.exceptions.ImposibleMoveException;
 
 /**
- * Class Bishop описывает шахматную фигуру слона.
- * @author Timur Kapkaev (timur.kap@yandedx.ru)
+ * Class Horse описывает фигуру коня.
+ * \@author Timur Kapkaev (timur.kap@yandex.ru)
  * @version $Id$
- * @since 14.05.2017
+ * @since 15.05.2017
  */
-public class Bishop extends Figure {
+public class Horse extends Figure {
     /**
-     * Конструктор класса Bishop.
+     * Конструктор класса Horse.
      * @param position - расположение слона на шахматной доск
      * */
-    public Bishop(Cell position) {
-         super(position);
+    public Horse(Cell position) {
+        super(position);
     }
 
     /**
-     * Ход слоном.
+     * Ход конем.
      * @param dist - ячейка, в которую осуществляется ход
      * @return траектория перемещения фигуры, составленная из ячеек
      * @throws ImposibleMoveException - фигура не в состоянии выполнить указанное перемещение
@@ -34,13 +35,27 @@ public class Bishop extends Figure {
         if (!dist.validCoordinate()) {
             throw exception;
         }
-        /* Проверка хода по диагонали */
-        if (!position.isFormsDiagonal(dist)) {
-                throw exception;
+        /* Проверка хода конем */
+        Cell tmpCell = null;
+        boolean match = false;
+        for (int i = 0; i < 4; i++) {
+            /*Вращаем вектор вокруг ячйки, которую занимает конь */
+            /* Поворотный вектор указывает на возможное положение коня на следующем ходе*/
+            tmpCell = position.rotate(2, 1, i);
+            if (tmpCell.eq(dist)) {
+                match = true;
+                break;
             }
-
-        /* Траектория перемещения фигуры */
-        return position.trajectoryLine(dist);
+            tmpCell = position.rotate(2, -1, i);
+            if (tmpCell.eq(dist)) {
+                match = true;
+                break;
+            }
+        }
+        if (!match) {
+            throw new ImposibleMoveException();
+        }
+        return new Cell[] {tmpCell};
     }
     /**
      * Замена фигуры.
@@ -48,7 +63,7 @@ public class Bishop extends Figure {
      * @return фигура с новым положением
      * */
     public Figure clone(Cell dist) {
-        return new Bishop(dist);
+        return new Horse(dist);
     }
 
 }

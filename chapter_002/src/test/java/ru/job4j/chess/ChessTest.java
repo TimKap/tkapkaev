@@ -9,6 +9,9 @@ import ru.job4j.chess.exceptions.ImposibleMoveException;
 import ru.job4j.chess.exceptions.OccupiedWayException;
 import ru.job4j.chess.figures.Bishop;
 import ru.job4j.chess.figures.Figure;
+import ru.job4j.chess.figures.Rook;
+import ru.job4j.chess.figures.Queen;
+import ru.job4j.chess.figures.Horse;
 /**
  * Class ChessTest содержит тесты для шахмат.
  * @author Timur Kapkaev (timur.kap@yandex.ru)
@@ -16,6 +19,7 @@ import ru.job4j.chess.figures.Figure;
  * @since 15.05.2017
  */
 public class ChessTest {
+
 
     /**
      * Тест для хода слона.
@@ -37,6 +41,70 @@ public class ChessTest {
         assertThat(resultTrajectory[1].getX(), is(expectedTrajectory[1].getX()));
         assertThat(resultTrajectory[1].getY(), is(expectedTrajectory[1].getY()));
     }
+
+    /**
+     * Тест для хода ладьи.
+     * */
+    @Test
+    public void whenMakeWayRookThenGetVerticalTrajectory() {
+        Rook rook = new Rook(new Cell(2, 2));
+        Cell[] resultTrajectory;
+        Cell[] expectedTrajectory = new Cell[] {new Cell(2, 3), new Cell(2, 4)};
+
+        try {
+            resultTrajectory = rook.way(new Cell(2, 4));
+        } catch (ImposibleMoveException exception) {
+            resultTrajectory = null;
+        }
+
+        assertThat(resultTrajectory[0].getX(), is(expectedTrajectory[0].getX()));
+        assertThat(resultTrajectory[0].getY(), is(expectedTrajectory[0].getY()));
+        assertThat(resultTrajectory[1].getX(), is(expectedTrajectory[1].getX()));
+        assertThat(resultTrajectory[1].getY(), is(expectedTrajectory[1].getY()));
+    }
+
+    /**
+     * Тест для хода королевы.
+     * */
+    @Test
+    public void whenMakeWayQueenThenGetVerticalTrajectory() {
+        Queen queen = new Queen(new Cell(2, 2));
+        Cell[] resultTrajectory;
+        Cell[] expectedTrajectory = new Cell[] {new Cell(2, 3), new Cell(2, 4)};
+
+        try {
+            resultTrajectory = queen.way(new Cell(2, 4));
+        } catch (ImposibleMoveException exception) {
+            resultTrajectory = null;
+        }
+
+        assertThat(resultTrajectory[0].getX(), is(expectedTrajectory[0].getX()));
+        assertThat(resultTrajectory[0].getY(), is(expectedTrajectory[0].getY()));
+        assertThat(resultTrajectory[1].getX(), is(expectedTrajectory[1].getX()));
+        assertThat(resultTrajectory[1].getY(), is(expectedTrajectory[1].getY()));
+    }
+
+
+    /**
+     * Тест для хода конем.
+     * */
+    @Test
+    public void whenMakeWayHorseThenGetTrajectory() {
+        Horse horse = new Horse(new Cell(2, 2));
+        Cell[] resultTrajectory;
+        Cell[] expectedTrajectory = new Cell[] {new Cell(0, 1)};
+
+        try {
+            resultTrajectory = horse.way(new Cell(0, 1));
+        } catch (ImposibleMoveException exception) {
+            resultTrajectory = null;
+        }
+
+        assertThat(resultTrajectory[0].getX(), is(expectedTrajectory[0].getX()));
+        assertThat(resultTrajectory[0].getY(), is(expectedTrajectory[0].getY()));
+    }
+
+
 
     /**
      * Тест для хода фигурой по шахмаьной доски с перемещением фигуры.
@@ -63,6 +131,7 @@ public class ChessTest {
 
         assertThat(figure.checkCell(expectedCell), is(figure));
     }
+
 
     /**
      * Тест для хода фигурой по шахмаьной доски с ошибкой.

@@ -55,22 +55,4 @@ public class ConvertList {
         return array;
 
     }
-
-
-
-//    public static void main(String[] args) {
-//
-//        List<Integer> list = new ArrayList<Integer>();
-//        Collections.addAll(list, 7, 6, 5, 4, 3, 2, 1);
-//
-//        ConvertList convertor = new ConvertList();
-//        int [][] mas = convertor.toArray(list, 2 );
-//        for (int i = 0 ; i < mas.length; i++) {
-//            for(int j = 0; j < mas[i].length; j++) {
-//                System.out.print(mas[i][j] +  " ");
-//            }
-//            System.out.println();
-//        }
-//        System.out.println(convertor.toList(mas).toString());
-//    }
 }

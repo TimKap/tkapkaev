@@ -1,4 +1,5 @@
 package ru.job4j.convertlist;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +47,24 @@ public class TestConvertList {
         int[][] resultMas = convert.toArray(list, 3);
 
         assertThat(resultMas, is(expectedMas));
+    }
+
+    /**
+     * Тест для конвертации списка массивов целых чисел в один общий список.
+     */
+    @Test
+    public void whenConvertListFromArraysThenGetUinionList() {
+        List<int[]> data = new ArrayList<int[]>();
+
+        data.add(new int[]{1, 2});
+        data.add(new int[]{3, 4, 5, 6});
+
+        List<Integer> expected = new ArrayList<Integer>();
+        expected.addAll(Arrays.asList(1, 2, 3, 4, 5, 6));
+
+        List<Integer> result = new ConvertList().convert(data);
+
+        assertThat(result, is(expected));
     }
 
 }

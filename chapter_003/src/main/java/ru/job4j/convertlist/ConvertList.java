@@ -52,6 +52,21 @@ public class ConvertList {
         }
         return array;
     }
+
+    /**
+     * Преобразует список массивов целых чисел в один общий список целых чисел.
+     * @param list - список из массивов
+     * @return общий список целых чисел
+     * */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> buf = new ArrayList<Integer>();
+        for (int[] array:list) {
+            for (int element:array) {
+                buf.add(element);
+            }
+        }
+        return buf;
+    }
 }
 
 

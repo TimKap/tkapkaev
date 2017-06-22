@@ -7,6 +7,9 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Class StartUITest описывает тесты для пользовательского интерфейса трекера.
@@ -25,11 +28,11 @@ public class StartUITest {
         StartUI ui = new StartUI(userActions);
         ui.init();
         Tracker tracker = ui.getTracker();
-        String result = tracker.findAll()[0].getName();
+        String result = tracker.findAll().get(0).getName();
         String expected = "Tim";
         assertThat(result, is(expected));
 
-        result = tracker.findAll()[0].getDescription();
+        result = tracker.findAll().get(0).getDescription();
         expected = "Item Test 1";
         assertThat(result, is(expected));
     }
@@ -46,16 +49,17 @@ public class StartUITest {
         tracker.add(items[1]);
         tracker.add(items[2]);
         /*Ожидаемое значение после удаления заявки*/
-        Item[] expected = {items[0], items[2]};
+        List<Item> expected =  new ArrayList<Item>();
+        expected.addAll(Arrays.asList(items[0], items[2]));
 
         /*Задание действий пользователя*/
-        StubInput userActions = new StubInput(new String[]{"3", tracker.findAll()[1].getId(), "y"});
+        StubInput userActions = new StubInput(new String[]{"3", tracker.findAll().get(1).getId(), "y"});
         /*Формирование пользовательского интерфейса*/
         StartUI ui = new StartUI(userActions, tracker);
         /* Удаление заявки */
         ui.init();
 
-        Item[] result = tracker.findAll();
+        List<Item> result = tracker.findAll();
         assertThat(result, is(expected));
     }
 
@@ -70,7 +74,7 @@ public class StartUITest {
         tracker.add(item);
 
         /*Задание действий пользователя*/
-        StubInput userActions = new StubInput(new String[]{"2", tracker.findAll()[0].getId(), "modified Item", "New test", "2", "y"});
+        StubInput userActions = new StubInput(new String[]{"2", tracker.findAll().get(0).getId(), "modified Item", "New test", "2", "y"});
         StartUI ui = new StartUI(userActions, tracker);
         String expected = "modified Item";
         String result;
@@ -78,11 +82,11 @@ public class StartUITest {
 		/* Замена заявки item на expected*/
         ui.init();
 
-        result = tracker.findAll()[0].getName();
+        result = tracker.findAll().get(0).getName();
         assertThat(result, is(expected));
 
         expected = "New test";
-        result = tracker.findAll()[0].getDescription();
+        result = tracker.findAll().get(0).getDescription();
         assertThat(result, is(expected));
     }
 
@@ -98,7 +102,7 @@ public class StartUITest {
         tracker.add(items[1]);
         tracker.add(items[2]);
 
-        StubInput userActions = new StubInput(new String[]{"4", tracker.findAll()[1].getId(), "y"});
+        StubInput userActions = new StubInput(new String[]{"4", tracker.findAll().get(1).getId(), "y"});
         StartUI ui = new StartUI(userActions, tracker);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -110,7 +114,7 @@ public class StartUITest {
                 +
                 String.format("%s\r\n", "test")
                 +
-                String.format("ID: %s\r\n", tracker.findAll()[1].getId())
+                String.format("ID: %s\r\n", tracker.findAll().get(1).getId())
                 +
                 "-----------------------------\r\n";
         /*Вывод заявки на экран*/
@@ -119,7 +123,7 @@ public class StartUITest {
     }
 
     /**
-     * Тест получение заявки по Id.
+     * Тест получение заявки по Имени.
      */
     @Test
     public void whenFindByNameThenGetAllItemsWithThisName() {
@@ -142,7 +146,7 @@ public class StartUITest {
                 +
                 String.format("%s\r\n", "test")
                 +
-                String.format("ID: %s\r\n", tracker.findAll()[0].getId())
+                String.format("ID: %s\r\n", tracker.findAll().get(0).getId())
                 +
                 "-----------------------------\r\n"
                 +
@@ -152,7 +156,7 @@ public class StartUITest {
                 +
                 String.format("%s\r\n", "test")
                 +
-                String.format("ID: %s\r\n", tracker.findAll()[2].getId())
+                String.format("ID: %s\r\n", tracker.findAll().get(2).getId())
                 +
                 "-----------------------------\r\n";
         /*Вывод заявки на экран*/
@@ -184,7 +188,7 @@ public class StartUITest {
                 +
                 String.format("%s\r\n", "test")
                 +
-                String.format("ID: %s\r\n", tracker.findAll()[0].getId())
+                String.format("ID: %s\r\n", tracker.findAll().get(0).getId())
                 +
                 "-----------------------------\r\n"
                 +
@@ -194,7 +198,7 @@ public class StartUITest {
                 +
                 String.format("%s\r\n", "test")
                 +
-                String.format("ID: %s\r\n", tracker.findAll()[1].getId())
+                String.format("ID: %s\r\n", tracker.findAll().get(1).getId())
                 +
                 "-----------------------------\r\n"
                 +
@@ -204,7 +208,7 @@ public class StartUITest {
                 +
                 String.format("%s\r\n", "test")
                 +
-                String.format("ID: %s\r\n", tracker.findAll()[2].getId())
+                String.format("ID: %s\r\n", tracker.findAll().get(2).getId())
                 +
                 "-----------------------------\r\n";
         /*Вывод заявки на экран*/
@@ -232,7 +236,7 @@ public class StartUITest {
      * Тест для добавления новой заявки: Неправильный ввод времени при создании заявки. Переполнение списка заявок.
      * */
     @Test
-    public void whenInsertInvalidTimeAndListOfItemsIsFullTheTryInsertNewTimeAndgetMessage() {
+    public void whenInsertInvalidTimeThenTryInsertNewTimeAndGetMessage() {
 
         String[] actions = new String[70];
         actions[0] = "0";
@@ -257,8 +261,7 @@ public class StartUITest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
 
-        String expected = "Please enter correct date\r\n"
-                 + "Can't add item. Tracker is full\r\n";
+        String expected = "Please enter correct date\r\n";
 
         StartUI ui = new StartUI(userActions);
         ui.initWithoutMenu();
@@ -286,7 +289,7 @@ public class StartUITest {
     public void whenEditAndInsertInvalidDataThenGetMessage() {
         Tracker tracker = new Tracker();
         tracker.add(new Item("Tom", "test",  1));
-        StubInput userActions = new StubInput(new String[] {"2", "100", "n", "2", tracker.findAll()[0].getId(), "Lee", "test2", "aaaa", "2", "y"});
+        StubInput userActions = new StubInput(new String[] {"2", "100", "n", "2", tracker.findAll().get(0).getId(), "Lee", "test2", "aaaa", "2", "y"});
         StartUI ui = new StartUI(userActions, tracker);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
@@ -299,7 +302,7 @@ public class StartUITest {
         assertThat(result, is(expected));
 
         expected = "Lee";
-        result = tracker.findAll()[0].getName();
+        result = tracker.findAll().get(0).getName();
 
         assertThat(result, is(expected));
 

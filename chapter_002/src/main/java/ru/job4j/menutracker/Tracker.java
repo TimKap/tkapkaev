@@ -1,7 +1,9 @@
 package ru.job4j.menutracker;
 import ru.job4j.models.Item;
-import java.util.Arrays;
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
 * Class Tracker обеспечивает работу с заявками.
 * @author Timur Kapkaev (timur.kap@yandex.ru)
@@ -10,7 +12,7 @@ import java.util.Random;
 */
 public class Tracker {
 	/** Заявки. */
-	private Item[] items = new Item[10];
+	private List<Item> items = new ArrayList<Item>();
 
 	/** Количество заявок.*/
 	private int position;
@@ -33,7 +35,7 @@ public class Tracker {
 	*/
 	public Item add(Item item) {
 		item.setId(generateId());
-		items[position++] = item;
+		items.add(item);
 		return item;
 	}
 
@@ -43,12 +45,13 @@ public class Tracker {
 	*/
 	public void update(Item item) {
 
-		for (int i = 0; i < position; i++) {
-			if ((items[i].getId().equals(item.getId()))) {
-				items[i] = item;
+		for (int i = 0; i < items.size(); i++) {
+			if ((items.get(i).getId().equals(item.getId()))) {
+				items.set(i, item);
 				break;
 			}
 		}
+
 	}
 
 	/**
@@ -56,33 +59,17 @@ public class Tracker {
 	* @param item - удаляемая заявка
 	*/
 	public void delete(Item item) {
-		int i;
-		for (i = 0; i < position; i++) {
-			if (item.getId().equals(items[i].getId())) {
-				break;
-			}
-		}
-		if (i < position - 1) {
-			System.arraycopy(items, i + 1, items, i, position - i - 1);
-			items[position - 1] = null;
-			position--;
-		} else {
-			if (i == (position - 1)) {
-				items[position - 1] = null;
-				position--;
-			}
-
-		}
+			items.remove(item);
 	}
 
 	/**
 	* Получение списка всех заявок.
 	* @return список всех заявок
 	*/
-	public Item[] findAll() {
-		Item[] buf = new Item[position];
-		for (int i = 0; i < position; i++) {
-			buf[i] = items[i];
+	public List<Item> findAll() {
+		List<Item> buf = new ArrayList<>();
+		for (Item item:items) {
+			buf.add(item);
 		}
 		return buf;
 	}
@@ -92,15 +79,14 @@ public class Tracker {
 	* @param key - имя заявки
 	* @return список заявок с одинаковым именем.
 	*/
-	public Item[] findByName(String key) {
-		Item[] result = new Item[position];
-		int i = 0;
+	public List<Item> findByName(String key) {
+		List<Item> result = new ArrayList<Item>();
 		for (Item item : items) {
-			if ((item != null) && key.equals(item.getName())) {
-				result[i++] = item;
+			if (item.getName().equals(key)) {
+				result.add(item);
 			}
 		}
-		return Arrays.copyOf(result, i);
+		return result;
 	}
 
 	/**
@@ -111,7 +97,7 @@ public class Tracker {
 	public Item findById(String id) {
 		Item result = null;
 		for (Item item : items) {
-			if ((item != null) && id.equals(item.getId())) {
+			if (id.equals(item.getId())) {
 				result = item;
 				break;
 			}

@@ -2,7 +2,6 @@ package ru.job4j.convertlist;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-//import java.util.Collections;
 
 /**
  * Class Convert описывает прямое и обратное преобразование Списка в мнокомерный массив.
@@ -19,9 +18,9 @@ public class ConvertList {
      * */
     public List<Integer> toList(int[][]array) {
         List<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                list.add(array[i][j]);
+        for (int[] row:array) {
+            for (int element:row) {
+                list.add(element);
             }
         }
         return list;
@@ -51,8 +50,8 @@ public class ConvertList {
                 }
             }
         }
-
         return array;
-
     }
 }
+
+

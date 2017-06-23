@@ -31,4 +31,34 @@ public class TestSortUser {
         assertThat(result, is(expected));
     }
 
+    /**
+     * Тест метода sortNameLength.
+     * */
+    @Test
+    public void whenSortByNameLengthThenGetSortedList() {
+        List<User> data = new ArrayList<User>();
+        data.addAll(Arrays.asList(new User("Tom", 10), new User("Kate", 1), new User("Ted", 3)));
+
+        List<User> expected = new ArrayList<User>();
+        expected.addAll(Arrays.asList(data.get(0), data.get(2), data.get(1)));
+
+        List<User> result = new SortUser().sortNameLength(data);
+        assertThat(result, is(expected));
+    }
+
+    /**
+     * Тест метода sortByAllFields.
+     * */
+    @Test
+    public void whenSortByAllFieldsThenGetSortedList() {
+        List<User> data = new ArrayList<User>();
+        data.addAll(Arrays.asList(new User("Tom", 10), new User("Kate", 1), new User("Ted", 3)));
+
+        List<User> expected = new ArrayList<User>();
+        expected.addAll(Arrays.asList(data.get(2), data.get(0), data.get(1)));
+
+        List<User> result = new SortUser().sortByAllFields(data);
+        assertThat(result, is(expected));
+    }
+
 }

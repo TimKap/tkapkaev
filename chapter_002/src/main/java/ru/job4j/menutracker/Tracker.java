@@ -44,14 +44,7 @@ public class Tracker {
 	* @param item - редактируемая заявка
 	*/
 	public void update(Item item) {
-
-		for (int i = 0; i < items.size(); i++) {
-			if ((items.get(i).getId().equals(item.getId()))) {
-				items.set(i, item);
-				break;
-			}
-		}
-
+		items.set(items.indexOf(item), item);
 	}
 
 	/**
@@ -96,11 +89,11 @@ public class Tracker {
 	*/
 	public Item findById(String id) {
 		Item result = null;
-		for (Item item : items) {
-			if (id.equals(item.getId())) {
-				result = item;
-				break;
-			}
+		Item searchItem = new Item(null, null, 0);
+		searchItem.setId(id);
+		int i = items.indexOf(searchItem);
+		if (i >= 0) {
+			result = items.get(i);
 		}
 		return result;
 	}

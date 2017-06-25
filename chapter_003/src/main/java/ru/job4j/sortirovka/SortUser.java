@@ -33,15 +33,7 @@ public class SortUser {
         list.sort(new Comparator<User>() {
             @Override
             public int compare(User o1, User o2) {
-                if (o1.getName().length() < o2.getName().length()) {
-                    return -1;
-                } else {
-                    if (o1.getName().length() > o2.getName().length()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
+                return Integer.compare(o1.getName().length(), o2.getName().length());
             }
         });
 
@@ -53,20 +45,16 @@ public class SortUser {
      * @return отсортированный список
      */
     public List<User> sortByAllFields(List<User> list) {
-        list.sort(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                if (o1.getName().length() < o2.getName().length()) {
-                    return -1;
-                } else {
-                    if (o1.getName().length() > o2.getName().length()) {
-                        return 1;
-                    } else {
-                        return ((Integer) o1.getAge()).compareTo(o2.getAge());
-                    }
-                }
+        Comparator<User> comparator = (o1, o2) -> {
+            int result;
+            result = Integer.compare(o1.getName().length(), o2.getName().length());
+            if (result == 0) {
+                result = Integer.compare(o1.getAge(), o2.getAge());
             }
-        });
+            return result;
+        };
+        list.sort(comparator);
+
         return list;
     }
 

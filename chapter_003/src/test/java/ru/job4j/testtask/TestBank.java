@@ -20,7 +20,7 @@ public class TestBank {
 
     /** Тест для метода addUser.*/
     @Test
-    public void whenAddUserThenGetUserInTheBAnk() {
+    public void whenAddUserThenGetUserInTheBank() {
         Bank bank = new Bank();
         User user = new User("Tom", 12345);
         bank.addUser(user);
@@ -31,7 +31,7 @@ public class TestBank {
      * Тест для метода deleteUser.
      * */
     @Test
-    public void whenDeleteUSerThenGetNooneuserIntBank() {
+    public void whenDeleteUSerThenGetNoOneUserInBank() {
         Bank bank = new Bank();
         User user = new User("Tom", 12345);
         bank.addUser(user);
@@ -43,7 +43,7 @@ public class TestBank {
      * Тест для метода addAccountToUser.
      * */
     @Test
-    public void whebAddAccountToUserThenGetUSerWithAccount() {
+    public void whenAddAccountToUserThenGetUSerWithAccount() {
         Bank bank = new Bank();
         User user = new User("Tom", 12345);
         bank.addUser(user);
@@ -64,7 +64,7 @@ public class TestBank {
         bank.addUser(user);
         Account account =  new Account("789");
         bank.addAccountToUser(user, account);
-        bank.deleteAccountFromUser(user, account);
+        bank.deleteAccountFromUser(user, "789");
         List<Account> accounts = bank.getClients().get(user);
         assertThat(false, is(accounts.contains(account)));
 
@@ -90,6 +90,25 @@ public class TestBank {
 
     }
     /**
+     *  Тест для метода getUserAccountByRequisite.
+     */
+    @Test
+    public void whenRequestAccountByRequisitThenGetAccount() {
+        Bank bank = new Bank();
+        User user = new User("Tom", 12345);
+        bank.addUser(user);
+        List<Account> data = new ArrayList<Account>();
+        data.addAll(Arrays.asList(new Account("111"), new Account("111"), new Account("222")));
+        for (Account account:data) {
+            bank.addAccountToUser(user, account);
+        }
+        Account expected = data.get(2);
+        Account result = bank.getUserAccountByRequisite(user, "222");
+
+        assertThat(result, is(expected));
+
+    }
+    /**
      * Тест для метода transferMoney.
      * */
     @Test
@@ -109,7 +128,7 @@ public class TestBank {
         bank.addAccountToUser(user2, accountUser2);
 
         /* Перевести средства со счета user1 на счет user2 */
-        bank.transferMoney(user1, accountUser1, user2, accountUser2, 40000d);
+        bank.transferMoney(user1, "5555", user2, "2222", 40000d);
 
         double resultValue1 = bank.getUserAccounts(user1).get(0).getValue();
         double resultValue2 = bank.getUserAccounts(user2).get(0).getValue();

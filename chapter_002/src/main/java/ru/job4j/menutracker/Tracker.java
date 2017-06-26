@@ -61,9 +61,7 @@ public class Tracker {
 	*/
 	public List<Item> findAll() {
 		List<Item> buf = new ArrayList<>();
-		for (Item item:items) {
-			buf.add(item);
-		}
+		buf.addAll(items);
 		return buf;
 	}
 

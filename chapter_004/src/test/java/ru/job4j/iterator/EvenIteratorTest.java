@@ -1,5 +1,9 @@
 package ru.job4j.iterator;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -17,11 +21,14 @@ public class EvenIteratorTest {
      */
     @Test
     public void whenIterateNumberThenGetEvenNumber() {
-        EvenIterator iterator = new EvenIterator(Integer.MAX_VALUE - 3);
+        ArrayList<Integer> numbers = new ArrayList<>();
+        numbers.addAll(Arrays.asList(1, 2, 3, 5, 2, 6));
 
-        int[] expected = {Integer.MAX_VALUE - 3, Integer.MAX_VALUE - 1};
+        EvenIterator iterator = new EvenIterator(numbers);
 
-        int[] result = new int[2];
+        int[] expected = {2, 2, 6};
+
+        int[] result = new int[3];
         int i = 0;
         while (iterator.hasNext()) {
             result[i++] = (Integer) iterator.next();

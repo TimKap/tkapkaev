@@ -2,6 +2,7 @@ package ru.job4j.iterator;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Class NaturalNumberIterator описывает итератор для натуральных чисел.
@@ -21,13 +22,7 @@ public class PrimeNumbersIterator implements Iterator {
      * */
     public PrimeNumbersIterator(List<Integer> numbers) {
         this.numbers = numbers;
-        int i;
-        for (i = 0; i < numbers.size(); i++) {
-            if (isPrime(numbers.get(i))) {
-                break;
-            }
-        }
-        index = i;
+        index = -1;
     }
 
     /**
@@ -35,7 +30,7 @@ public class PrimeNumbersIterator implements Iterator {
      * @param n - целое число
      * @return true, если число простое.
      * */
-    private static boolean isPrime(int n) {
+    private boolean isPrime(int n) {
         int  lim = (int) Math.sqrt(n);
         boolean isPrime = true;
         for (int i = 2; i <= lim; i++) {
@@ -46,13 +41,27 @@ public class PrimeNumbersIterator implements Iterator {
         }
         return isPrime;
     }
+
+    /**
+     * Возвращает позицию следующего простого числа.
+     * @param currentIndex - текущая позици простого числа
+     * @return позиция простого числа: -1 в случае отсутствия четного числа
+     */
+    private int getNextIndexForPrimeNumber(int currentIndex) {
+        for (int i = ++currentIndex; i < numbers.size(); i++) {
+            if (isPrime(numbers.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
     /**
      * Проверяет наличие доступных простых чисел.
      * @return true если есть еще простое число
      * */
     @Override
     public boolean hasNext() {
-        return index < numbers.size();
+        return getNextIndexForPrimeNumber(index) != -1;
     }
 
     /**
@@ -62,12 +71,19 @@ public class PrimeNumbersIterator implements Iterator {
      * */
     @Override
     public Object next() {
-        int tmp = numbers.get(index);
-        while (++index < numbers.size()) {
-            if (isPrime(numbers.get(index))) {
-                break;
-            }
+        int nextIndex = getNextIndexForPrimeNumber(index);
+
+        if (nextIndex != -1) {
+            index = nextIndex;
         }
-        return tmp;
+
+        int primeNumber;
+        try {
+            primeNumber = numbers.get(nextIndex);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new NoSuchElementException();
+        }
+
+        return primeNumber;
     }
 }

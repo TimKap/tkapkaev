@@ -2,6 +2,7 @@ package ru.job4j.iterator;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Class EvenGenerator возвращает итератор четных чисел.
@@ -10,47 +11,68 @@ import java.util.List;
  * @since 30.06.2017
  */
 public class EvenIterator implements Iterator {
-    /**Числовая последовательность.*/
-    private List<Integer> evenNumber;
-    /** Индекс, указывающий на четное число.*/
-    private int index = 0;
+    /**
+     * Числовая последовательность.
+     */
+    private List<Integer> numbers;
+    /**
+     * Индекс, указывающий на четное число.
+     */
+    private int index;
+
     /**
      * Конструктор класса EvenIterator.
-     * @param evenNumber - начальное значение четного числа
-     * */
-    public EvenIterator(List<Integer> evenNumber) {
-        this.evenNumber = evenNumber;
-        int i;
-        for (i = 0; i < evenNumber.size(); i++) {
-            if ((evenNumber.get(i) % 2) == 0) {
-                break;
+     *
+     * @param number - числовая последовательность
+     */
+    public EvenIterator(List<Integer> number) {
+        this.numbers = number;
+        index = -1;
+    }
+
+    /**
+     * Возвращает позицию следующего четного числа.
+     * @param currentIndex - текущая позици четного числа
+     * @return позиция четного числа: -1 в случае отсутствия четного числа
+     */
+    private int getNextIndexForEvenNumber(int currentIndex) {
+        for (int i = ++currentIndex; i < numbers.size(); i++) {
+            if ((numbers.get(i) % 2) == 0) {
+                return i;
             }
         }
-        index = i;
+        return -1;
     }
 
     /**
      * Проверяет наличие доступных четных чисел.
      * @return true если есть еще четное число
-     * */
+     */
     @Override
     public boolean hasNext() {
-        return index < evenNumber.size();
+        return getNextIndexForEvenNumber(index) != -1;
     }
 
     /**
      * Возвращает четное число.
      * Переводит каретку на следующее четно число.
      * @return элемент матрицы
-     * */
+     * @throws NoSuchElementException при отсутствии четных элементов
+     */
     @Override
     public Object next() {
-        int tmp = evenNumber.get(index);
-        while (++index < evenNumber.size()) {
-            if  ((evenNumber.get(index) % 2) == 0) {
-                break;
-            }
+        int nextIndex = getNextIndexForEvenNumber(index);
+
+        if (nextIndex != -1) {
+            index = nextIndex;
         }
-        return tmp;
+
+        int evenNumber;
+        try {
+            evenNumber = numbers.get(nextIndex);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new NoSuchElementException();
+        }
+        return evenNumber;
     }
 }

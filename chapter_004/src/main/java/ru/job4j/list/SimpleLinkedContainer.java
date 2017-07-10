@@ -1,6 +1,8 @@
 package ru.job4j.list;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Class SimpleLinkedContainer описывает связный список.
  * @author Timur Kapkaev (timur.kap@yandex.ru)
@@ -27,7 +29,7 @@ public class SimpleLinkedContainer<E> implements Iterable<E> {
         if (last == null) {
             first = newNode;
         } else {
-            last.next = newNode;
+            last.setNext(newNode);
         }
         last = newNode;
         size++;
@@ -47,17 +49,73 @@ public class SimpleLinkedContainer<E> implements Iterable<E> {
         if (index < (size >> 1)) {
             node = first;
             for (int i = 0; i < index; i++) {
-                node = node.next;
+                node = node.getNext();
             }
         } else {
             node = last;
             for (int i = size - 1; i > index; i--) {
-                node = node.prev;
+                node = node.getPrev();
             }
         }
         return node.getValue();
     }
 
+    /**
+     * Удаляет последний узел списка.
+     * @param last - последний узел списка
+     * @return значение последнего узла
+     * */
+    private E unlinkLast(Node<E> last) {
+        Node<E> prev = last.getPrev();
+        E value = last.getValue();
+        this.last = prev;
+        if (prev != null) {
+            prev.setNext(null);
+        } else {
+            first = null;
+        }
+        size--;
+        return value;
+    }
+
+    /**
+     * Удаляет первый узел из списка.
+     * @param first - первый узел списка
+     * @return значение первого узла.
+     * */
+    private E unlinkFirst(Node<E> first) {
+        Node<E> next = first.getNext();
+        E value = first.getValue();
+        this.first = next;
+        if (next != null) {
+            next.setPrev(null);
+        } else {
+            last = null;
+        }
+        size--;
+        return value;
+    }
+
+    /**
+     * Удаляет значение из начала списка.
+     * @return значение из начала списка
+     * */
+    public E removeFirst() {
+        if (first == null) {
+            throw new NoSuchElementException();
+        }
+        return unlinkFirst(first);
+    }
+    /**
+     * Удаляет элемент из конца списка.
+     * @return значение из конца списка
+     * */
+    public E removeLast() {
+        if (last == null) {
+            throw new NoSuchElementException();
+        }
+        return unlinkLast(last);
+    }
     /**
      * Возвращает значение первого узла связного списка.
      * @return значение первого узла

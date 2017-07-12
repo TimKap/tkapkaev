@@ -32,29 +32,15 @@ public class LinkedListCyclicity<E> {
      * @return true, если список образует циклическую структуру
      * */
     public boolean hasCycle() {
-        /* Внешний счетчик пройденных узлов. */
-        int counter = 1;
-        /* Крайний узел в пройденном пути узлов. */
-        Node<E> node = first;
+        Node<E> slowNode = first;
+        Node<E> fastNode = slowNode.getNext() == null ? null : slowNode.getNext().getNext();
 
-        while (node != null) {
-            /* Внутренний счетчик пройденных узлов. */
-            int innerCounter = 1;
-
-            /* Поиск среди пройденныхх узлов крайнего узла. */
-            Node<E> innerNode = first;
-            while (innerNode != node) {
-                innerNode = innerNode.getNext();
-                innerCounter++;
-            }
-
-            if (counter != innerCounter) {
-                /*Обнаружение среди пройденных узлов крайнего узла.*/
+        while (slowNode != null && fastNode != null) {
+            if (slowNode == fastNode) {
                 return true;
             }
-            /* Переход к следующему узлу списка. */
-            node = node.getNext();
-            counter++;
+            slowNode = slowNode.getNext();
+            fastNode = fastNode.getNext() == null ? null : fastNode.getNext().getNext();
         }
         return false;
     }

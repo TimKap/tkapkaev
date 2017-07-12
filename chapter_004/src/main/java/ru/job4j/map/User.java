@@ -68,4 +68,37 @@ public class User {
     public void setChildren(int children) {
         this.children = children;
     }
+
+    /**
+     * Вычисляет хеш-функцию для объекта класса User.
+     * @return хеш-код
+     * */
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
+        result = 31 * result + children;
+        return result;
+    }
+
+
+    /**
+     * Определяет равенство объектов класса User.
+     * @param o - объект с которым выполняется сравнение.
+     * @return true, если объекты равны.
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (children != user.children) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        return birthday != null ? birthday.equals(user.birthday) : user.birthday == null;
+    }
+
+
 }

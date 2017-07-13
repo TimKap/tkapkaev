@@ -1,5 +1,4 @@
 package ru.job4j.set;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -11,7 +10,7 @@ import java.util.Iterator;
  */
 public class HashTableSet<E> implements Iterable<E> {
     /** Хеш-таблица. */
-    private final HashMap<E, Object> hashTable = new HashMap<E, Object>();
+    private final HashTable<E, Object> hashTable = new HashTable<E, Object>();
 
     /** "Пустое" значение. */
     private static final Object DUMMY_VALUE = new Object();
@@ -30,7 +29,7 @@ public class HashTableSet<E> implements Iterable<E> {
      * */
     @Override
     public Iterator<E> iterator() {
-        return hashTable.keySet().iterator();
+        return hashTable.keyIterator();
     }
 
 }

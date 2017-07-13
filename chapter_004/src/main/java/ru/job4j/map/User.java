@@ -88,17 +88,25 @@ public class User {
      * @param o - объект с которым выполняется сравнение.
      * @return true, если объекты равны.
      * */
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        User user = (User) o;
-//
-//        if (children != user.children) return false;
-//        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-//        return birthday != null ? birthday.equals(user.birthday) : user.birthday == null;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        if (children != user.children) {
+            return false;
+        }
+        if (name != null ? !name.equals(user.name) : user.name != null) {
+            return false;
+        }
+        return birthday != null ? birthday.equals(user.birthday) : user.birthday == null;
+    }
 
 
 }

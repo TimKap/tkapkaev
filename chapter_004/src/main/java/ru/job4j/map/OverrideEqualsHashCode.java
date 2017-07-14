@@ -59,6 +59,9 @@ public class OverrideEqualsHashCode {
      * */
     @Override
     public int hashCode() {
-        return 0;
+        int result = number;
+        result = 31 * result + floatNumber != +0.0f ? Float.floatToIntBits(floatNumber) : 0;
+        result = 31 * result + string != null ? string.hashCode() : 0;
+        return result;
     }
 }

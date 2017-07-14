@@ -40,6 +40,14 @@ public class OverrideEqualsHashCodeTest {
         OverrideEqualsHashCode notX = new OverrideEqualsHashCode(1, (float) 3.4, "notOk");
         assertThat(x.equals(notX), is(false));
 
-
+    }
+    /**
+     * Тест для hashCode.
+     * */
+    @Test
+    public void whenHashCodeThenExecuteHashFunction() {
+        OverrideEqualsHashCode x = new OverrideEqualsHashCode(1, (float) 3.4, "VseOk");
+        OverrideEqualsHashCode y = new OverrideEqualsHashCode(1, (float) 3.4, "VseOk");
+        assertThat(x.hashCode() == y.hashCode(), is(true));
     }
 }

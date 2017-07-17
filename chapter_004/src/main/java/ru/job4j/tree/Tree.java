@@ -156,6 +156,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         };
     }
 
+
+    /**
+     * Проверяет дерево на бинарность.
+     * @return true, если дерево бинарное
+     * */
+    public boolean isBinary() {
+        List<Node<E>> levelNodes = new LinkedList<>();
+        levelNodes.add(root);
+        while (levelNodes.size() != 0) {
+            for (Node<E> node : levelNodes) {
+                if (node.getChildren().size() > 2) {
+                    return false;
+                }
+            }
+            levelNodes = formNextNodesLevel(levelNodes);
+        }
+        return true;
+    }
     /**
      * Class Node описывает дерево.
      * @author Timur Kapkaev (timur.kap@yandex.ru)

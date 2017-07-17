@@ -99,4 +99,30 @@ public class TreeTest {
         assertThat(result, is(expected));
     }
 
+    /**
+     * Тест для метода isBinary.
+     * */
+    @Test
+    public void whenIsBinaryThenReturnTrueIfTreeBinary() {
+
+        boolean expected = true;
+
+        Tree<Integer> tree = new Tree(0);
+
+        /*1-й уровень*/
+        tree.add(0, 1);
+        tree.add(0, 2);
+
+        /*2-й уровень.*/
+        tree.add(1, 3);
+        tree.add(1, 4);
+
+        tree.add(2, 6);
+        tree.add(2, 7);
+
+        boolean result = tree.isBinary();
+
+        assertThat(result, is(expected));
+    }
+
 }

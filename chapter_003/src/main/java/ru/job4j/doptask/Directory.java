@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  * @since 26.06.2017
  */
 public class Directory {
+    /** Шаблон поиска.*/
+    private static final Pattern PATTERN = Pattern.compile("(.*)\\\\");
     /**Список подразделений.*/
     private List<String> departments = new ArrayList<String>();
 
@@ -82,13 +84,12 @@ public class Directory {
      * Добавление в список кода верхнеуровнего подразделения.
      * */
     private void recoverStructure() {
-        Pattern pattern = Pattern.compile("(.*)\\\\");
         Matcher match;
         /*Вставка пустой строки в список*/
         departments.add(0, "");
         for (int i = 1; i < departments.size(); i++) {
             /* Возвращаем надуровень текущего подразделения*/
-            match = pattern.matcher(departments.get(i));
+            match = PATTERN.matcher(departments.get(i));
             if (match.find()) {
                 String subDepartment = match.group(1);
                 String previousDepartment = departments.get(i - 1);

@@ -35,15 +35,10 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     @Override
     public boolean add(E parentValue, E childValue) {
 
-        /* */
-        if (parentValue.compareTo(childValue) == 0) {
-            return false;
+        Node<E> node = null;
+        if ((parentValue.compareTo(childValue) != 0) && (searchNode(childValue) == null)) {
+            node = searchNode(parentValue);
         }
-
-        if (searchNode(childValue) != null) {
-            return false;
-        }
-        Node<E> node = searchNode(parentValue);
 
         /* Вставка дочернего узла. */
         if (node != null) {

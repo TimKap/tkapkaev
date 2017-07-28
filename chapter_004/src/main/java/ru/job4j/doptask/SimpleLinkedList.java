@@ -14,9 +14,6 @@ public class SimpleLinkedList<E> {
     /** Конец связанного списка. */
     private Node<E> last;
 
-    /** Размер связанного списка. */
-    private int size;
-
     /**
      * Добавляет значение в список.
      * @param e - добавляемое знеачение
@@ -29,24 +26,8 @@ public class SimpleLinkedList<E> {
             last.setNextNode(node);
         }
         last = node;
-        size++;
     }
-    /**
-     * Возвращает i - ый элемент списка.
-     * @param index - индекс искомого узла
-     * @return значение i-ого узла
-     * */
-    private E get(int index) {
-        Node<E> node = first;
-        if (index < size) {
-            for (int i = 0; i < index; i++) {
-                node = node.getNextNode();
-            }
-            return node.getValue();
-        } else {
-            return null;
-        }
-    }
+
 
     /**
      * Возвращает k-ый элемент с конца.
@@ -54,13 +35,18 @@ public class SimpleLinkedList<E> {
      * @return значение k - ого элемента с конца
      * */
     public E getK(int k) {
-        int index = size - k;
-        if (index < 0) {
-            return null;
-        } else {
-            return get(index);
+        Node<E> cur = first;
+        Node<E> pre = cur;
+        int i = 0;
+        while (cur != null) {
+            if (i++ >= k) {
+                pre = pre.getNextNode();
+            }
+            cur = cur.getNextNode();
         }
+        return pre.getValue();
     }
+
 
     /**
      * Class Node описывает узел связанного списка.

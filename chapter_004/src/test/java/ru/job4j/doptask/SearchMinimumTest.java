@@ -20,14 +20,15 @@ public class SearchMinimumTest {
      * */
     @Test
     public void whenSearchThenGetMinIndexes() {
-        ArrayList<Integer> expected = new ArrayList<>(Arrays.asList(4, 8, 10));
+        int[] expected = {1, 2, 3};
 
+        SearchMinimum minimum = new SearchMinimum();
+        ArrayList<Integer> list = new ArrayList<>();
+        list.addAll(Arrays.asList(6, 3, 4, 2, 5, 1));
 
-        ArrayList<Integer> list = new ArrayList<>(Arrays.asList(10, 10, 10,  5, 1, 6, 11, 13, 1, 10, 1, 1));
-        SearchMinimum minimumSearch = new SearchMinimum();
-        MinContainer result = minimumSearch.search(list, 3);
+        int[] result = minimum.search(list, 3);
 
-        assertThat(result.getMin(), is(1));
-        assertThat(result.getMinIndexes(), is(expected));
+        assertThat(result, is(expected));
+
     }
 }

@@ -35,26 +35,6 @@ public class Price implements Comparable<Price> {
         this.value = value;
     }
 
-//    /**
-//     * Сложение стоимости.
-//     * @param price - второе слагаемое
-//     * @return увеличенная стоимость
-//     * */
-//    public Price add(Price price) {
-//        value += price.getValue();
-//        return this;
-//    }
-
-//    /**
-//     * Уменьшение стоимости.
-//     * @param price - второе слагаемое
-//     * @return уменьшенная стоимость
-//     * */
-//    public Price sub(Price price) {
-//        value -= price.getValue();
-//        return this;
-//    }
-
     /**
      * Обределяет соотношение между объектами Price.
      * @return -1 если текущий объект предшествует заданному, 1 если текущий объект следует за заданным, 0 если объекты равны
@@ -74,7 +54,7 @@ public class Price implements Comparable<Price> {
         if (this == o) {
             return true;
         }
-        if ((o != null) || (getClass() != o.getClass())) {
+        if ((o == null) || (getClass() != o.getClass())) {
             return false;
         }
 

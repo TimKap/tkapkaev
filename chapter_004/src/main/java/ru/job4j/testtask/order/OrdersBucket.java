@@ -16,7 +16,7 @@ import java.util.Map;
 public class OrdersBucket<E extends Order> {
 
     /** Корзина заказов. */
-    private Map<String, E> bucket = new HashMap<>();
+    private Map<String, E> bucket = new HashMap<>(1000);
 
     /** Стоимость корнзины. */
     private final Price bucketPrice;

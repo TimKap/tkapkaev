@@ -1,5 +1,6 @@
 package ru.job4j.testtask;
 import org.junit.Test;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -24,5 +25,16 @@ public class OrderBookManagerTest {
 
         assertThat(result[0], is(expected));
 
+    }
+    /**
+     * Тест для определения времени.
+     * */
+    @Test
+    public void getTime() {
+        OrderBookManager bookManager = new OrderBookManager();
+        long start = System.currentTimeMillis();
+        bookManager.processingFile("C:/projects/orders.xml");
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 }

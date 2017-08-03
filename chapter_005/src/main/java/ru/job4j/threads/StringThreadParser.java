@@ -40,11 +40,17 @@ public class StringThreadParser implements Runnable {
         Pattern pattern = Pattern.compile(this.pattern);
         Matcher m = pattern.matcher(stroka);
         int i = 0;
+
         while (m.find()) {
             i++;
         }
-        System.out.println("Thread name: " + Thread.currentThread().getName());
-        System.out.printf("Pattern(%s): %d\r\n", pattern, i);
+
+        for(;!Thread.currentThread().isInterrupted(););
+        if (!Thread.currentThread().isInterrupted()) {
+            System.out.println("Thread name: " + Thread.currentThread().getName());
+            System.out.printf("Pattern(%s): %d\r\n", pattern, i);
+        }
+
     }
 
 
@@ -59,12 +65,29 @@ public class StringThreadParser implements Runnable {
         String patSpace = " ";
         String patWord = "[\\w]+";
 
-
+        System.out.println("Старт программы");
         Thread thread1 = new Thread(new StringThreadParser(stroka, patSpace));
         Thread thread2 = new Thread(new StringThreadParser(stroka, patWord));
         thread1.setName("Search Space");
         thread2.setName("Search Word");
         thread1.start();
         thread2.start();
+        try {
+
+            thread1.join(1000);
+            thread2.join(1000);
+            if (thread1.isAlive()) {
+                System.out.println("Принудительное завершение потока: " + thread1.getName());
+                thread1.interrupt();
+            }
+            if (thread2.isAlive()) {
+                System.out.println("Принудительное завершение потока: " + thread2.getName());
+                thread2.interrupt();
+            }
+            System.out.println("Завершение программы");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }

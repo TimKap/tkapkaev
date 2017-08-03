@@ -45,7 +45,11 @@ public class StringThreadParser implements Runnable {
             i++;
         }
 
-        for(;!Thread.currentThread().isInterrupted(););
+        for (;;) {
+            if (Thread.currentThread().isInterrupted()) {
+                break;
+            }
+        }
         if (!Thread.currentThread().isInterrupted()) {
             System.out.println("Thread name: " + Thread.currentThread().getName());
             System.out.printf("Pattern(%s): %d\r\n", pattern, i);

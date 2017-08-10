@@ -1,4 +1,4 @@
-package ru.job4j.jmm;
+package ru.job4j.jmm.volatileproblem;
 
 /**
  * Class VolatileProblem описывает проблему видимости разделяемых переменных в многопоточном приложении.
@@ -9,27 +9,25 @@ package ru.job4j.jmm;
  */
 public class VolatileProblem {
 
-
     /**
      * Точка входа.
      * @param args - аргументы командной строки
      * */
     public static void main(String[] args) {
-
         SharedVariable sharedVariable = new SharedVariable();
-        Thread threadIncrement = new Thread(new TaskIncrement(sharedVariable));
-        Thread threadShow = new Thread(new ShowSharedVariable(sharedVariable));
-        threadIncrement.setName("change variable");
-        threadShow.setName("show variable");
-        threadIncrement.start();
-        threadShow.start();
+
+        Thread writeTask = new Thread(new WriteTask(sharedVariable));
+        Thread readTask = new Thread(new ReadTask(sharedVariable));
+        writeTask.start();
+        readTask.start();
 
         try {
-            threadIncrement.join();
-            threadShow.join();
+            writeTask.join();
+            readTask.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
 
     }

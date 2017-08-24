@@ -1,14 +1,14 @@
 package ru.job4j.synchronization.searchtextfile;
 
-import net.jcip.annotations.GuardedBy;
+
 import net.jcip.annotations.ThreadSafe;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -28,14 +28,12 @@ public class SearchTextInFile implements Runnable {
     /**
      * Список файлов, в которых ыыполняется поиск.
      */
-    @GuardedBy(value = "filesName")
-    private final Queue<String> filesName;
+    private final ConcurrentLinkedQueue<String> filesName;
 
     /**
      * Файлы, в которых обнаружен искомый текст.
      */
-    @GuardedBy(value = "filesContainsText")
-    private final List<String> filesContainsText;
+    private final CopyOnWriteArrayList<String> filesContainsText;
 
     /**
      * Конструктор  класса SearchTextInFile.
@@ -45,7 +43,7 @@ public class SearchTextInFile implements Runnable {
      * @param filesContainsText - Файлы, в которых обнаружен искомый текст
      */
 
-    public SearchTextInFile(Queue<String> filesName, String text, List<String> filesContainsText) {
+    public SearchTextInFile(ConcurrentLinkedQueue<String> filesName, String text, CopyOnWriteArrayList<String> filesContainsText) {
         this.filesName = filesName;
         this.text = text;
         this.filesContainsText = filesContainsText;
@@ -58,16 +56,15 @@ public class SearchTextInFile implements Runnable {
     public void run() {
         while (true) {
             String fileName;
-            synchronized (filesName) {
-                if (filesName.isEmpty() && Thread.currentThread().isInterrupted()) {
-                    break;
-                }
-                fileName = filesName.poll();
+
+            if (filesName.isEmpty() && Thread.currentThread().isInterrupted()) {
+                break;
             }
+
+            fileName = filesName.poll();
+
             if (fileName != null && searchText(fileName, text)) {
-                synchronized (filesContainsText) {
-                    filesContainsText.add(fileName);
-                }
+                filesContainsText.add(fileName);
             }
         }
 

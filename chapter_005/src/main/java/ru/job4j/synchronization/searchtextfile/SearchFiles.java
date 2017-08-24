@@ -1,12 +1,12 @@
 package ru.job4j.synchronization.searchtextfile;
 
-import net.jcip.annotations.GuardedBy;
+
 import net.jcip.annotations.ThreadSafe;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Class SearchFiles выполняет поиск файлов с задданным расширением.
@@ -26,8 +26,7 @@ public class SearchFiles implements Runnable {
     /**
      * Очередь файлов с заданным раширением.
      */
-    @GuardedBy(value = "filesNAme")
-    private final Queue<String> filesName;
+    private final ConcurrentLinkedQueue<String> filesName;
 
     /**
      * Каталог, с которого начинается поиск.
@@ -41,15 +40,16 @@ public class SearchFiles implements Runnable {
      * @param exts      - расширения файлов
      * @param filesName -  очередь файлов с заданным расширением
      */
-    public SearchFiles(String root, List<String> exts, Queue<String> filesName) {
+    public SearchFiles(String root, List<String> exts, ConcurrentLinkedQueue<String> filesName) {
         this.root = root;
         this.exts = exts;
         this.filesName = filesName;
+
     }
 
     /**
      * Задача формирования очереди из файлов с заданным расширением.
-     * */
+     */
     @Override
     public void run() {
         makeQueue(root);
@@ -57,8 +57,9 @@ public class SearchFiles implements Runnable {
 
     /**
      * Формирование очереди из имен файлов с заданным расширением.
+     *
      * @param path - путь к каталогу
-     * */
+     */
     private void makeQueue(String path) {
 
         /* текущий каталог */
@@ -80,9 +81,7 @@ public class SearchFiles implements Runnable {
                     } else {
                         if (checkExtension(pathToEntity)) {
                             /* добавляем файл в очередь */
-                            synchronized (filesName) {
-                                filesName.add(pathToEntity);
-                            }
+                            filesName.add(pathToEntity);
                         }
                     }
                 }
@@ -97,9 +96,10 @@ public class SearchFiles implements Runnable {
 
     /**
      * Проверка расширения файла.
+     *
      * @param fileName - имя файла
      * @return true, если расширение удовлетворяет требованиям
-     * */
+     */
     private boolean checkExtension(String fileName) {
         int indexPoint = fileName.lastIndexOf(".");
         if ((indexPoint != -1) && (indexPoint != 0)) {

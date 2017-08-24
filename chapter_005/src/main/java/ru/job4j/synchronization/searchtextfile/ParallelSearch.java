@@ -1,10 +1,11 @@
 package ru.job4j.synchronization.searchtextfile;
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+
 import java.util.List;
-import java.util.Queue;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -48,8 +49,8 @@ public class ParallelSearch {
      * @return список файлов, содержащих указанный текст.
      */
     List<String> result() {
-        Queue<String> filesName = new LinkedList<>();
-        List<String> filesContainsText = new ArrayList<>();
+        ConcurrentLinkedQueue<String> filesName = new ConcurrentLinkedQueue<>();
+        CopyOnWriteArrayList<String> filesContainsText = new CopyOnWriteArrayList<>();
         Thread makeFilesNameQueue = new Thread(new SearchFiles(root, exts, filesName));
 
         SearchTextInFile searchTask = new SearchTextInFile(filesName, text, filesContainsText);

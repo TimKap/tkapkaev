@@ -52,4 +52,38 @@ public class Coordinate {
     public void setY(int y) {
         this.y = y;
     }
+
+
+    /**
+     * Определяет равенство коодинат.
+     * @param o - координата, с которой выполняется сравнение
+     * @return true, если координаты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Coordinate that = (Coordinate) o;
+
+        if (x != that.x) {
+            return false;
+        }
+        return y == that.y;
+    }
+
+    /**
+     * Задает хеш-функцию координаты.
+     * @return хеш-код
+     * */
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
 }

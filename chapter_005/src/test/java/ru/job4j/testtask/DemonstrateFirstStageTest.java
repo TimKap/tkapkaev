@@ -22,11 +22,10 @@ public class DemonstrateFirstStageTest {
         Thread th = new Thread() {
             @Override
             public  void run() {
-                Hero hero = new Hero(board);
+                Monster monster = new Monster(board);
                 while (true) {
-                    Coordinate coordinate = null;
                     try {
-                        coordinate = hero.changePosition();
+                        Coordinate coordinate = monster.autoAction();
                         System.out.printf("Thread: %s X: %d Y: %d\n\r", Thread.currentThread().getName(), coordinate.getX(), coordinate.getY());
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -42,11 +41,10 @@ public class DemonstrateFirstStageTest {
         Thread th2 = new Thread() {
             @Override
             public  void run() {
-                Hero hero = new Hero(board);
+                Monster monster = new Monster(board);
                 while (true) {
-                    Coordinate coordinate = null;
                     try {
-                        coordinate = hero.changePosition();
+                        Coordinate coordinate = monster.autoAction();
                         System.out.printf("Thread: %s X: %d Y: %d\n\r", Thread.currentThread().getName(), coordinate.getX(), coordinate.getY());
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {

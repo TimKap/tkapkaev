@@ -1,98 +1,132 @@
 package ru.job4j.menutracker;
+
 import ru.job4j.models.Item;
+import ru.job4j.models.ItemDatabase;
+
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.List;
-import java.util.ArrayList;
+
 
 /**
-* Class Tracker обеспечивает работу с заявками.
-* @author Timur Kapkaev (timur.kap@yandex.ru)
-* @version $Id$
-* @since 09.04.2017
-*/
+ * Class Tracker обеспечивает работу с заявками.
+ *
+ * @author Timur Kapkaev (timur.kap@yandex.ru)
+ * @version $Id$
+ * @since 09.04.2017
+ */
 public class Tracker {
-	/** Заявки. */
-	private List<Item> items = new ArrayList<Item>();
+    /**
+     * Заявки.
+     */
+    private ItemDatabase items;
 
-	/** Количество заявок.*/
-	private int position;
+    /**
+     * Количество заявок.
+     */
+    private int position;
 
-	/** Генератор случайного числа.*/
-	private static final Random RN = new Random();
+    /**
+     * Генератор случайного числа.
+     */
+    private static final Random RN = new Random();
 
-	/**
-	* Генератор идентификационного номера.
-	* @return id в формате строки
-	*/
-	String generateId() {
-		return String.valueOf(RN.nextInt());
-	}
+    /**
+     * Конструктор класса Tracker.
+     * @throws Exception при нарушении создания объекта Tracker
+     */
+    public Tracker() throws Exception {
+        items = ItemDatabase.newInstance();
+    }
 
-	/**
-	* Добавление заявки.
-	* @param item - заявка
-	* @return  добавленная заявка
-	*/
-	public Item add(Item item) {
-		item.setId(generateId());
-		items.add(item);
-		return item;
-	}
+    /**
+     * Генератор идентификационного номера.
+     *
+     * @return id в формате строки
+     */
+    String generateId() {
+        return String.valueOf(RN.nextInt());
+    }
 
-	/**
-	* Редактирование заявки.
-	* @param item - редактируемая заявка
-	*/
-	public void update(Item item) {
-		items.set(items.indexOf(item), item);
-	}
+    /**
+     * Добавление заявки.
+     *
+     * @param item - заявка
+     * @return добавленная заявка
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     */
+    public Item add(Item item) throws SQLException {
+        item.setId(generateId());
+        items.add(item);
+        return item;
+    }
 
-	/**
-	* Удаление заявки.
-	* @param item - удаляемая заявка
-	*/
-	public void delete(Item item) {
-			items.remove(item);
-	}
+    /**
+     * Редактирование заявки.
+     *
+     * @param item - редактируемая заявка
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     */
+    public void update(Item item) throws SQLException {
+        items.update(item);
+    }
 
-	/**
-	* Получение списка всех заявок.
-	* @return список всех заявок
-	*/
-	public List<Item> findAll() {
-		List<Item> buf = new ArrayList<>();
-		buf.addAll(items);
-		return buf;
-	}
+    /**
+     * Удаление заявки.
+     *
+     * @param item - удаляемая заявка
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     */
+    public void delete(Item item) throws SQLException {
+        items.delete(item);
+    }
 
-	/**
-	* Получение списка заявок с одинаковым именем.
-	* @param key - имя заявки
-	* @return список заявок с одинаковым именем.
-	*/
-	public List<Item> findByName(String key) {
-		List<Item> result = new ArrayList<Item>();
-		for (Item item : items) {
-			if (item.getName().equals(key)) {
-				result.add(item);
-			}
-		}
-		return result;
-	}
+    /**
+     * Получение списка всех заявок.
+     * @return список всех заявок
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     */
+    public List<Item> findAll() throws SQLException {
+        return items.findAll();
+    }
 
-	/**
-	* Возвращение заявки по Id.
-	* @param id - идентификационный номер
-	* @return - заявка
-	*/
-	public Item findById(String id) {
-		Item result = null;
-		Item searchItem = new Item(null, null, 0);
-		searchItem.setId(id);
-		int i = items.indexOf(searchItem);
-		if (i >= 0) {
-			result = items.get(i);
-		}
-		return result;
-	}
+    /**
+     * Получение списка заявок с одинаковым именем.
+     *
+     * @param key - имя заявки
+     * @return список заявок с одинаковым именем.
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     */
+    public List<Item> findByName(String key) throws SQLException {
+        return items.findByName(key);
+    }
+
+    /**
+     * Возвращение заявки по Id.
+     *
+     * @param id - идентификационный номер
+     * @return - заявка
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     */
+    public Item findById(String id) throws SQLException {
+        return items.findByID(id);
+    }
+
+    /**
+     * Очищает трекер.
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     * */
+    public void clean() throws SQLException {
+        items.clean();
+    }
+
+    /**
+     * Завершение работы с трекером.
+     * @throws SQLException - An exception that provides information on a database access error or other errors
+     * */
+    public void close() throws SQLException {
+        if (items != null) {
+            items.close();
+        }
+    }
 }

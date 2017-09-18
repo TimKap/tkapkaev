@@ -1,6 +1,6 @@
 package ru.job4j.models;
 /**
-* Class Iteme описывает заявку.
+* Class Item описывает заявку.
 * @author Timur Kapkaev (timur.kap@yandex.ru)
 * @version $Id$
 * @since 31.03.2017
@@ -28,6 +28,17 @@ public class Item {
 		this.name = name;
 		this.description = description;
 		this.create = create;
+	}
+
+	/**
+	 * Конструктор заявки.
+	 * @param name - название заявки
+	 * @param description - описание заявки
+	 */
+	public Item(String name, String description) {
+		this.name = name;
+		this.description = description;
+
 	}
 
 	/**

@@ -16,8 +16,9 @@ public class StartUI {
     /**
      * Конструктор класса StartUI.
      * @param input - способ ввода данных в приложение
+     * @throws Exception при нарушении создания объекта Tracker
      * */
-    public StartUI(Input input) {
+    public StartUI(Input input) throws Exception {
 
         this.input = input;
         tracker = new Tracker();
@@ -70,8 +71,16 @@ public class StartUI {
      * @param args - аргументы переданные в приложение из консоли.
      * */
     public static void main(String[] args) {
-       StartUI ui = new StartUI(new ConsoleInput());
-       ui.init();
-
+        StartUI ui = null;
+        try {
+            ui = new StartUI(new ConsoleInput());
+            ui.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ui != null) {
+                ui.menu.close();
+            }
+        }
     }
 }

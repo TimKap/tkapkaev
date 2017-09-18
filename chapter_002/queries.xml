@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<querise>
+    <add>insert into items (name, description, comments) values(?, ?, ?);</add>
+    <delete>delete from items where id=?;</delete>
+    <clean>delete from items;</clean>
+    <update>update items set name=?, description=?, comments=? where id=?;</update>
+    <selectAll>select * from items;</selectAll>
+    <selectByName>select * from items where name=?;</selectByName>
+    <selectByID>select * from items where id=?;</selectByID>
+    <table>CREATE TABLE IF NOT EXISTS items (
+        id serial primary key,
+        name varchar(256),
+        description varchar(256),
+        create_time timestamp not null default now(),
+        comments text
+        );</table>
+</querise>

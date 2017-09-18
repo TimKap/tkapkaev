@@ -21,222 +21,282 @@ public class StartUITest {
 
     /**
      * Тест добавление заявки в трекер.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenAddItemThenTrackerAddItToList() {
+    public void whenAddItemThenTrackerAddItToList() throws Exception {
         StubInput userActions = new StubInput(new String[]{"0", "Tim", "Item Test 1", "123", "y"});
         StartUI ui = new StartUI(userActions);
-        ui.init();
-        Tracker tracker = ui.getTracker();
-        String result = tracker.findAll().get(0).getName();
-        String expected = "Tim";
-        assertThat(result, is(expected));
+        try {
+            ui.getTracker().clean();
+            ui.init();
+            Tracker tracker = ui.getTracker();
+            String result = tracker.findAll().get(0).getName();
+            String expected = "Tim";
+            assertThat(result, is(expected));
 
-        result = tracker.findAll().get(0).getDescription();
-        expected = "Item Test 1";
-        assertThat(result, is(expected));
+            result = tracker.findAll().get(0).getDescription();
+            expected = "Item Test 1";
+            assertThat(result, is(expected));
+
+        } finally {
+            ui.getTracker().close();
+        }
     }
 
     /**
      * Тест по удалению заявки.
+     * @throws Exception при нарушении создания объекта Tracker
      */
     @Test
-    public void whenDeleteItemThenGetReducedTracker() {
+    public void whenDeleteItemThenGetReducedTracker() throws Exception {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
-        Item[] items = {new Item("Item1", "test", 1L), new Item("Item2", "test", 2L), new Item("Item3", "test", 3L)};
-        tracker.add(items[0]);
-        tracker.add(items[1]);
-        tracker.add(items[2]);
+        try {
+            tracker.clean();
+            Item[] items = {new Item("Item1", "test"), new Item("Item2", "test"), new Item("Item3", "test")};
+            tracker.add(items[0]);
+            tracker.add(items[1]);
+            tracker.add(items[2]);
+
         /*Ожидаемое значение после удаления заявки*/
-        List<Item> expected =  new ArrayList<Item>();
-        expected.addAll(Arrays.asList(items[0], items[2]));
+            List<Item> expected = new ArrayList<>();
+            expected.addAll(Arrays.asList(items[0], items[2]));
+            items[0].setId("1");
+            items[1].setId("2");
+            items[2].setId("3");
 
         /*Задание действий пользователя*/
-        StubInput userActions = new StubInput(new String[]{"3", tracker.findAll().get(1).getId(), "y"});
+            StubInput userActions = new StubInput(new String[]{"3", "2", "y"});
         /*Формирование пользовательского интерфейса*/
-        StartUI ui = new StartUI(userActions, tracker);
+            StartUI ui = new StartUI(userActions, tracker);
         /* Удаление заявки */
-        ui.init();
+            ui.init();
 
-        List<Item> result = tracker.findAll();
-        assertThat(result, is(expected));
+            List<Item> result = tracker.findAll();
+            assertThat(result, is(expected));
+        } finally {
+            tracker.close();
+        }
+
     }
 
     /**
      * Тест для редактирования заявки.
+     * @throws Exception при нарушении создания объекта Tracker
      */
     @Test
-    public void whenUpdateItemThenGetExpected() {
+    public void whenUpdateItemThenGetExpected() throws Exception {
         /*Инициализация трекера*/
         Tracker tracker = new Tracker();
-        Item item = new Item("Item1", "test", 1L);
-        tracker.add(item);
+        try {
+            tracker.clean();
+            Item item = new Item("Item1", "test");
+            tracker.add(item);
+            item.setId("1");
 
         /*Задание действий пользователя*/
-        StubInput userActions = new StubInput(new String[]{"2", tracker.findAll().get(0).getId(), "modified Item", "New test", "2", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
-        String expected = "modified Item";
-        String result;
+            StubInput userActions = new StubInput(new String[]{"2", "1", "modified Item", "New test", "2", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
+            String expected = "modified Item";
+            String result;
 
 		/* Замена заявки item на expected*/
-        ui.init();
+            ui.init();
 
-        result = tracker.findAll().get(0).getName();
-        assertThat(result, is(expected));
+            result = tracker.findAll().get(0).getName();
+            assertThat(result, is(expected));
 
-        expected = "New test";
-        result = tracker.findAll().get(0).getDescription();
-        assertThat(result, is(expected));
+            expected = "New test";
+            result = tracker.findAll().get(0).getDescription();
+            assertThat(result, is(expected));
+        } finally {
+            tracker.close();
+        }
+
     }
 
     /**
      * Тест получение заявки по Id.
+     * @throws Exception при нарушении создания объекта Tracker
      */
     @Test
-    public void whenFindByIdThenGetItemWithThisId() {
+    public void whenFindByIdThenGetItemWithThisId() throws Exception {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
-        Item[] items = {new Item("Item1", "test", 1L), new Item("Item2", "test", 2L), new Item("Item3", "test", 3L)};
-        tracker.add(items[0]);
-        tracker.add(items[1]);
-        tracker.add(items[2]);
+        try {
+            tracker.clean();
+            Item[] items = {new Item("Item1", "test"), new Item("Item2", "test"), new Item("Item3", "test")};
+            tracker.add(items[0]);
+            tracker.add(items[1]);
+            tracker.add(items[2]);
+            items[0].setId("1");
+            items[1].setId("2");
+            items[2].setId("3");
 
-        StubInput userActions = new StubInput(new String[]{"4", tracker.findAll().get(1).getId(), "y"});
-        StartUI ui = new StartUI(userActions, tracker);
+            StubInput userActions = new StubInput(new String[]{"4", "2", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        String expected = "-----------------------------\r\n"
-                +
-                String.format("Name: %s     Data: %s\r\n", "Item2", "2")
-                +
-                String.format("%s\r\n", "test")
-                +
-                String.format("ID: %s\r\n", tracker.findAll().get(1).getId())
-                +
-                "-----------------------------\r\n";
-        /*Вывод заявки на экран*/
-        ui.initWithoutMenu();
-        assertThat(out.toString(), is(expected));
+            String expected = "-----------------------------\r\n"
+                    +
+                    String.format("Name: %s     Data: %s\r\n", "Item2", tracker.findAll().get(1).getCreate())
+                    +
+                    String.format("%s\r\n", "test")
+                    +
+                    String.format("ID: %s\r\n", tracker.findAll().get(1).getId())
+                    +
+                    "-----------------------------\r\n";
+            /*Вывод заявки на экран*/
+            ui.initWithoutMenu();
+            assertThat(out.toString(), is(expected));
+        } finally {
+            tracker.close();
+        }
     }
 
     /**
      * Тест получение заявки по Имени.
+     * @throws Exception при нарушении создания объекта Tracker
      */
     @Test
-    public void whenFindByNameThenGetAllItemsWithThisName() {
+    public void whenFindByNameThenGetAllItemsWithThisName() throws Exception {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
-        Item[] items = {new Item("Item1", "test", 1L), new Item("Item2", "test", 2L), new Item("Item1", "test", 3L)};
-        tracker.add(items[0]);
-        tracker.add(items[1]);
-        tracker.add(items[2]);
+        try {
+            tracker.clean();
+            Item[] items = {new Item("Item1", "test"), new Item("Item2", "test"), new Item("Item1", "test")};
+            tracker.add(items[0]);
+            tracker.add(items[1]);
+            tracker.add(items[2]);
+            items[0].setId("1");
+            items[1].setId("2");
+            items[2].setId("3");
 
-        StubInput userActions = new StubInput(new String[]{"5", "Item1", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
+            StubInput userActions = new StubInput(new String[]{"5", "Item1", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        String expected = "-----------------------------\r\n"
-                +
-                String.format("Name: %s     Data: %s\r\n", "Item1", "1")
-                +
-                String.format("%s\r\n", "test")
-                +
-                String.format("ID: %s\r\n", tracker.findAll().get(0).getId())
-                +
-                "-----------------------------\r\n"
-                +
-                "-----------------------------\r\n"
-                +
-                String.format("Name: %s     Data: %s\r\n", "Item1", "3")
-                +
-                String.format("%s\r\n", "test")
-                +
-                String.format("ID: %s\r\n", tracker.findAll().get(2).getId())
-                +
-                "-----------------------------\r\n";
+            String expected = "-----------------------------\r\n"
+                    +
+                    String.format("Name: %s     Data: %s\r\n", "Item1", tracker.findAll().get(0).getCreate())
+                    +
+                    String.format("%s\r\n", "test")
+                    +
+                    String.format("ID: %s\r\n", tracker.findAll().get(0).getId())
+                    +
+                    "-----------------------------\r\n"
+                    +
+                    "-----------------------------\r\n"
+                    +
+                    String.format("Name: %s     Data: %s\r\n", "Item1", tracker.findAll().get(2).getCreate())
+                    +
+                    String.format("%s\r\n", "test")
+                    +
+                    String.format("ID: %s\r\n", tracker.findAll().get(2).getId())
+                    +
+                    "-----------------------------\r\n";
         /*Вывод заявки на экран*/
-        ui.initWithoutMenu();
-        assertThat(out.toString(), is(expected));
+            ui.initWithoutMenu();
+            assertThat(out.toString(), is(expected));
+        } finally {
+            tracker.close();
+        }
     }
 
     /**
      * Тест получение всех заявок.
+     * @throws Exception при нарушении создания объекта Tracker
      */
     @Test
-    public void whenFindAllThenGetAllNotNullItems() {
+    public void whenFindAllThenGetAllNotNullItems() throws Exception {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
-        Item[] items = {new Item("Item1", "test", 1L), new Item("Item2", "test", 2L), new Item("Item3", "test", 3L)};
-        tracker.add(items[0]);
-        tracker.add(items[1]);
-        tracker.add(items[2]);
+        try {
+            tracker.clean();
+            Item[] items = {new Item("Item1", "test", 1L), new Item("Item2", "test", 2L), new Item("Item3", "test", 3L)};
+            tracker.add(items[0]);
+            tracker.add(items[1]);
+            tracker.add(items[2]);
+            items[0].setId("1");
+            items[1].setId("2");
+            items[2].setId("3");
 
-        StubInput userActions = new StubInput(new String[]{"1", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
+            StubInput userActions = new StubInput(new String[]{"1", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        String expected = "-----------------------------\r\n"
-                +
-                String.format("Name: %s     Data: %s\r\n", "Item1", "1")
-                +
-                String.format("%s\r\n", "test")
-                +
-                String.format("ID: %s\r\n", tracker.findAll().get(0).getId())
-                +
-                "-----------------------------\r\n"
-                +
-                "-----------------------------\r\n"
-                +
-                String.format("Name: %s     Data: %s\r\n", "Item2", "2")
-                +
-                String.format("%s\r\n", "test")
-                +
-                String.format("ID: %s\r\n", tracker.findAll().get(1).getId())
-                +
-                "-----------------------------\r\n"
-                +
-                "-----------------------------\r\n"
-                +
-                String.format("Name: %s     Data: %s\r\n", "Item3", "3")
-                +
-                String.format("%s\r\n", "test")
-                +
-                String.format("ID: %s\r\n", tracker.findAll().get(2).getId())
-                +
-                "-----------------------------\r\n";
+            String expected = "-----------------------------\r\n"
+                    +
+                    String.format("Name: %s     Data: %s\r\n", "Item1", tracker.findAll().get(0).getCreate())
+                    +
+                    String.format("%s\r\n", "test")
+                    +
+                    String.format("ID: %s\r\n", tracker.findAll().get(0).getId())
+                    +
+                    "-----------------------------\r\n"
+                    +
+                    "-----------------------------\r\n"
+                    +
+                    String.format("Name: %s     Data: %s\r\n", "Item2", tracker.findAll().get(1).getCreate())
+                    +
+                    String.format("%s\r\n", "test")
+                    +
+                    String.format("ID: %s\r\n", tracker.findAll().get(1).getId())
+                    +
+                    "-----------------------------\r\n"
+                    +
+                    "-----------------------------\r\n"
+                    +
+                    String.format("Name: %s     Data: %s\r\n", "Item3", tracker.findAll().get(2).getCreate())
+                    +
+                    String.format("%s\r\n", "test")
+                    +
+                    String.format("ID: %s\r\n", tracker.findAll().get(2).getId())
+                    +
+                    "-----------------------------\r\n";
         /*Вывод заявки на экран*/
-        ui.initWithoutMenu();
-        assertThat(out.toString(), is(expected));
+            ui.initWithoutMenu();
+            assertThat(out.toString(), is(expected));
+        } finally {
+            tracker.close();
+        }
     }
     /**
      * Тест для выбора пункта меню: ввод некорректных данных при выборе пункта меню.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenSelectMeuUserInsertInvalidDataThenTrySelectAgain() {
+    public void whenSelectMeuUserInsertInvalidDataThenTrySelectAgain() throws Exception {
         Tracker tracker = new Tracker();
-        StubInput userActions = new StubInput(new String[] {"gjhg", "10", "0", "Tom", "test", "1", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        String expected = "Please enter validate data again\r\n"
-                        + "Please choose correct action\r\n";
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+        try {
+            tracker.clean();
+            StubInput userActions = new StubInput(new String[]{"gjhg", "10", "0", "Tom", "test", "1", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
+            String expected = "Please enter validate data again\r\n"
+                    + "Please choose correct action\r\n";
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
+        } finally {
+            tracker.close();
+        }
 
     }
     /**
      * Тест для добавления новой заявки: Неправильный ввод времени при создании заявки. Переполнение списка заявок.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenInsertInvalidTimeThenTryInsertNewTimeAndGetMessage() {
+    public void whenInsertInvalidTimeThenTryInsertNewTimeAndGetMessage() throws Exception {
 
         String[] actions = new String[70];
         actions[0] = "0";
@@ -264,110 +324,145 @@ public class StartUITest {
         String expected = "Please enter correct date\r\n";
 
         StartUI ui = new StartUI(userActions);
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+        try {
+            ui.getTracker().clean();
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
+        } finally {
+            ui.getTracker().close();
+        }
     }
     /**
      * Тест для вывода всех заявок: Вывод пустого списка заявок.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenShowAllEmptyListOfItemsThenGetMessage() {
-        StubInput userActions = new StubInput(new String[] {"1", "y"});
+    public void whenShowAllEmptyListOfItemsThenGetMessage() throws Exception {
+        StubInput userActions = new StubInput(new String[]{"1", "y"});
         StartUI ui = new StartUI(userActions);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        String expected = "Tracker is empty\r\n";
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+        try {
+            ui.getTracker().clean();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
+            String expected = "Tracker is empty\r\n";
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
+        } finally {
+            ui.getTracker().close();
+        }
     }
     /**
-     * Тест для редактирования заявки: Неп заявки с введенным ID. Неправильно введенная дата при добавлении заявки.
+     * Тест для редактирования заявки: Нет заявки с введенным ID. Неправильно введенная дата при добавлении заявки.
+     * @throws Exception при нарушении создания объекта Tracker
      */
     @Test
-    public void whenEditAndInsertInvalidDataThenGetMessage() {
+    public void whenEditAndInsertInvalidDataThenGetMessage() throws Exception {
         Tracker tracker = new Tracker();
-        tracker.add(new Item("Tom", "test",  1));
-        StubInput userActions = new StubInput(new String[] {"2", "100", "n", "2", tracker.findAll().get(0).getId(), "Lee", "test2", "aaaa", "2", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+        try {
+            tracker.clean();
+            tracker.add(new Item("Tom", "test", 1));
+            StubInput userActions = new StubInput(new String[]{"2", "100", "n", "2", tracker.findAll().get(0).getId(), "Lee", "test2", "aaaa", "2", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        String expected =  "Item nod founded\r\n"
-                          +
-                           "Please enter correct date\r\n";
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+            String expected = "Item nod founded\r\n"
+                    +
+                    "Please enter correct date\r\n";
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
 
-        expected = "Lee";
-        result = tracker.findAll().get(0).getName();
+            expected = "Lee";
+            result = tracker.findAll().get(0).getName();
 
-        assertThat(result, is(expected));
+            assertThat(result, is(expected));
+        } finally {
+            tracker.close();
+        }
 
     }
 
     /**
      * Тест для удаления заявки из трекера. В трекере отсутствует заявка с заявленным ID.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenDeleteItemWithUnexpectedIdThenGetMessage() {
+    public void whenDeleteItemWithUnexpectedIdThenGetMessage() throws Exception {
         Tracker tracker = new Tracker();
-        tracker.add(new Item("Tom", "test",  1));
+        try {
+            tracker.clean();
+            tracker.add(new Item("Tom", "test"));
 
-        StubInput userActions = new StubInput(new String[] {"3", "1", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
-        String expected = "Item nod founded\r\n";
+            StubInput userActions = new StubInput(new String[]{"3", "2", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
+            String expected = "Item nod founded\r\n";
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
+        } finally {
+           tracker.close();
+        }
 
     }
 
     /**
      * Тест для поиска заявки по ID. В трекере отсутствует заявка с заявленным ID.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenFindByIdItemWithUnexpectedIdThenGetMessage() {
+    public void whenFindByIdItemWithUnexpectedIdThenGetMessage() throws Exception {
 
         Tracker tracker = new Tracker();
-        tracker.add(new Item("Tom", "test",  1));
-        StubInput userActions = new StubInput(new String[] {"4", "1", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
-        String expected = "Item nod founded\r\n";
+        try {
+            tracker.clean();
+            tracker.add(new Item("Tom", "test"));
+            StubInput userActions = new StubInput(new String[]{"4", "2", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
+            String expected = "Item nod founded\r\n";
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
+        } finally {
+            tracker.close();
+        }
 
     }
 
     /**
      * Тест для поиска заявки по Имени. В трекере отсутствует заявка с заявленным Именем.
+     * @throws Exception при нарушении создания объекта Tracker
      * */
     @Test
-    public void whenFindByNameItemWithUnexpectedNameThenGetMessage() {
+    public void whenFindByNameItemWithUnexpectedNameThenGetMessage() throws Exception {
 
         Tracker tracker = new Tracker();
-        tracker.add(new Item("Tom", "test",  1));
-        StubInput userActions = new StubInput(new String[] {"5", "Tm", "y"});
-        StartUI ui = new StartUI(userActions, tracker);
-        String expected = "Items nod founded\r\n";
+        try {
+            tracker.clean();
+            tracker.add(new Item("Tom", "test", 1));
+            StubInput userActions = new StubInput(new String[]{"5", "Tm", "y"});
+            StartUI ui = new StartUI(userActions, tracker);
+            String expected = "Items nod founded\r\n";
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(out));
 
-        ui.initWithoutMenu();
-        String result = out.toString();
-        assertThat(result, is(expected));
+            ui.initWithoutMenu();
+            String result = out.toString();
+            assertThat(result, is(expected));
+        } finally {
+            tracker.close();
+        }
 
     }
 

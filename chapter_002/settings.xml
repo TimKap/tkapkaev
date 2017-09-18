@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <database>Items</database>
+    <user>postgres</user>
+    <password>1</password>
+</settings>

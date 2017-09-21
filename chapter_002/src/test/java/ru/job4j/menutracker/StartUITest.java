@@ -218,7 +218,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         try {
             tracker.clean();
-            Item[] items = {new Item("Item1", "test", 1L), new Item("Item2", "test", 2L), new Item("Item3", "test", 3L)};
+            Item[] items = {new Item("Item1", "test"), new Item("Item2", "test"), new Item("Item3", "test")};
             tracker.add(items[0]);
             tracker.add(items[1]);
             tracker.add(items[2]);
@@ -362,7 +362,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         try {
             tracker.clean();
-            tracker.add(new Item("Tom", "test", 1));
+            tracker.add(new Item("Tom", "test"));
             StubInput userActions = new StubInput(new String[]{"2", "100", "n", "2", tracker.findAll().get(0).getId(), "Lee", "test2", "aaaa", "2", "y"});
             StartUI ui = new StartUI(userActions, tracker);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -449,7 +449,7 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         try {
             tracker.clean();
-            tracker.add(new Item("Tom", "test", 1));
+            tracker.add(new Item("Tom", "test"));
             StubInput userActions = new StubInput(new String[]{"5", "Tm", "y"});
             StartUI ui = new StartUI(userActions, tracker);
             String expected = "Items nod founded\r\n";

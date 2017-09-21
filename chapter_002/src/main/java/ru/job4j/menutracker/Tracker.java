@@ -4,6 +4,7 @@ import ru.job4j.models.Item;
 import ru.job4j.models.ItemDatabase;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
@@ -53,11 +54,13 @@ public class Tracker {
      *
      * @param item - заявка
      * @return добавленная заявка
-     * @throws SQLException - An exception that provides information on a database access error or other errors
      */
-    public Item add(Item item) throws SQLException {
-        item.setId(generateId());
-        items.add(item);
+    public Item add(Item item) {
+        try {
+            items.add(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return item;
     }
 
@@ -65,29 +68,40 @@ public class Tracker {
      * Редактирование заявки.
      *
      * @param item - редактируемая заявка
-     * @throws SQLException - An exception that provides information on a database access error or other errors
      */
-    public void update(Item item) throws SQLException {
-        items.update(item);
+    public void update(Item item) {
+        try {
+            items.update(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Удаление заявки.
      *
      * @param item - удаляемая заявка
-     * @throws SQLException - An exception that provides information on a database access error or other errors
      */
-    public void delete(Item item) throws SQLException {
-        items.delete(item);
+    public void delete(Item item) {
+        try {
+            items.delete(item);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Получение списка всех заявок.
      * @return список всех заявок
-     * @throws SQLException - An exception that provides information on a database access error or other errors
      */
-    public List<Item> findAll() throws SQLException {
-        return items.findAll();
+    public List<Item> findAll() {
+        List<Item> items = new ArrayList<>();
+        try {
+            items.addAll(this.items.findAll());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
     /**
@@ -95,10 +109,15 @@ public class Tracker {
      *
      * @param key - имя заявки
      * @return список заявок с одинаковым именем.
-     * @throws SQLException - An exception that provides information on a database access error or other errors
      */
-    public List<Item> findByName(String key) throws SQLException {
-        return items.findByName(key);
+    public List<Item> findByName(String key) {
+        List<Item> items = new ArrayList<>();
+        try {
+            items.addAll(this.items.findByName(key));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
     /**
@@ -106,10 +125,15 @@ public class Tracker {
      *
      * @param id - идентификационный номер
      * @return - заявка
-     * @throws SQLException - An exception that provides information on a database access error or other errors
      */
-    public Item findById(String id) throws SQLException {
-        return items.findByID(id);
+    public Item findById(String id) {
+        Item item = null;
+        try {
+            item = items.findByID(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return item;
     }
 
     /**

@@ -141,17 +141,18 @@ public class ItemDatabase {
      * error or other errors;
      * */
     public void add(Item item) throws SQLException {
-        PreparedStatement ps = dbConnection.prepareStatement(addQuery);
-        ps.setString(1, item.getName());
-        ps.setString(2, item.getDescription());
-        StringBuilder comments = new StringBuilder();
-        if (item.getComments() != null) {
-            for (String row : item.getComments()) {
-                comments.append(row);
+        try (PreparedStatement ps = dbConnection.prepareStatement(addQuery)) {
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getDescription());
+            StringBuilder comments = new StringBuilder();
+            if (item.getComments() != null) {
+                for (String row : item.getComments()) {
+                    comments.append(row);
+                }
             }
+            ps.setString(3, comments.toString());
+            ps.execute();
         }
-        ps.setString(3, comments.toString());
-        ps.execute();
     }
 
     /**
@@ -162,21 +163,20 @@ public class ItemDatabase {
      * */
     public void delete(Item item) throws SQLException {
         int id = Integer.valueOf(item.getId());
-        PreparedStatement ps = dbConnection.prepareStatement(deleteQuery);
-        ps.setInt(1, id);
-        ps.execute();
+        try (PreparedStatement ps = dbConnection.prepareStatement(deleteQuery)) {
+            ps.setInt(1, id);
+            ps.execute();
+        }
     }
 
     /** Очищает таблицу.
      * @throws SQLException - An exception that provides information on a database access error or other errors
      * */
     public void clean() throws SQLException {
-        Statement st = dbConnection.createStatement();
-        try {
+
+        try (Statement st = dbConnection.createStatement()) {
             st.execute(cleanQuery);
             st.execute("ALTER SEQUENCE items_id_seq RESTART WITH 1;");
-        } finally {
-            st.close();
         }
     }
 
@@ -188,19 +188,20 @@ public class ItemDatabase {
      * */
     public void update(Item item) throws SQLException {
         int id = Integer.valueOf(item.getId());
-        PreparedStatement ps = dbConnection.prepareStatement(updateQuery);
-        ps.setString(1, item.getName());
-        ps.setString(2, item.getDescription());
+        try (PreparedStatement ps = dbConnection.prepareStatement(updateQuery)) {
+            ps.setString(1, item.getName());
+            ps.setString(2, item.getDescription());
 
-        StringBuilder comments = new StringBuilder();
-        if (item.getComments() != null) {
-            for (String row : item.getComments()) {
-                comments.append(row);
+            StringBuilder comments = new StringBuilder();
+            if (item.getComments() != null) {
+                for (String row : item.getComments()) {
+                    comments.append(row);
+                }
             }
+            ps.setString(3, comments.toString());
+            ps.setInt(4, id);
+            ps.execute();
         }
-        ps.setString(3, comments.toString());
-        ps.setInt(4, id);
-        ps.execute();
     }
 
     /**
@@ -211,18 +212,13 @@ public class ItemDatabase {
      * */
     public List<Item> findAll() throws SQLException {
         List<Item> items = new ArrayList<>();
-        PreparedStatement ps = dbConnection.prepareStatement(selectAllQuery);
-
-        ResultSet rs = ps.executeQuery();
-        try {
+        try (Statement st = dbConnection.createStatement();
+             ResultSet rs = st.executeQuery(selectAllQuery)) {
             while (rs.next()) {
                 Item item = createItem(rs);
                 items.add(item);
             }
-        } finally {
-            rs.close();
         }
-
         return items;
     }
 
@@ -235,16 +231,14 @@ public class ItemDatabase {
      */
     public List<Item> findByName(String name) throws SQLException {
         List<Item> items = new ArrayList<>();
-        PreparedStatement ps = dbConnection.prepareStatement(selectByNameQuery);
-        ps.setString(1, name);
-        ResultSet rs = ps.executeQuery();
-        try {
-            while (rs.next()) {
-                Item item = createItem(rs);
-                items.add(item);
+        try (PreparedStatement ps = dbConnection.prepareStatement(selectByNameQuery)) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Item item = createItem(rs);
+                    items.add(item);
+                }
             }
-        } finally {
-            rs.close();
         }
         return items;
     }
@@ -257,19 +251,15 @@ public class ItemDatabase {
      * error or other errors
      */
     public Item findByID(String id) throws SQLException {
-        PreparedStatement ps = dbConnection.prepareStatement(selectByIDQuery);
-        ps.setInt(1, Integer.valueOf(id));
-        ResultSet rs = ps.executeQuery();
-
         Item item = null;
-        try {
-            if (rs.next()) {
-                item = createItem(rs);
+        try (PreparedStatement ps = dbConnection.prepareStatement(selectByIDQuery)) {
+            ps.setInt(1, Integer.valueOf(id));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    item = createItem(rs);
+                }
             }
-        } finally {
-            rs.close();
         }
-
         return item;
     }
 

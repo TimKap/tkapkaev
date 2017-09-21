@@ -23,7 +23,7 @@ public class DatabaseTest {
         int[] expected = {1, 2, 3, 4, 5};
 
         Database database = new Database();
-        database.setDatabase("SQLite");
+        database.setDatabase("SQLite.db");
         database.setUsername("postgres");
         database.setPassword("1");
         database.setRecordsNumber(5);
@@ -37,11 +37,11 @@ public class DatabaseTest {
      * Тест для workWithDataBase.
      * */
     @Test
-    public void whenWorkWithDatabaseThenGetNumberArray() {
+   public void whenWorkWithDatabaseThenGetNumberArray() {
         int[] expected = {1, 2, 3, 4, 5};
 
         Database database = new Database();
-        database.setDatabase("SQLite");
+        database.setDatabase("SQLite.db");
         database.setUsername("postgres");
         database.setPassword("1");
         database.setRecordsNumber(5);
@@ -52,11 +52,10 @@ public class DatabaseTest {
     /**
      * demonstration.
      * */
-
     public void demonstration() {
         long start = System.currentTimeMillis();
         Database database = new Database();
-        database.setDatabase("SQLite");
+        database.setDatabase("SQLite.db");
         database.setUsername("postgres");
         database.setPassword("1");
         database.setRecordsNumber(1000000);

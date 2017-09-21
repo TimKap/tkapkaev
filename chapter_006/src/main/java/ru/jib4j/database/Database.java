@@ -1,8 +1,5 @@
 package ru.jib4j.database;
 
-
-
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -128,60 +125,80 @@ public class Database {
      * @return соединение (null в случае неудачного подключения).
      */
     private Connection tryConnect() {
+
         Connection connection = null;
         try {
-            String url = "jdbc:postgresql://localhost:5432/" + database;
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
+            Class.forName("org.sqlite.JDBC");
+            String url = "jdbc:sqlite:" + database;
+            connection = DriverManager.getConnection(url);
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return connection;
+
     }
 
     /**
      * Возвращает данные из базы данных.
      *
-     * @return массив чисел
+     * @return массив чисел  (null, если соединение с БД не было установлено)
      */
     public int[] getNumbersFromDatabase() {
 
-        /* установить соединение с БД */
-        Connection connection = tryConnect();
-        int[] numbers = new int[recordsNumber];
+//        /* установить соединение с БД */
 
-        if (connection == null) {
-            return null;
-        }
+        int[] numbers = null;
+        SQLException myException = null;
+        try (Connection con = tryConnect()) {
+            if (con != null) {
+                numbers = new int[recordsNumber];
+                try (Statement statement = con.createStatement();
+                     PreparedStatement prStatement = con.prepareStatement("INSERT INTO TEST (FIELD) VALUES(?);")
+                ) {
+                    /* подготовка таблицы TEST*/
+                    statement.execute("CREATE TABLE IF NOT EXISTS TEST (FIELD integer primary key);");
+                    statement.execute("DELETE FROM TEST;");
+                    con.setAutoCommit(false);
 
-        Statement statement = null;
-        ResultSet result = null;
-
-        try {
-             /* подготовка таблицы TEST*/
-            statement = connection.createStatement();
-            statement.execute("CREATE TABLE IF NOT EXISTS TEST (FIELD integer primary key);");
-            statement.execute("DELETE FROM TEST;");
-
-             /* заполнение таблицы TEST*/
-            PreparedStatement prStatement = connection.prepareStatement("INSERT INTO TEST (FIELD) VALUES(?)");
-            for (int i = 0; i < recordsNumber; i++) {
-                prStatement.setInt(1, i + 1);
-                prStatement.execute();
+                    /* заполнение таблицы TEST*/
+                    for (int i = 0; i < recordsNumber; i++) {
+                        prStatement.setInt(1, i + 1);
+                        prStatement.addBatch();
+                    }
+                    prStatement.executeBatch();
+                    con.commit();
+                    try (ResultSet result = statement.executeQuery("SELECT FIELD FROM TEST;")) {
+                    /* извлечение данных из TEST */
+                        int i = 0;
+                        while (result.next()) {
+                            numbers[i++] = result.getInt("FIELD");
+                        }
+                        con.commit();
+                    }
+                } catch (SQLException e) {
+                    myException = e;
+                    try {
+                        con.rollback();
+                    } catch (SQLException m) {
+                        myException.addSuppressed(m);
+                    }
+                } finally {
+                    if (myException != null) {
+                        try {
+                            con.setAutoCommit(true);
+                        } catch (SQLException e) {
+                            myException.addSuppressed(e);
+                        }
+                        throw myException;
+                    } else {
+                        con.setAutoCommit(true);
+                    }
+                }
             }
-
-            /* извлечение данных из TEST */
-            result = statement.executeQuery("SELECT FIELD FROM TEST;");
-
-            int i = 0;
-            while (result.next()) {
-                numbers[i++] = result.getInt("FIELD");
-            }
-
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            close(connection, statement, result);
         }
+
         return numbers;
     }
 
@@ -218,9 +235,7 @@ public class Database {
             writer.writeEndElement();
             writer.writeEndDocument();
 
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } catch (XMLStreamException | FileNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -272,7 +287,7 @@ public class Database {
      * @param xml - xml файл
      * @return массив чисел
      * */
-    private int[]  parseXNL(File xml) {
+    private int[]  parseXML(File xml) {
         int[] numbers = new int[recordsNumber];
         XMLStreamReader reader = null;
         try {
@@ -283,13 +298,11 @@ public class Database {
                 if (reader.next() == XMLStreamConstants.START_ELEMENT) {
                     if (reader.getLocalName().equals("entry")) {
                         String tmp = reader.getAttributeValue(null, "field");
-                        numbers[i++] = Integer.valueOf(tmp).intValue();
+                        numbers[i++] = Integer.valueOf(tmp);
                     }
                 }
             }
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } catch (XMLStreamException | FileNotFoundException e) {
             e.printStackTrace();
         } finally {
                 try {
@@ -317,44 +330,14 @@ public class Database {
         database.setPassword(password);
         database.setRecordsNumber(recordsNumber);
         int[] numbers = database.getNumbersFromDatabase();
-        File xml = database.createXML(numbers, "1.xml");
-        File transformedXML = database.transformXML(xml, "2.xml", "stylesheet.xsl");
-        int[] result = database.parseXNL(transformedXML);
+        File xml = database.createXML(numbers, "./1.xml");
+        File transformedXML = database.transformXML(xml, "./2.xml", "./stylesheet.xsl");
+        int[] result = database.parseXML(transformedXML);
+        long sum = 0;
+        for (Integer number:result) {
+            sum += number;
+        }
+        System.out.println("Arithmetic sum: " + sum);
         return result;
     }
-
-    /**
-     * Закрывает соединение с БД.
-     * @param connection - соединения
-     * @param statement - состояние
-     * @param resultset - результат запроса
-     * */
-    private void close(Connection connection, Statement statement, ResultSet resultset) {
-
-
-        try {
-            if (resultset != null) {
-                resultset.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (statement != null) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

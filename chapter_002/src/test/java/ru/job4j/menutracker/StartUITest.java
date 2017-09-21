@@ -7,6 +7,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ public class StartUITest {
 
     /**
      * Тест добавление заявки в трекер.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenAddItemThenTrackerAddItToList() throws Exception {
+    public void whenAddItemThenTrackerAddItToList() throws SQLException {
         StubInput userActions = new StubInput(new String[]{"0", "Tim", "Item Test 1", "123", "y"});
         StartUI ui = new StartUI(userActions);
         try {
@@ -46,10 +47,10 @@ public class StartUITest {
 
     /**
      * Тест по удалению заявки.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      */
     @Test
-    public void whenDeleteItemThenGetReducedTracker() throws Exception {
+    public void whenDeleteItemThenGetReducedTracker() throws SQLException {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
         try {
@@ -83,10 +84,10 @@ public class StartUITest {
 
     /**
      * Тест для редактирования заявки.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      */
     @Test
-    public void whenUpdateItemThenGetExpected() throws Exception {
+    public void whenUpdateItemThenGetExpected() throws SQLException {
         /*Инициализация трекера*/
         Tracker tracker = new Tracker();
         try {
@@ -118,10 +119,10 @@ public class StartUITest {
 
     /**
      * Тест получение заявки по Id.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      */
     @Test
-    public void whenFindByIdThenGetItemWithThisId() throws Exception {
+    public void whenFindByIdThenGetItemWithThisId() throws SQLException {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
         try {
@@ -159,10 +160,10 @@ public class StartUITest {
 
     /**
      * Тест получение заявки по Имени.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      */
     @Test
-    public void whenFindByNameThenGetAllItemsWithThisName() throws Exception {
+    public void whenFindByNameThenGetAllItemsWithThisName() throws SQLException {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
         try {
@@ -210,10 +211,10 @@ public class StartUITest {
 
     /**
      * Тест получение всех заявок.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      */
     @Test
-    public void whenFindAllThenGetAllNotNullItems() throws Exception {
+    public void whenFindAllThenGetAllNotNullItems() throws SQLException {
        /* Инициализация трекера*/
         Tracker tracker = new Tracker();
         try {
@@ -270,10 +271,10 @@ public class StartUITest {
     }
     /**
      * Тест для выбора пункта меню: ввод некорректных данных при выборе пункта меню.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenSelectMeuUserInsertInvalidDataThenTrySelectAgain() throws Exception {
+    public void whenSelectMeuUserInsertInvalidDataThenTrySelectAgain() throws SQLException {
         Tracker tracker = new Tracker();
         try {
             tracker.clean();
@@ -293,10 +294,10 @@ public class StartUITest {
     }
     /**
      * Тест для добавления новой заявки: Неправильный ввод времени при создании заявки. Переполнение списка заявок.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenInsertInvalidTimeThenTryInsertNewTimeAndGetMessage() throws Exception {
+    public void whenInsertInvalidTimeThenTryInsertNewTimeAndGetMessage() throws SQLException {
 
         String[] actions = new String[70];
         actions[0] = "0";
@@ -335,10 +336,10 @@ public class StartUITest {
     }
     /**
      * Тест для вывода всех заявок: Вывод пустого списка заявок.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenShowAllEmptyListOfItemsThenGetMessage() throws Exception {
+    public void whenShowAllEmptyListOfItemsThenGetMessage() throws SQLException {
         StubInput userActions = new StubInput(new String[]{"1", "y"});
         StartUI ui = new StartUI(userActions);
         try {
@@ -355,10 +356,10 @@ public class StartUITest {
     }
     /**
      * Тест для редактирования заявки: Нет заявки с введенным ID. Неправильно введенная дата при добавлении заявки.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      */
     @Test
-    public void whenEditAndInsertInvalidDataThenGetMessage() throws Exception {
+    public void whenEditAndInsertInvalidDataThenGetMessage() throws SQLException {
         Tracker tracker = new Tracker();
         try {
             tracker.clean();
@@ -387,10 +388,10 @@ public class StartUITest {
 
     /**
      * Тест для удаления заявки из трекера. В трекере отсутствует заявка с заявленным ID.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenDeleteItemWithUnexpectedIdThenGetMessage() throws Exception {
+    public void whenDeleteItemWithUnexpectedIdThenGetMessage() throws SQLException {
         Tracker tracker = new Tracker();
         try {
             tracker.clean();
@@ -414,10 +415,10 @@ public class StartUITest {
 
     /**
      * Тест для поиска заявки по ID. В трекере отсутствует заявка с заявленным ID.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenFindByIdItemWithUnexpectedIdThenGetMessage() throws Exception {
+    public void whenFindByIdItemWithUnexpectedIdThenGetMessage() throws SQLException {
 
         Tracker tracker = new Tracker();
         try {
@@ -441,10 +442,10 @@ public class StartUITest {
 
     /**
      * Тест для поиска заявки по Имени. В трекере отсутствует заявка с заявленным Именем.
-     * @throws Exception при нарушении создания объекта Tracker
+     * @throws SQLException при нарушении очистки таблицы или некорректное закрытие трекера
      * */
     @Test
-    public void whenFindByNameItemWithUnexpectedNameThenGetMessage() throws Exception {
+    public void whenFindByNameItemWithUnexpectedNameThenGetMessage() throws SQLException {
 
         Tracker tracker = new Tracker();
         try {

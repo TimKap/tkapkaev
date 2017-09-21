@@ -34,10 +34,13 @@ public class Tracker {
 
     /**
      * Конструктор класса Tracker.
-     * @throws Exception при нарушении создания объекта Tracker
      */
-    public Tracker() throws Exception {
-        items = ItemDatabase.newInstance();
+    public Tracker() {
+        try {
+            items = ItemDatabase.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

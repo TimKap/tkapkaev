@@ -49,7 +49,6 @@ public class MenuTracker {
 	 * Инициализация пунктов меню меню трекера.
 	 */
 	public void fillActions() {
-
         /* Инициализация пунктов меню*/
 		actions.addAll(Arrays.asList(new AddItem(), new ShowAllItems(), new EditItem(), new DeleteItem(), new FindItemById(), new FindItemsByName()));
 	}

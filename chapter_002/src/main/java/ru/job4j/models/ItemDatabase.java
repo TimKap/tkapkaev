@@ -58,7 +58,7 @@ public class ItemDatabase {
      * @return объект ItemDatabase
      * @throws Exception при нарушении создания объекта ItemDatabase
      * */
-    public static ItemDatabase newInstance() throws Exception {
+    public static ItemDatabase  newInstance() throws Exception {
         ItemDatabase database = new ItemDatabase();
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <url>jdbc:postgresql://localhost:5432/work</url>
+    <user>postgres</user>
+    <password>1</password>
+    <vacancyTitle>java</vacancyTitle>
+    <forbiddenWord>script</forbiddenWord>
+    <updatePeriod>120</updatePeriod>
+
+</settings>

@@ -17,7 +17,7 @@ import java.io.PrintWriter;
  * @version $ID$
  * @since 03.07.2017
  * */
-public class EchoServlet extends HttpServlet {
+public class  EchoServlet extends HttpServlet {
     /** логгер. */
     private static final Logger LOGGER = LogManager.getLogger(EchoServlet.class);
 
@@ -31,9 +31,8 @@ public class EchoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-       try (PrintWriter writer = new PrintWriter(resp.getOutputStream())) {
-           writer.append("Hello World.");
-           writer.flush();
-       }
+        PrintWriter writer = resp.getWriter();
+        writer.append("Hello World");
+        writer.flush();
     }
 }

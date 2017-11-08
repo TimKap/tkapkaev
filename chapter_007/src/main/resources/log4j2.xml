@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>
     <Properties>
-        <Property name="filename">chapter_007/log/output.log</Property>>
+        <Property name="filename">/chapter_007/log/output.log</Property>>
     </Properties>
     <Appenders>
         <File name="file" filename="${filename}">
@@ -15,6 +15,10 @@
             <AppenderRef ref="file"/>
         </Root>
         <Logger name="ru.job4j.firstservlets.EchoServlet" level="info">
-        </Logger>>
+        </Logger>
+        <Logger name="ru.job4j.firstservlets.UserStore" level="info">
+        </Logger>
+        <Logger name="ru.job4j.firstservlets.UserServlet" level="info">
+        </Logger>
     </Loggers>
 </Configuration>

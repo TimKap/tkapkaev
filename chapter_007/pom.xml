@@ -5,12 +5,14 @@
    <packaging>war</packaging>
 
    <dependencies>
+      <!--Servlet package-->
       <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>javax.servlet-api</artifactId>
          <version>3.1.0</version>
          <scope>provided</scope>
       </dependency>
+      <!--Logger Log4j2 package-->
       <dependency>
          <groupId>org.apache.logging.log4j</groupId>
          <artifactId>log4j-api</artifactId>
@@ -21,6 +23,15 @@
          <artifactId>log4j-core</artifactId>
          <version>2.9.1</version>
       </dependency>
+
+      <!--Connection pool Apache Commons DBCP-->
+      <dependency>
+         <groupId>commons-dbcp</groupId>
+         <artifactId>commons-dbcp</artifactId>
+         <version>1.4</version>
+      </dependency>
+
+
 
    </dependencies>
       <parent>

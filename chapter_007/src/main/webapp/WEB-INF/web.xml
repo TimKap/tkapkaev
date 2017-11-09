@@ -2,13 +2,34 @@
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>ru.job4j.firstservlets.EchoServlet</servlet-class>
-
     </servlet>
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>ru.job4j.firstservlets.UserServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <servlet>
+        <servlet-name>MainPageServlet</servlet-name>
+        <servlet-class>ru.job4j.servletsform.MainPageServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <servlet-class>ru.job4j.servletsform.InsertUserServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>ru.job4j.servletsform.DeleteUserServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <servlet-class>ru.job4j.servletsform.UpdateUserServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
         <url-pattern>/echo</url-pattern>
@@ -16,5 +37,21 @@
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainPageServlet</servlet-name>
+        <url-pattern>/mainPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <url-pattern>/mainPage/insertUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/mainPage/deleteUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <url-pattern>/mainPage/updateUser</url-pattern>
     </servlet-mapping>
 </web-app>

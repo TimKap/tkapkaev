@@ -20,5 +20,8 @@
         </Logger>
         <Logger name="ru.job4j.firstservlets.UserServlet" level="info">
         </Logger>
+        <Logger name="ru.job4j.servletsform" level="info">
+        </Logger>
+
     </Loggers>
 </Configuration>

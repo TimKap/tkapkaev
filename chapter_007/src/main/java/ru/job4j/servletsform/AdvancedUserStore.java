@@ -28,7 +28,7 @@ import java.util.Date;
 public class AdvancedUserStore {
 
     /** экземпляр AdvancedUserStore. */
-    private static final AdvancedUserStore instance = new AdvancedUserStore();
+    private static final AdvancedUserStore INSTANCE = new AdvancedUserStore();
 
     /** логгер. */
     private static final Logger LOGGER = LogManager.getLogger(AdvancedUserStore.class);
@@ -57,7 +57,7 @@ public class AdvancedUserStore {
      * @return экземпляр AdvancedUserStore
      * */
     public static AdvancedUserStore getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     /**
@@ -105,12 +105,13 @@ public class AdvancedUserStore {
     /**
      * Возвращает всех пользователей из базы данных.
      * @return пользователи базы данных.
+     * @throws SQLException - ошибка запроса
      * */
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        try ( Connection con = getConnection();
-              Statement st = con.createStatement();
-              ResultSet rs = st.executeQuery(String.format("SELECT * FROM %s;", table))) {
+        try (Connection con = getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(String.format("SELECT * FROM %s;", table))) {
             while (rs.next()) {
                 String login = rs.getString("login");
                 String name = rs.getString("name");
@@ -152,8 +153,8 @@ public class AdvancedUserStore {
      * */
 
     public void update(User updatedUser) throws SQLException {
-        try (Connection con =  getConnection();
-             PreparedStatement ps =con.prepareStatement(String.format("INSERT INTO %s (login, name, email) VALUES(?, ?, ?) ON CONFLICT (login) DO UPDATE SET name=EXCLUDED.name, email=EXCLUDED.email, date=NOW();", table))) {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(String.format("INSERT INTO %s (login, name, email) VALUES(?, ?, ?) ON CONFLICT (login) DO UPDATE SET name=EXCLUDED.name, email=EXCLUDED.email, date=NOW();", table))) {
             ps.setString(1, updatedUser.getLogin());
             ps.setString(2, updatedUser.getName());
             ps.setString(3, updatedUser.getEmail());

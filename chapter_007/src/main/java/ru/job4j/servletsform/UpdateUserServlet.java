@@ -12,6 +12,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
+/**
+ * Class UpdateUserServlet обеспечивает обновление пользователя.
+ * @author Timur Kapkaev (timur.kap@yandex.ru)
+ * @version $ID$
+ * @since 09.11.2017
+ * */
 public class UpdateUserServlet extends HttpServlet {
     /** взаимодействие с базой данных пользователей.*/
     private final AdvancedUserStore users = AdvancedUserStore.getInstance();

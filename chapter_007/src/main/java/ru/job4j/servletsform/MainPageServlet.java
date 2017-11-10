@@ -46,26 +46,46 @@ public class MainPageServlet extends HttpServlet {
             }
 
             PrintWriter writer = resp.getWriter();
-            writer.append("<!DOCTYPE html>" +
-                    "<html lang=\"en\">" +
-                    "<head>" +
-                    "    <meta charset=\"UTF-8\">" +
-                    "    <title>Title</title>" +
-                    "</head>" +
-                    "<body>" +
-                    "<form>" +
-                    "Name: <input type='text' name='name'>" +
-                    "Login: <input type='text' name='login'>" +
-                    "e-mail: <input type='text' name='email'> " +
-                    "<p>" +
-                    "<input type=\"submit\" value=\"Add \" formaction=\"" + req.getContextPath() + "/mainPage/insertUser\" formmethod=\"post\">" +
-                    "<input type=\"submit\" value=\"Delete\" formaction=\""  + req.getContextPath() +"/mainPage/deleteUser\" formmethod=\"post\">" +
-                    "<input type=\"submit\" value=\"Update\" formaction=\"" + req.getContextPath() + "/mainPage/updateUser\" formmethod=\"post\"></p>" +
-                    "</form>" +
-                    "<table>" +
-                    usersTable.toString() +
-                    "</table>" +
-                    "</body>" +
+            writer.append("<!DOCTYPE html>"
+                    +
+                    "<html lang=\"en\">"
+                    +
+                    "<head>"
+                    +
+                    "    <meta charset=\"UTF-8\">"
+                    +
+                    "    <title>Title</title>"
+                    +
+                    "</head>"
+                    +
+                    "<body>"
+                    +
+                    "<form>"
+                    +
+                    "Name: <input type='text' name='name'>"
+                    +
+                    "Login: <input type='text' name='login'>"
+                    +
+                    "e-mail: <input type='text' name='email'> "
+                    +
+                    "<p>"
+                    +
+                    "<input type=\"submit\" value=\"Add \" formaction=\"" + req.getContextPath() + "/mainPage/insertUser\" formmethod=\"post\">"
+                    +
+                    "<input type=\"submit\" value=\"Delete\" formaction=\""  + req.getContextPath() + "/mainPage/deleteUser\" formmethod=\"post\">"
+                    +
+                    "<input type=\"submit\" value=\"Update\" formaction=\"" + req.getContextPath() + "/mainPage/updateUser\" formmethod=\"post\"></p>"
+                    +
+                    "</form>"
+                    +
+                    "<table>"
+                    +
+                    usersTable.toString()
+                    +
+                    "</table>"
+                    +
+                    "</body>"
+                    +
                     "</html>");
             writer.flush();
 

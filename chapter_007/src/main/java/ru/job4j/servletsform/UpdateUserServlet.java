@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
@@ -40,9 +39,7 @@ public class UpdateUserServlet extends HttpServlet {
         User user = new User(name, login, email, null);
         try {
             users.update(user);
-            PrintWriter writer = resp.getWriter();
-            writer.append("User has been updated\r\n");
-            writer.flush();
+            resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

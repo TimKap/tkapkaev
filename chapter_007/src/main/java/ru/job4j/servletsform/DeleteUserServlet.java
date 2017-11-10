@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
@@ -37,9 +36,7 @@ public class DeleteUserServlet extends HttpServlet {
         resp.setContentType("text/html");
         try {
             users.delete(login);
-            PrintWriter writer = resp.getWriter();
-            writer.append("DELETE request has been executed\r\n");
-            writer.flush();
+            resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

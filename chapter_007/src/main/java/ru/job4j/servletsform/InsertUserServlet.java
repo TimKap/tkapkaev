@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 /**
@@ -41,15 +40,8 @@ public class InsertUserServlet extends HttpServlet {
         String email = req.getParameter("email");
         User user = new User(name, login, email, null);
         try {
-
-            PrintWriter writer = resp.getWriter();
-            if (users.insert(user)) {
-                writer.append(String.format("Added new user Name: %s,  Login: %s, E-mail: %s added", name, login, email));
-            } else {
-                writer.append("User already exist\r\n");
-            }
-            writer.flush();
-
+            users.insert(user);
+            resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

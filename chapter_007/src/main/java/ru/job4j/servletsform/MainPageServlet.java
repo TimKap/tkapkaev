@@ -2,15 +2,15 @@ package ru.job4j.servletsform;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.job4j.firstservlets.User;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
+
 
 
 /**
@@ -36,60 +36,10 @@ public class MainPageServlet extends HttpServlet {
      * */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder usersTable = new StringBuilder();
-        resp.setContentType("text/html");
-        int i = 0;
+
         try {
-            for (User user : users.getAllUsers()) {
-                i++;
-                usersTable.append("<tr><td>" + i + ". " + user.stringForm() + "</td></tr>");
-            }
-
-            PrintWriter writer = resp.getWriter();
-            writer.append("<!DOCTYPE html>"
-                    +
-                    "<html lang=\"en\">"
-                    +
-                    "<head>"
-                    +
-                    "    <meta charset=\"UTF-8\">"
-                    +
-                    "    <title>Title</title>"
-                    +
-                    "</head>"
-                    +
-                    "<body>"
-                    +
-                    "<form>"
-                    +
-                    "Name: <input type='text' name='name'>"
-                    +
-                    "Login: <input type='text' name='login'>"
-                    +
-                    "e-mail: <input type='text' name='email'> "
-                    +
-                    "<p>"
-                    +
-                    "<input type=\"submit\" value=\"Add \" formaction=\"" + req.getContextPath() + "/mainPage/insertUser\" formmethod=\"post\">"
-                    +
-                    "<input type=\"submit\" value=\"Delete\" formaction=\""  + req.getContextPath() + "/mainPage/deleteUser\" formmethod=\"post\">"
-                    +
-                    "<input type=\"submit\" value=\"Update\" formaction=\"" + req.getContextPath() + "/mainPage/updateUser\" formmethod=\"post\"></p>"
-                    +
-                    "</form>"
-                    +
-                    "<table>"
-                    +
-                    usersTable.toString()
-                    +
-                    "</table>"
-                    +
-                    "</body>"
-                    +
-                    "</html>");
-            writer.flush();
-
-
+            req.setAttribute("users", users.getAllUsers());
+            req.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(req, resp);
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

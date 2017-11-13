@@ -85,8 +85,17 @@ public class User {
         builder.append(String.format("Name:   %s\r\n", name));
         builder.append(String.format("Login:  %s\r\n", login));
         builder.append(String.format("e-mail: %s\r\n", email));
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z");
-        builder.append(String.format("Date:   %s\r\n", dateFormat.format(createDate)));
+
+        builder.append(dateString());
         return builder.toString();
+    }
+
+    /**
+     * Возвращает дату в строковом формате.
+     * @return дату в формате строки
+     * */
+    public String dateString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss z");
+        return String.format("Date:   %s\r\n", dateFormat.format(createDate));
     }
 }

@@ -40,18 +40,18 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MainPageServlet</servlet-name>
-        <url-pattern>/mainPage</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>InsertUserServlet</servlet-name>
-        <url-pattern>/mainPage/insertUser</url-pattern>
+        <url-pattern>/insertUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteUserServlet</servlet-name>
-        <url-pattern>/mainPage/deleteUser</url-pattern>
+        <url-pattern>/deleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateUserServlet</servlet-name>
-        <url-pattern>/mainPage/updateUser</url-pattern>
+        <url-pattern>/updateUser</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -36,7 +36,7 @@ public class DeleteUserServlet extends HttpServlet {
         resp.setContentType("text/html");
         try {
             users.delete(login);
-            resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+            resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

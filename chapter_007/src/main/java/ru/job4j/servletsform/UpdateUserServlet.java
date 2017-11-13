@@ -39,7 +39,7 @@ public class UpdateUserServlet extends HttpServlet {
         User user = new User(name, login, email, null);
         try {
             users.update(user);
-            resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+            resp.sendRedirect(String.format("%s/", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

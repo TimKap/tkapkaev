@@ -5,6 +5,7 @@
    <packaging>war</packaging>
 
    <dependencies>
+
       <!--Servlet package-->
       <dependency>
          <groupId>javax.servlet</groupId>
@@ -12,6 +13,7 @@
          <version>3.1.0</version>
          <scope>provided</scope>
       </dependency>
+
       <!--Logger Log4j2 package-->
       <dependency>
          <groupId>org.apache.logging.log4j</groupId>
@@ -31,7 +33,18 @@
          <version>1.4</version>
       </dependency>
 
+      <!--Java standard tag library-->
+      <dependency>
+         <groupId>jstl</groupId>
+         <artifactId>jstl</artifactId>
+         <version>1.2</version>
+      </dependency>
 
+      <dependency>
+         <groupId>taglibs</groupId>
+         <artifactId>standard</artifactId>
+         <version>1.1.2</version>
+      </dependency>
 
    </dependencies>
       <parent>

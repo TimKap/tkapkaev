@@ -1,57 +1,192 @@
 <web-app>
+
+    <!-- Фильтр авторизации -->
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>ru.job4j.security.controller.filters.AuthorizationFilter</filter-class>
+    </filter>
+    <!--Фильтр аутентификации-->
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>AuthoentificationFilter</filter-name>
+        <filter-class>ru.job4j.security.controller.filters.AuthoentificationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthoentificationFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>ru.job4j.firstservlets.EchoServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>EchoServlet</servlet-name>
+        <url-pattern>/echo</url-pattern>
+    </servlet-mapping>
+
+
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>ru.job4j.firstservlets.UserServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+
 
     <servlet>
         <servlet-name>MainPageServlet</servlet-name>
         <servlet-class>ru.job4j.servletsform.MainPageServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>MainPageServlet</servlet-name>
+        <url-pattern>/unauthorized</url-pattern>
+    </servlet-mapping>
+
+
     <servlet>
         <servlet-name>InsertUserServlet</servlet-name>
         <servlet-class>ru.job4j.servletsform.InsertUserServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <url-pattern>/unauthorized/insertUser</url-pattern>
+    </servlet-mapping>
+
+
     <servlet>
         <servlet-name>DeleteUserServlet</servlet-name>
         <servlet-class>ru.job4j.servletsform.DeleteUserServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/unauthorized/deleteUser</url-pattern>
+    </servlet-mapping>
+
+
     <servlet>
         <servlet-name>UpdateUserServlet</servlet-name>
         <servlet-class>ru.job4j.servletsform.UpdateUserServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
-
-    <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MainPageServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>InsertUserServlet</servlet-name>
-        <url-pattern>/insertUser</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteUserServlet</servlet-name>
-        <url-pattern>/deleteUser</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateUserServlet</servlet-name>
-        <url-pattern>/updateUser</url-pattern>
+        <url-pattern>/unauthorized/updateUser</url-pattern>
     </servlet-mapping>
+
+
+    <!-- Сервлеты приложения с авторизацией пользователей-->
+    <!-- Главная страница-->
+    <servlet>
+        <servlet-name>MainSecurity</servlet-name>
+        <servlet-class>ru.job4j.security.controller.MainSecurity</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainSecurity</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!-- Страница пользователя-->
+    <servlet>
+        <servlet-name>UserController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.UserController</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserController</servlet-name>
+        <url-pattern>/guest</url-pattern>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <!--Авторизация пользователя-->
+    <servlet>
+        <servlet-name>Authorization</servlet-name>
+        <servlet-class>ru.job4j.security.controller.authorization.Authorization</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Authorization</servlet-name>
+        <url-pattern>/authorization</url-pattern>
+    </servlet-mapping>
+
+
+    <!--Выход из системы-->
+    <servlet>
+        <servlet-name>ExitController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.ExitController</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExitController</servlet-name>
+        <url-pattern>/admin/exit</url-pattern>
+        <url-pattern>/guest/exit</url-pattern>
+    </servlet-mapping>
+
+    <!-- Управление обновлением пользователя -->
+    <servlet>
+        <servlet-name>GuestUpdateController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.guest.GuestUpdateController</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GuestUpdateController</servlet-name>
+        <url-pattern>/guest/guestUpdate</url-pattern>
+    </servlet-mapping>
+
+    <!--Редактор пользователей -->
+    <servlet>
+        <servlet-name>UserRedactorController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.UserRedactorController</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserRedactorController</servlet-name>
+        <url-pattern>/admin/userRedactor</url-pattern>
+    </servlet-mapping>
+
+    <!-- Вставка пользователя-->
+    <servlet>
+        <servlet-name>InsertUserController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.InsertUserController</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InsertUserController</servlet-name>
+        <url-pattern>/admin/insertUser</url-pattern>
+    </servlet-mapping>
+
+    <!--Удаление пользователя-->
+    <servlet>
+        <servlet-name>DeleteUserController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.DeleteUserController</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserController</servlet-name>
+        <url-pattern>/admin/deleteUser</url-pattern>
+    </servlet-mapping>
+    <!--Обновляет пользователя-->
+    <servlet>
+        <servlet-name>UpdateUserController</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.UpdateUserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserController</servlet-name>
+        <url-pattern>/admin/updateUser</url-pattern>
+    </servlet-mapping>
+
+
 </web-app>

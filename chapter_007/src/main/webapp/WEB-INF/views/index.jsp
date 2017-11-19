@@ -18,9 +18,9 @@
     Login: <input type='text' name='login'>
     e-mail: <input type='text' name='email'>
     <p>
-        <input type='submit' value='Add' formaction="${pageContext.servletContext.contextPath}/insertUser" formmethod='post'>
-        <input type='submit' value='Delete' formaction="${pageContext.servletContext.contextPath}/deleteUser" formmethod='post'>
-        <input type='submit' value='Update' formaction="${pageContext.servletContext.contextPath}/updateUser" formmethod='post'>
+        <input type='submit' value='Add' formaction="${pageContext.servletContext.contextPath}/unauthorized/insertUser" formmethod='post'>
+        <input type='submit' value='Delete' formaction="${pageContext.servletContext.contextPath}/unauthorized/deleteUser" formmethod='post'>
+        <input type='submit' value='Update' formaction="${pageContext.servletContext.contextPath}/unauthorized/updateUser" formmethod='post'>
     </p>
 </form>
 <table style="border: 1px solid black;", cellpadding="1", cellspacing="1", border="1">

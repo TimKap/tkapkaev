@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>
     <Properties>
-        <Property name="filename">/chapter_007/log/output.log</Property>>
+        <Property name="filename">/chapter_007/log/output.log</Property>
     </Properties>
     <Appenders>
         <File name="file" filename="${filename}">
@@ -21,6 +21,8 @@
         <Logger name="ru.job4j.firstservlets.UserServlet" level="info">
         </Logger>
         <Logger name="ru.job4j.servletsform" level="info">
+        </Logger>
+        <Logger name="ru.job4j.security" level="info">
         </Logger>
 
     </Loggers>

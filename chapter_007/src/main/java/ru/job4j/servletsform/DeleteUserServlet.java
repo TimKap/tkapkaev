@@ -2,6 +2,7 @@ package ru.job4j.servletsform;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.job4j.firstservlets.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,8 +36,8 @@ public class DeleteUserServlet extends HttpServlet {
         String login = req.getParameter("login");
         resp.setContentType("text/html");
         try {
-            users.delete(login);
-            resp.sendRedirect(String.format("%s/", req.getContextPath()));
+            users.delete(new User.UserBuilder().addLogin(login).build());
+            resp.sendRedirect(String.format("%s/unauthorized", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

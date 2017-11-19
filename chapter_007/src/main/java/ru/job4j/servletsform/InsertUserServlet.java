@@ -41,7 +41,7 @@ public class InsertUserServlet extends HttpServlet {
         User user = new User(name, login, email, null);
         try {
             users.insert(user);
-            resp.sendRedirect(String.format("%s/", req.getContextPath()));
+            resp.sendRedirect(String.format("%s/unauthorized", req.getContextPath()));
         } catch (SQLException e) {
             LOGGER.error(e);
             resp.sendError(500);

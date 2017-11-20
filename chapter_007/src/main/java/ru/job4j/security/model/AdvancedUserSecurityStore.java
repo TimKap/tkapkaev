@@ -1,7 +1,6 @@
 package ru.job4j.security.model;
 
 import ru.job4j.servletsform.AdvancedStore;
-import ru.job4j.servletsform.IResultSetConverter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +31,7 @@ public class AdvancedUserSecurityStore  extends AdvancedStore<AdvancedUser> {
      * Конструктор класса AdvancedUserSecurityStore.
      * */
     private AdvancedUserSecurityStore() {
-        super( resultSet -> {
+        super(resultSet -> {
             String login = resultSet.getString("login");
             String name = resultSet.getString("name");
             String email = resultSet.getString("email");

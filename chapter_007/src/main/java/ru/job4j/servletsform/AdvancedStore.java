@@ -167,5 +167,17 @@ public abstract class AdvancedStore<E extends ICRUDQueries> {
             return rs.next() ? converter.apply(rs) : null;
         }
     }
+
+    /**
+     * Очищает таблицу с пользователями.
+     * @throws SQLException - ошибка удаления пользователей
+     * */
+    public void clearUsers() throws SQLException {
+        try (Connection con = getConnection();
+             Statement st = con.createStatement()
+        ) {
+            st.execute(String.format("DELETE FROM %s;", table));
+        }
+    }
 }
 

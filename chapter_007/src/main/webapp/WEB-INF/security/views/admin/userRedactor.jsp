@@ -35,27 +35,27 @@
         <input type='submit' value='Delete' formaction="${pageContext.servletContext.contextPath}/admin/deleteUser" formmethod='post'>
         <input type='submit' value='Update' formaction="${pageContext.servletContext.contextPath}/admin/updateUser" formmethod='post'>
     </p>
-    <table style="border: 1px solid black;", cellpadding="1", cellspacing="1", border="1">
-        <tr>
-            <th>login</th>
-            <th>name</th>
-            <th>email</th>
-            <th>date</th>
-            <th>role</th>
-            <th>password</th>
-        <c:forEach items="${users}" var="user">
-            <tr>
-                <td><c:out value="${user.getLogin()}"></c:out></td>
-                <td><c:out value="${user.getName()}"></c:out></td>
-                <td><c:out value="${user.getEmail()}"></c:out></td>
-                <td><c:out value="${user.dateString()}"></c:out></td>
-                <td><c:out value="${user.getRole()}"></c:out></td>
-                <td><c:out value="${user.getPassword()}"></c:out></td>
-            </tr>
-        </c:forEach>
-
-
-    </table>
 </form>
+<table style="border: 1px solid black;", cellpadding="1", cellspacing="1", border="1">
+    <tr>
+        <th>login</th>
+        <th>name</th>
+        <th>email</th>
+        <th>date</th>
+        <th>role</th>
+        <th>password</th>
+        <c:forEach items="${users}" var="user">
+    <tr>
+        <td><c:out value="${user.getLogin()}"></c:out></td>
+        <td><c:out value="${user.getName()}"></c:out></td>
+        <td><c:out value="${user.getEmail()}"></c:out></td>
+        <td><c:out value="${user.dateString()}"></c:out></td>
+        <td><c:out value="${user.getRole()}"></c:out></td>
+        <td><c:out value="${user.getPassword()}"></c:out></td>
+    </tr>
+    </c:forEach>
+
+
+</table>
 </body>
 </html>

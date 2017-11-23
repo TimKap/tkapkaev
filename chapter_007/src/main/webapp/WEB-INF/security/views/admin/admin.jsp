@@ -31,7 +31,7 @@
     </tr>
 </table>
 <form>
-    <input type='submit' value='Выход' formaction="${pageContext.servletContext.contextPath}/admin/exit" formmethod='post'>
+    <input type='submit' value='Выход' formaction="${pageContext.servletContext.contextPath}/exit" formmethod='post'>
     <input type='submit' value='Редактор пользователей' formaction="${pageContext.servletContext.contextPath}/admin/userRedactor" formmethod='get'>
 </form>
 </body>

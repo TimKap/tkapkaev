@@ -57,8 +57,10 @@ public class Authorization extends HttpServlet {
             if (user != null) {
                 HttpSession session = req.getSession();
                 synchronized (session) {
-                    session.setAttribute("login", user.getLogin());
-                    session.setAttribute("role", user.getRole());
+                    if (session.getAttribute("identification") == null) {
+                        UserIdentification identification = new UserIdentification(user.getRole(), user.getLogin());
+                        session.setAttribute("identification", identification);
+                    }
                 }
                 resp.sendRedirect(String.format("%s/", req.getContextPath()));
             } else {

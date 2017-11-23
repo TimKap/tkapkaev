@@ -2,6 +2,7 @@ package ru.job4j.security.controller.admin;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.job4j.security.controller.authorization.UserIdentification;
 import ru.job4j.security.model.AdvancedUser;
 import ru.job4j.security.model.AdvancedUserSecurityStore;
 
@@ -38,26 +39,29 @@ public class DeleteUserController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        String sessionLogin;
-        synchronized (session) {
-            sessionLogin = session.getAttribute("login").toString();
-        }
-        String deletedLogin = req.getParameter("login");
-        try {
-            if (!deletedLogin.equals("")) {
-                AdvancedUser user = new AdvancedUser.AdvancedUserBuilder().addLogin(deletedLogin).build();
-                users.delete(user);
-            }
-            if (deletedLogin.equals(sessionLogin)) {
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/exit");
-                dispatcher.forward(req, resp);
-            } else {
-                resp.sendRedirect(String.format("%s/admin/userRedactor", req.getContextPath()));
-            }
+        UserIdentification identification = (UserIdentification) session.getAttribute("identification");
+        if (identification != null) {
+            String sessionLogin = identification.getLogin();
 
-        } catch (SQLException e) {
-            LOGGER.error(e);
-            resp.sendError(501);
+            String deletedLogin = req.getParameter("login");
+            try {
+                if (!deletedLogin.equals("")) {
+                    AdvancedUser user = new AdvancedUser.AdvancedUserBuilder().addLogin(deletedLogin).build();
+                    users.delete(user);
+                }
+                if (deletedLogin.equals(sessionLogin)) {
+                    RequestDispatcher dispatcher = req.getRequestDispatcher("/admin/exit");
+                    dispatcher.forward(req, resp);
+                } else {
+                    resp.sendRedirect(String.format("%s/admin/userRedactor", req.getContextPath()));
+                }
+
+            } catch (SQLException e) {
+                LOGGER.error(e);
+                resp.sendError(501);
+            }
+        } else {
+            resp.sendRedirect(String.format("%s/authorization", req.getContextPath()));
         }
 
     }

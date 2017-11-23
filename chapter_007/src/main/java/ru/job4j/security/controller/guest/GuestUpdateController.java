@@ -2,6 +2,7 @@ package ru.job4j.security.controller.guest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.job4j.security.controller.authorization.UserIdentification;
 import ru.job4j.security.model.AdvancedUser;
 import ru.job4j.security.model.AdvancedUserSecurityStore;
 
@@ -38,18 +39,20 @@ public class GuestUpdateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String login;
-        synchronized (session) {
-            login = session.getAttribute("login").toString();
-        }
-        try {
-            AdvancedUser user = users.searchByPrimaryKey(new AdvancedUser.Key(login));
-            user.insertUserToRequest(req);
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/security/views/guest/guestUpdate.jsp");
-            dispatcher.forward(req, resp);
-        } catch (SQLException e) {
-            LOGGER.error(e);
-            resp.sendError(501);
+        UserIdentification identification = (UserIdentification) session.getAttribute("identification");
+        if (identification != null) {
+            String login = identification.getLogin();
+            try {
+                AdvancedUser user = users.searchByPrimaryKey(new AdvancedUser.Key(login));
+                user.insertUserToRequest(req);
+                RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/security/views/guest/guestUpdate.jsp");
+                dispatcher.forward(req, resp);
+            } catch (SQLException e) {
+                LOGGER.error(e);
+                resp.sendError(501);
+            }
+        } else {
+            resp.sendRedirect(String.format("%s/authorization", req.getContextPath()));
         }
     }
 
@@ -63,21 +66,23 @@ public class GuestUpdateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String login;
-        synchronized (session) {
-            login = session.getAttribute("login").toString();
-        }
-        try {
-            AdvancedUser user = users.searchByPrimaryKey(new AdvancedUser.Key(login));
-            String name = req.getParameter("name");
-            String email = req.getParameter("email");
-            String password = req.getParameter("password");
-            user.modifUser(name, email, null, password);
-            users.update(user);
-            resp.sendRedirect(String.format("%s/", req.getContextPath()));
-        } catch (SQLException e) {
-            LOGGER.error(e);
-            resp.sendError(501);
+        UserIdentification identification = (UserIdentification) session.getAttribute("identification");
+        if (identification != null) {
+            String login = identification.getLogin();
+            try {
+                AdvancedUser user = users.searchByPrimaryKey(new AdvancedUser.Key(login));
+                String name = req.getParameter("name");
+                String email = req.getParameter("email");
+                String password = req.getParameter("password");
+                user.modifUser(name, email, null, password);
+                users.update(user);
+                resp.sendRedirect(String.format("%s/", req.getContextPath()));
+            } catch (SQLException e) {
+                LOGGER.error(e);
+                resp.sendError(501);
+            }
+        } else {
+            resp.sendRedirect(String.format("%s/authorization", req.getContextPath()));
         }
 
     }

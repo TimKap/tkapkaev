@@ -107,8 +107,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
-        <url-pattern>/guest</url-pattern>
-        <url-pattern>/admin</url-pattern>
+        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
     <!--Авторизация пользователя-->
@@ -131,8 +130,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ExitController</servlet-name>
-        <url-pattern>/admin/exit</url-pattern>
-        <url-pattern>/guest/exit</url-pattern>
+        <url-pattern>/exit</url-pattern>
     </servlet-mapping>
 
     <!-- Управление обновлением пользователя -->

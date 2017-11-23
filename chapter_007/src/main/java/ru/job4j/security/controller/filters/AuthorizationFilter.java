@@ -1,6 +1,8 @@
 package ru.job4j.security.controller.filters;
 
 
+import ru.job4j.security.controller.authorization.UserIdentification;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletResponse;
@@ -46,13 +48,8 @@ public class AuthorizationFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             HttpSession session = httpRequest.getSession();
-            String login = null;
-            synchronized (session) {
-                if (session.getAttribute("login") != null) {
-                    login = session.getAttribute("login").toString();
-                }
-            }
-            if (login == null) {
+            UserIdentification identification = (UserIdentification) session.getAttribute("identification");
+            if (identification == null) {
                 HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
                 httpResponse.sendRedirect(String.format("%s/authorization", httpRequest.getContextPath()));
             } else {

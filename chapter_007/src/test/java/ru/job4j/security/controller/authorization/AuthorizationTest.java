@@ -44,10 +44,9 @@ public class AuthorizationTest {
         Authorization servlet = new Authorization();
         servlet.doPost(mockRequest, mockResponse);
 
-        String resultLogin = session.getAttribute("login").toString();
-        String resultPassword = session.getAttribute("role").toString();
-        assertThat(resultLogin, is(expectedLogin));
-        assertThat(resultPassword, is(expectedRole));
+        UserIdentification identification = (UserIdentification) session.getAttribute("identification");
+        assertThat(identification.getLogin(), is(expectedLogin));
+        assertThat(identification.getRole(), is(expectedRole));
 
     }
 

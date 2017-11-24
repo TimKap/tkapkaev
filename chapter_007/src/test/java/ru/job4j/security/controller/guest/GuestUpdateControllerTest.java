@@ -3,6 +3,7 @@ package ru.job4j.security.controller.guest;
 import org.junit.Test;
 import org.mockito.Mockito;
 import ru.job4j.security.controller.authorization.MockHttpSession;
+import ru.job4j.security.controller.authorization.UserIdentification;
 import ru.job4j.security.model.AdvancedUser;
 import ru.job4j.security.model.AdvancedUserSecurityStore;
 
@@ -34,7 +35,7 @@ public class GuestUpdateControllerTest {
         AdvancedUserSecurityStore.getInstance().insert(user);
 
         MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setAttribute("login", "test");
+        mockSession.setAttribute("identification", new UserIdentification("admin", "test"));
 
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.when(mockRequest.getSession()).thenReturn(mockSession);

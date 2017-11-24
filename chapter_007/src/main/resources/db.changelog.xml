@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+	<changeSet id="1" author="Tim">
+		<sql>
+			CREATE TABLE roles (
+				role varchar(200) primary key
+			);
+		</sql>
+	</changeSet>
+	<changeSet id="2" author="Tim">
+		<sql>
+			CREATE TABLE securityus (
+				login varchar(200) primary key,
+				name varchar(200),
+				email varchar(200),
+				date timestamp DEFAULT NOW(),
+				password varchar(200),
+				role varchar(200) not null references roles(role)
+			);
+		</sql>
+	</changeSet>
+	<changeSet id="3" author="Tim" runAlways="true">
+		<sql>
+			DELETE FROM securityus;
+		</sql>
+	</changeSet>
+	<changeSet id="4" author="Tim" runAlways="true">
+		<sql>
+			DELETE FROM roles;
+		</sql>
+	</changeSet>
+	<changeSet id="5" author="Tim" runAlways="true">
+		<sql>
+			INSERT INTO roles (role) VALUES ('admin'), ('guest');
+		</sql>
+	</changeSet>
+	<changeSet id="6" author="Tim" runAlways="true">
+		<sql>
+			INSERT INTO securityus (login, name, email, password, role) VALUES ('test', 'Test', 'test@mail.ru', 'test', 'admin');
+		</sql>
+	</changeSet>
+
+
+</databaseChangeLog>

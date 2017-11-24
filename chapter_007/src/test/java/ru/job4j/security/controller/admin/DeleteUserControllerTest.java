@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.mockito.Mockito;
 import ru.job4j.security.controller.authorization.MockHttpSession;
+import ru.job4j.security.controller.authorization.UserIdentification;
 import ru.job4j.security.model.AdvancedUser;
 import ru.job4j.security.model.AdvancedUserSecurityStore;
 
@@ -42,7 +43,7 @@ public class DeleteUserControllerTest {
         Mockito.when(mockRequest.getParameter("login")).thenReturn(loginOfDeletedElement);
 
         HttpSession session = new MockHttpSession();
-        session.setAttribute("login", "login");
+        session.setAttribute("identification", new UserIdentification("admin", "login"));
         Mockito.when(mockRequest.getSession()).thenReturn(session);
 
 

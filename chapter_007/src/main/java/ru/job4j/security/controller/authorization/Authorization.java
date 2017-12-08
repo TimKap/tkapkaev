@@ -62,7 +62,7 @@ public class Authorization extends HttpServlet {
                         session.setAttribute("identification", identification);
                     }
                 }
-                resp.sendRedirect(String.format("%s/", req.getContextPath()));
+                resp.sendRedirect(String.format("%s", req.getContextPath()));
             } else {
                 req.setAttribute("error", "Invalid user login and password");
                 doGet(req, resp);

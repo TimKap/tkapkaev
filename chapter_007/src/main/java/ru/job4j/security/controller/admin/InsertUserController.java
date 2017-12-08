@@ -41,7 +41,9 @@ public class InsertUserController extends HttpServlet {
         String email = req.getParameter("email");
         String role = req.getParameter("role");
         String password = req.getParameter("password");
-        AdvancedUser user = new AdvancedUser.AdvancedUserBuilder().addLogin(login).addName(name).addEmail(email).addRole(role).addPassword(password).build();
+        String city = req.getParameter("city");
+        String country = req.getParameter("country");
+        AdvancedUser user = new AdvancedUser.AdvancedUserBuilder().addLogin(login).addName(name).addEmail(email).addRole(role).addPassword(password).addCity(city).addCountry(country).build();
         try {
             Set<String> roles = users.getRoles();
             if (!login.equals("") && !password.equals("") && roles.contains(role)) {

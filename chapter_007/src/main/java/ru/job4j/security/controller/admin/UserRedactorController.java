@@ -2,7 +2,7 @@ package ru.job4j.security.controller.admin;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.job4j.security.model.AdvancedUser;
+
 import ru.job4j.security.model.AdvancedUserSecurityStore;
 
 import javax.servlet.RequestDispatcher;
@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+
 
 /**
  * UserRedactorController описывает редактор пользователей базы данных.
@@ -36,14 +35,14 @@ public class UserRedactorController extends HttpServlet {
      * */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            List<AdvancedUser> list = users.getAllUsers();
-            req.setAttribute("users", list);
+//        try {
+//            List<AdvancedUser> list = users.getAllUsers();
+//            req.setAttribute("users", list);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/security/views/admin/userRedactor.jsp");
             dispatcher.forward(req, resp);
-        } catch (SQLException e) {
-            LOGGER.error(e);
-            resp.sendError(501);
-        }
+//        } catch (SQLException e) {
+//            LOGGER.error(e);
+//            resp.sendError(501);
+//        }
     }
 }

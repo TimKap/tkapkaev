@@ -7,13 +7,15 @@ import java.io.InputStream;
 
 
 import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
-import java.util.Properties;
+
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Date;
+import java.util.Properties;
 
 
 /**
@@ -38,7 +40,9 @@ public class AdvancedUserSecurityStore  extends AdvancedStore<AdvancedUser> {
             Date date = new Date(resultSet.getTimestamp("date").getTime());
             String role = resultSet.getString("role");
             String password = resultSet.getString("password");
-            return new AdvancedUser.AdvancedUserBuilder().addLogin(login).addName(name).addEmail(email).addCreateDate(date).addRole(role).addPassword(password).build();
+            String city = resultSet.getString("city");
+            String country = resultSet.getString("country");
+            return new AdvancedUser.AdvancedUserBuilder().addLogin(login).addName(name).addEmail(email).addCreateDate(date).addRole(role).addPassword(password).addCity(city).addCountry(country).build();
         });
     }
 
@@ -95,5 +99,45 @@ public class AdvancedUserSecurityStore  extends AdvancedStore<AdvancedUser> {
             }
         }
         return roles;
+    }
+    /**
+     * Возвращает страны.
+     * @return  страны.
+     * @throws SQLException - ошибка возвращения списка стран.
+     * */
+    public Set<String> getCountries() throws SQLException {
+
+        try (Connection con = getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT distinct country FROM regions")
+        ) {
+            Set<String> countries = new HashSet<>();
+            while (rs.next()) {
+                countries.add(rs.getString("country"));
+            }
+            return countries;
+        }
+    }
+
+    /**
+     * Возвращает города страны.
+     * @param country - название страны.
+     * @return города страны
+     * @throws SQLException - ошибка возвращения городов
+     * */
+    public Set<String> getCities(String country) throws SQLException {
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement("SELECT city FROM regions WHERE country=?")
+        ) {
+            ps.setString(1, country);
+            try (ResultSet rs = ps.executeQuery()) {
+                Set<String> cities = new HashSet<>();
+                while (rs.next()) {
+                    cities.add(rs.getString("city"));
+                }
+                return cities;
+            }
+        }
     }
 }

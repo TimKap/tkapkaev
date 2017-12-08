@@ -74,7 +74,9 @@ public class GuestUpdateController extends HttpServlet {
                 String name = req.getParameter("name");
                 String email = req.getParameter("email");
                 String password = req.getParameter("password");
-                user.modifUser(name, email, null, password);
+                String city = req.getParameter("city");
+                String country = req.getParameter("country");
+                user.modifUser(name, email, null, password, city, country);
                 users.update(user);
                 resp.sendRedirect(String.format("%s/", req.getContextPath()));
             } catch (SQLException e) {

@@ -44,6 +44,44 @@
 			INSERT INTO securityus (login, name, email, password, role) VALUES ('test', 'Test', 'test@mail.ru', 'test', 'admin');
 		</sql>
 	</changeSet>
+	<changeSet id="7" author="Tim">
+		<sql>
+			CREATE TABLE regions(
+				city varchar(200),
+				country varchar(200),
+				PRIMARY KEY (city, country)
+			);
+		</sql>
+	</changeSet>
+	<changeSet id="8" author="Tim" runAlways="true">
+		<sql>
+			DELETE FROM regions;
+		</sql>
+	</changeSet>
 
+	<changeSet id="9" author="Tim" runAlways="true">
+		<sql>
+			INSERT INTO regions (city, country) VALUES('Moscow', 'Russia');
+			INSERT INTO regions (city, country) VALUES('St. Petersburg', 'Russia');
+			INSERT INTO regions (city, country) VALUES('New-York', 'USA');
+			INSERT INTO regions (city, country) VALUES('Washington', 'USA');
+		</sql>
+		<rollback>
+			DELETE FROM regions;
+		</rollback>
+	</changeSet>
+
+	<changeSet id="10" author="Tim">
+		<sql>ALTER TABLE securityus ADD COLUMN city varchar(200);</sql>
+		<rollback>ALTER TABLE securityus DROP COLUMN city;</rollback>
+	</changeSet>
+
+	<changeSet id="11" author="Tim">
+		<sql>ALTER TABLE securityus ADD COLUMN country varchar(200);</sql>
+		<rollback>ALTER TABLE securityus DROP COLUMN country;</rollback>
+	</changeSet>
+	<changeSet id="12" author="Tim">
+		<sql>ALTER TABLE securityus ADD FOREIGN KEY(city, country) REFERENCES regions(city, country);</sql>
+	</changeSet>
 
 </databaseChangeLog>

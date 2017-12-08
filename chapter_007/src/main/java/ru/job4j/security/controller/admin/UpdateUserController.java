@@ -40,10 +40,12 @@ public class UpdateUserController extends HttpServlet {
         String email = req.getParameter("email");
         String role = req.getParameter("role");
         String password = req.getParameter("password");
+        String city = req.getParameter("city");
+        String country = req.getParameter("country");
         try {
             if (!login.equals("")) {
                 AdvancedUser user = users.searchByPrimaryKey(new AdvancedUser.Key(login));
-                user.modifUser(name, email, role, password);
+                user.modifUser(name, email, role, password, city, country);
                 users.update(user);
             }
             resp.sendRedirect(String.format("%s/admin/userRedactor", req.getContextPath()));

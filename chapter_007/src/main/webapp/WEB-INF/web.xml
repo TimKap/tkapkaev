@@ -96,7 +96,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>MainSecurity</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 
     <!-- Страница пользователя-->
@@ -180,10 +180,88 @@
     <servlet>
         <servlet-name>UpdateUserController</servlet-name>
         <servlet-class>ru.job4j.security.controller.admin.UpdateUserController</servlet-class>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUserController</servlet-name>
         <url-pattern>/admin/updateUser</url-pattern>
+    </servlet-mapping>
+
+    <!--Обрабатывает ajax запрос на возвращение списка пользователей-->
+    <servlet>
+        <servlet-name>LoadUserTableAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.LoadUserTableAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoadUserTableAjax</servlet-name>
+        <url-pattern>/admin/ajax/loadTable</url-pattern>
+        <load-on-startup>2</load-on-startup>
+    </servlet-mapping>
+
+    <!--Обрабатывает ajax запрос на добавление пользователя-->
+    <servlet>
+        <servlet-name>InsertUserAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.InsertUserAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InsertUserAjax</servlet-name>
+        <url-pattern>/admin/ajax/insertUser</url-pattern>
+        <load-on-startup>2</load-on-startup>
+    </servlet-mapping>
+
+    <!--Обрабатывает ajax запрос на удаление ользователя -->
+    <servlet>
+        <servlet-name>DeleteUserAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.DeleteUserAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserAjax</servlet-name>
+        <url-pattern>/admin/ajax/deleteUser</url-pattern>
+        <load-on-startup>2</load-on-startup>
+    </servlet-mapping>
+
+    <!--Обрабатывает ajax запрос на обновлние пользователя-->
+    <servlet>
+        <servlet-name>UpdateUserAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.UpdateUserAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateUserAjax</servlet-name>
+        <url-pattern>/admin/ajax/updateUser</url-pattern>
+        <load-on-startup>2</load-on-startup>
+    </servlet-mapping>
+
+    <!--Обрабатывает ajax запрос на получение списка ролей-->
+    <servlet>
+        <servlet-name>GetRolesAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.GetRolesAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetRolesAjax</servlet-name>
+        <url-pattern>/admin/ajax/getRoles</url-pattern>
+        <load-on-startup>2</load-on-startup>
+    </servlet-mapping>
+
+    <!--Обрабатывает ajax запрос на получение списка рстран-->
+    <servlet>
+        <servlet-name>GetCountriesAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.GetCountriesAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetCountriesAjax</servlet-name>
+        <url-pattern>/ajax/getCountries</url-pattern>
+        <load-on-startup>2</load-on-startup>
+    </servlet-mapping>
+
+    <!-- Обрабатывает ajax запрос на получение списка городов.-->
+    <servlet>
+        <servlet-name>GetCitiesAjax</servlet-name>
+        <servlet-class>ru.job4j.security.controller.admin.ajax.GetCitiesAjax</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetCitiesAjax</servlet-name>
+        <url-pattern>/ajax/getCities</url-pattern>
+        <load-on-startup>2</load-on-startup>
     </servlet-mapping>
 
 

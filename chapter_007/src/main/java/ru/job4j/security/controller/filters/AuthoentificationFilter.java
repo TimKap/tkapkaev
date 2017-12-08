@@ -52,16 +52,21 @@ public class AuthoentificationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        HttpSession session = httpRequest.getSession();
+        UserIdentification identification = (UserIdentification) session.getAttribute("identification");
         try {
             Set<String> availableRoles = users.getRoles();
             String uri = httpRequest.getRequestURI();
             if (!uriContainsRole(uri, availableRoles)) {
                 /* страница не требует аутентификации */
-                filterChain.doFilter(servletRequest, servletResponse);
+                if (identification != null && (identification.getRole() != null) && uri.contains("/authorization")) {
+                    httpResponse.sendRedirect(String.format("%s", ((HttpServletRequest) servletRequest).getContextPath()));
+                } else {
+                    filterChain.doFilter(servletRequest, servletResponse);
+                }
             } else {
                 /* страница, требующая аутентификацию */
-                HttpSession session = httpRequest.getSession();
-                UserIdentification identification = (UserIdentification) session.getAttribute("identification");
+
                 if (identification != null) {
                     String role = identification.getRole();
                     if (uri.contains("/" + role)) {

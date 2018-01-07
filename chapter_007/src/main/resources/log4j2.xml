@@ -24,6 +24,8 @@
         </Logger>
         <Logger name="ru.job4j.security" level="info">
         </Logger>
+        <Logger name="ru.job4j.testtask" level="info">
+        </Logger>
 
     </Loggers>
 </Configuration>

@@ -70,6 +70,28 @@
                <username>postgres</username>
                <password>1</password>
             </configuration>
+
+            <executions>
+               <execution>
+                  <phase>process-resources</phase>
+                  <goals>
+                     <goal>update</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>3.5.3</version>
+            <configuration>
+               <changeLogFile>src/main/resources/musicshop.db.changelog.xml</changeLogFile>
+               <driver>org.postgresql.Driver</driver>
+               <url>jdbc:postgresql://localhost:5432/musicShop</url>
+               <username>postgres</username>
+               <password>1</password>
+            </configuration>
             <executions>
                <execution>
                   <phase>process-resources</phase>

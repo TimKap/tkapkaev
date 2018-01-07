@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1" author="Tim">
+        <sql>
+            CREATE TABLE users (
+                id serial primary key,
+                name varchar(200),
+                surname varchar(200),
+                password varchar(200)
+            );
+
+        </sql>
+    </changeSet>
+    <changeSet id="2" author="Tim">
+        <sql>
+            CREATE TABLE addresses (
+                id serial primary key,
+                country varchar(200),
+                city varchar(200),
+                street varchar(200)
+            );
+
+        </sql>
+    </changeSet>
+    <changeSet id="3" author="Tim">
+        <sql>
+            CREATE TABLE musicstyles (
+                id serial primary key,
+                style varchar(200)
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="4" author="Tim">
+        <sql>
+            CREATE TABLE roles (
+                id serial primary key,
+                role varchar(200)
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="5" author="Tim">
+        <sql>
+            CREATE TABLE useraddress (
+                user_id integer REFERENCES users(id) ON DELETE CASCADE,
+                address_id integer REFERENCES addresses(id) ON DELETE CASCADE,
+                PRIMARY KEY (user_id, address_id)
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="6" author="Tim">
+        <sql>
+            CREATE TABLE usermusicpreferences (
+                user_id integer REFERENCES users(id) ON DELETE CASCADE,
+                musicstyle_id integer REFERENCES musicstyles(id) ON DELETE CASCADE,
+                PRIMARY KEY (user_id, musicstyle_id)
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="7" author="Tim">
+        <sql>
+            CREATE TABLE userrole (
+                user_id integer REFERENCES users(id) ON DELETE CASCADE,
+                role_id integer REFERENCES roles(id) ON DELETE CASCADE,
+                PRIMARY KEY (user_id, role_id)
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

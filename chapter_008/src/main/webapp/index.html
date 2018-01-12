@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .myH {
+            font-family: "Times New Roman";
+            color: red
+        }
+
+        .table.table-bordered > tbody > tr > td,
+        .table.table-bordered > thead > tr > th {
+            border: 2px solid black;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script>
+        function addItem() {
+            var item = { description : document.getElementById("description").value }
+            $.ajax( {
+                url : './addItem',
+                method : 'POST',
+                dataType : 'JSON',
+                data : JSON.stringify(item),
+                complete : function() {loadTable()}
+            })
+        }
+        function loadTable() {
+            $.ajax({
+                url : './getItems',
+                method : 'GET',
+                complete : function(data) {
+                    var items = JSON.parse(data.responseText);
+                    var result = "";
+                    var showOnlyDoneTasks = document.getElementById("showOnlyDoneTasks");
+                    for (var i = 0; i < items.length; i++) {
+                        if (!(showOnlyDoneTasks.checked == true && items[i].done == false)) {
+                            result += "<tr>" +
+                                "<td>" + items[i].id + "</td>" +
+                                "<td>" + items[i].description + "</td>" +
+                                "<td>" + items[i].created + "</td>";
+                            var checkbox = document.createElement('input');
+                            checkbox.setAttribute("type", 'checkbox');
+                            checkbox.setAttribute("onclick", "changeDone(this," + items[i].id + ")");
+                            if (items[i].done == true) {
+                                checkbox.setAttribute("checked", "true");
+                            }
+                            result += "<td>" + checkbox.outerHTML + "</td></tr>";
+                        }
+                    }
+                    var table = document.getElementById("items");
+                    table.innerHTML = result;
+                }
+            })
+        }
+
+        function changeDone(element, itemId) {
+            var item = {id : itemId, description : null, create : null, done : element.checked};
+            $.ajax({
+                url : './changeDone',
+                method : 'POST',
+                dataType : 'JSON',
+                data : JSON.stringify(item),
+                complete : function(data) {
+                    var item = JSON.parse(data.responseText);
+                    this.checked = item.done;
+                }
+            })
+
+
+        }
+
+    </script>
+    <script>
+        $(document).ready(function() {loadTable()});
+    </script>
+</head>
+<body>
+<div class="container">
+    <form>
+        <div>
+            <h1>Описание задачи</h1>
+            <textarea id="description" rows="5" cols="40"></textarea>
+        </div>
+        <p></p>
+        <div>
+            <input type="button" value="добавить задачу" onclick="addItem()">
+        </div>
+    </form>
+    <p></p>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="text-center">id</th>
+            <th scope="col" class="text-center">description</th>
+            <th scope="col" class="text-center">created</th>
+            <th scope="col" class="text-center">done</th>
+        </tr>
+        </thead>
+        <tbody id="items">
+        </tbody>
+        <label><input type='checkbox' id="showOnlyDoneTasks" onclick="loadTable()"> show only done tasks</label>
+
+    </table>
+</div>
+</body>
+</html>

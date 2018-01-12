@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+    <Properties>
+        <Property name="filename">/chapter_008/log/output.log</Property>
+    </Properties>
+    <Appenders>
+        <File name="file" filename="${filename}">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="error">
+            <AppenderRef ref="file"/>
+        </Root>
+    </Loggers>
+</Configuration>

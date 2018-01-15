@@ -13,8 +13,6 @@ import java.util.List;
 import com.google.gson.Gson;
 import ru.job4j.todo.model.Item;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
 
 /**
@@ -38,15 +36,15 @@ public class ChangeDone extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Gson gson = new Gson();
         Item inputJson = gson.fromJson(req.getReader(), Item.class);
-        try (SessionFactory hbFactroy = new Configuration().configure().buildSessionFactory()) {
-            try (Session hbSession = hbFactroy.openSession()) {
-                hbSession.beginTransaction();
-                List<Item> items = hbSession.createQuery(String.format("FROM Item I WHERE I.id = %d", inputJson.getId())).list();
-                items.get(0).setDone(inputJson.getDone());
-                hbSession.update(items.get(0));
-                hbSession.getTransaction().commit();
-            }
+
+        try (Session hbSession = SessionFactorySingletone.getSessionFactory().openSession()) {
+            hbSession.beginTransaction();
+            List<Item> items = hbSession.createQuery(String.format("FROM Item I WHERE I.id = %d", inputJson.getId())).list();
+            items.get(0).setDone(inputJson.getDone());
+            hbSession.update(items.get(0));
+            hbSession.getTransaction().commit();
         }
+
         String outputJson = gson.toJson(inputJson);
         PrintWriter writer = resp.getWriter();
         writer.append(outputJson);

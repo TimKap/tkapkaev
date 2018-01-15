@@ -11,8 +11,6 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 import com.google.gson.Gson;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
 import ru.job4j.todo.model.Item;
 
@@ -38,15 +36,15 @@ public class AddItem extends HttpServlet {
         Gson gson = new Gson();
         InputJsonObject  inputJson = gson.fromJson(req.getReader(), InputJsonObject.class);
         Item item;
-        try (SessionFactory hbFactory = new Configuration().configure().buildSessionFactory()) {
-            try (Session hbSession = hbFactory.openSession()) {
-                item = new Item();
-                item.setDescription(inputJson.getDescription());
-                item.setCreated(new Timestamp(System.currentTimeMillis()));
-                hbSession.getTransaction();
-                hbSession.save(item);
-            }
+
+        try (Session hbSession = SessionFactorySingletone.getSessionFactory().openSession()) {
+            item = new Item();
+            item.setDescription(inputJson.getDescription());
+            item.setCreated(new Timestamp(System.currentTimeMillis()));
+            hbSession.getTransaction();
+            hbSession.save(item);
         }
+
         String outputJson = gson.toJson(item);
         PrintWriter writer = resp.getWriter();
         writer.append(outputJson);

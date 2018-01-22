@@ -1,5 +1,6 @@
 package ru.job4j.security.controller.admin.ajax;
 
+
 import ru.job4j.security.model.AdvancedUserSecurityStore;
 
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.ServletException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -39,61 +41,18 @@ public class GetCitiesAjax extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Gson gson = new Gson();
-        InputJsonObjectRepresentation country = gson.fromJson(req.getReader(), InputJsonObjectRepresentation.class);
+        Reader reader = req.getReader();
+        String[] country = gson.fromJson(reader, String[].class);
         try {
             resp.setContentType("text/json");
-            Set<String> cities = users.getCities(country.getCountry());
-            OutputJsonObjectRepresentation[] output = new OutputJsonObjectRepresentation[cities.size()];
-            int i = 0;
-            for (String city : cities) {
-                output[i] = new OutputJsonObjectRepresentation();
-                output[i].setCity(city);
-                i++;
-            }
-
-            String json = gson.toJson(output);
+            Set<String> cities = users.getCities(country[0]);
+            String json = gson.toJson(cities);
             PrintWriter writer = resp.getWriter();
             writer.append(json);
             writer.flush();
 
         } catch (SQLException e) {
             LOGGER.error(e);
-        }
-    }
-
-    /**
-     * Class InputJsonObjectRepresentation объектное представление данных, полученных в формате json .
-     * @author Timur Kapkaev (timur.kap@yandex.ru)
-     * @version $ID$
-     * @since 07.12.2017
-     * */
-    private static class InputJsonObjectRepresentation {
-        /** Название страны. */
-        private String country;
-        /**
-         * Возвращает название страны.
-         * @return название страны
-         * */
-        private String getCountry() {
-            return country;
-        }
-    }
-
-    /**
-     * Class OutputJsonObjectRepresentation объектное представление данных, отправляемых в формате json.
-     * @author Timur Kapkaev (timur.kap@yandex.ru)
-     * @version $ID$
-     * @since 07.12.2017
-     * */
-    private static class OutputJsonObjectRepresentation {
-        /** Название города. */
-        private String city;
-        /**
-         * Здает название города.
-         * @param city - название города
-         * */
-        private void setCity(String city) {
-            this.city = city;
         }
     }
 }

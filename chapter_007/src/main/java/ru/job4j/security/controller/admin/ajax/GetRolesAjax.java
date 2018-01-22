@@ -43,38 +43,14 @@ public class GetRolesAjax extends HttpServlet {
         try {
             resp.setContentType("text/json");
             Set<String> roles = users.getRoles();
-            OutputJsonObjectRepresentation[] output = new OutputJsonObjectRepresentation[roles.size()];
-            int i = 0;
-            for (String role : roles) {
-                output[i] = new OutputJsonObjectRepresentation();
-                output[i].setRole(role);
-                i++;
-            }
             Gson gson = new Gson();
-            String json = gson.toJson(output);
+            String json = gson.toJson(roles);
             PrintWriter writer = resp.getWriter();
             writer.append(json);
             writer.flush();
 
         } catch (SQLException e) {
             LOGGER.error(e);
-        }
-    }
-    /**
-     * Class OutputJsonObjectRepresentation объектное представление данных, отправляемых в формате json.
-     * @aгthor Timur Kapkaev (timur.kap@yandex.ru)
-     * @version $ID$
-     * @since 07.12.2017
-     * */
-    private static class OutputJsonObjectRepresentation {
-        /** Название страны. */
-        private String role;
-        /**
-         * Здает роль.
-         * @param role - роль
-         * */
-        private void setRole(String role) {
-            this.role = role;
         }
     }
 }

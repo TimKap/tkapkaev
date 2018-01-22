@@ -41,17 +41,9 @@ public class GetCountriesAjax extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             resp.setContentType("text/json");
-
             Set<String> countries = users.getCountries();
-            OutputJsonObjectRepresentation[] output = new OutputJsonObjectRepresentation[countries.size()];
-            int i = 0;
-            for (String country : users.getCountries()) {
-                output[i] = new OutputJsonObjectRepresentation();
-                output[i].setCountry(country);
-                i++;
-            }
             Gson gson = new Gson();
-            String json = gson.toJson(output);
+            String json = gson.toJson(countries);
             PrintWriter writer = resp.getWriter();
             writer.append(json);
             writer.flush();
@@ -59,23 +51,5 @@ public class GetCountriesAjax extends HttpServlet {
             LOGGER.error(e);
         }
 
-    }
-
-    /**
-     * Class OutputJsonObjectRepresentation объектное представление данных, отправляемых в формате json.
-     * @aгthor Timur Kapkaev (timur.kap@yandex.ru)
-     * @version $ID$
-     * @since 07.12.2017
-     * */
-    private static class OutputJsonObjectRepresentation {
-        /** Название страны. */
-        private String country;
-        /**
-         * Здает название страны.
-         * @param country - название страны
-         * */
-        private void setCountry(String country) {
-            this.country = country;
-        }
     }
 }

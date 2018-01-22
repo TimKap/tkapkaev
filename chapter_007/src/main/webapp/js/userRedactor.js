@@ -128,7 +128,7 @@ function selectRole() {
                 $(document.getElementById("select_role")).children().remove();
                 $(document.getElementById("select_role")).append("<option selected></option>");
                 for (var i = 0; i < roles.length; i++) {
-                    $(document.getElementById("select_role")).append("<option>" + roles[i].role + "</option>");
+                    $(document.getElementById("select_role")).append("<option>" + roles[i] + "</option>");
                 }
                 document.getElementById("select_role").value = previous_value;
             }
@@ -149,7 +149,7 @@ function selectCountry() {
                 $(document.getElementById("select_country")).children().remove();
                 $(document.getElementById("select_country")).append("<option selected></option>");
                 for (var i = 0; i < countries.length; i++) {
-                    $(document.getElementById("select_country")).append("<option>" + countries[i].country + "</option>");
+                    $(document.getElementById("select_country")).append("<option>" + countries[i] + "</option>");
                 }
                 document.getElementById("select_country").value = previous_value;
             }
@@ -158,7 +158,7 @@ function selectCountry() {
 }
 
 function selectCity() {
-    var country = {country : document.getElementById("select_country").value};
+    var country = [document.getElementById("select_country").value];
     $.ajax( {
         url: '../ajax/getCities',
         method: 'POST',
@@ -169,7 +169,7 @@ function selectCity() {
             $(document.getElementById("select_city")).children().remove();
             $(document.getElementById("select_city")).append("<option selected></option>");
             for (var i = 0; i < cities.length; i++) {
-                $(document.getElementById("select_city")).append("<option>" + cities[i].city + "</option>");
+                $(document.getElementById("select_city")).append("<option>" + cities[i] + "</option>");
             }
         }
     });

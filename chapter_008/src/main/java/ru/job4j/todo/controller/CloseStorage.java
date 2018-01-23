@@ -1,17 +1,19 @@
 package ru.job4j.todo.controller;
 
+import ru.job4j.todo.storage.Storage;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
- * Class CloseSessionFactory описывает закрытие ресурса SessionFactory.
+ * Class CloseStorage описывает закрытие ресурса SessionFactory.
  * @author Timur Kapkaev (timur.kap@yandex.ru)
  * @version $ID$
  * @since 15.01.2018
  */
 @WebListener()
-public class CloseSessionFactory implements ServletContextListener {
+public class CloseStorage implements ServletContextListener {
     /**
      * Вызывается при наступлении события - инициализация объекта ServletContext.
      * @param varl - объект, содержащий ServletContext
@@ -26,6 +28,6 @@ public class CloseSessionFactory implements ServletContextListener {
      * */
     @Override
     public void contextDestroyed(ServletContextEvent varl) {
-        SessionFactorySingletone.getSessionFactory().close();
+        new Storage().close();
     }
 }

@@ -11,8 +11,10 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 import com.google.gson.Gson;
-import org.hibernate.Session;
+
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.storage.ItemDAO;
+import ru.job4j.todo.storage.Storage;
 
 /**
  * Class AddItem описывает сервлет, добавляющий задание задание.
@@ -34,37 +36,20 @@ public class AddItem extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Gson gson = new Gson();
-        InputJsonObject  inputJson = gson.fromJson(req.getReader(), InputJsonObject.class);
-        Item item;
+        String[]  descriptions = gson.fromJson(req.getReader(), String[].class);
 
-        try (Session hbSession = SessionFactorySingletone.getSessionFactory().openSession()) {
-            item = new Item();
-            item.setDescription(inputJson.getDescription());
-            item.setCreated(new Timestamp(System.currentTimeMillis()));
-            hbSession.getTransaction();
-            hbSession.save(item);
-        }
+        Item item = new Item();
+        item.setDescription(descriptions[0]);
+        item.setCreated(new Timestamp(System.currentTimeMillis()));
+        Storage storage = new Storage();
+        storage.open();
+        ItemDAO itemDAO = storage.getItemDAO();
+        itemDAO.persist(item);
+        storage.submit();
 
         String outputJson = gson.toJson(item);
         PrintWriter writer = resp.getWriter();
         writer.append(outputJson);
         writer.flush();
-    }
-}
-/**
- *
- * */
-class InputJsonObject {
-
-
-    /** описанеи item. */
-    private String description;
-
-    /**
-     * Возвращает описание.
-     * @return описание
-     * */
-    public String getDescription() {
-        return description;
     }
 }

@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.hibernate.Session;
-
 import ru.job4j.todo.model.Item;
 
 import com.google.gson.Gson;
+import ru.job4j.todo.storage.ItemDAO;
+import ru.job4j.todo.storage.Storage;
 
 
 /**
@@ -35,12 +35,12 @@ public class GetItems extends HttpServlet {
      * */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        List<Item> items;
-        try (Session hbSession = SessionFactorySingletone.getSessionFactory().openSession()) {
-            hbSession.beginTransaction();
-            items = hbSession.createQuery("from Item").list();
-            hbSession.getTransaction().commit();
-        }
+
+        Storage storage = new Storage();
+        storage.open();
+        ItemDAO itemDAO = storage.getItemDAO();
+        List<Item> items = itemDAO.getAll();
+        storage.submit();
         Gson gson = new Gson();
         String json = gson.toJson(items);
         PrintWriter writer = resp.getWriter();

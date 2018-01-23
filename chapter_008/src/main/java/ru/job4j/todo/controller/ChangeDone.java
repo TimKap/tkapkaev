@@ -8,12 +8,12 @@ import javax.servlet.annotation.WebServlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import com.google.gson.Gson;
 import ru.job4j.todo.model.Item;
 
-import org.hibernate.Session;
+import ru.job4j.todo.storage.ItemDAO;
+import ru.job4j.todo.storage.Storage;
 
 /**
  * Class ChangeDone обрабатывает ajax на изменение состояния выполнения задачи.
@@ -36,16 +36,13 @@ public class ChangeDone extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Gson gson = new Gson();
         Item inputJson = gson.fromJson(req.getReader(), Item.class);
-
-        try (Session hbSession = SessionFactorySingletone.getSessionFactory().openSession()) {
-            hbSession.beginTransaction();
-            List<Item> items = hbSession.createQuery(String.format("FROM Item I WHERE I.id = %d", inputJson.getId())).list();
-            items.get(0).setDone(inputJson.getDone());
-            hbSession.update(items.get(0));
-            hbSession.getTransaction().commit();
-        }
-
-        String outputJson = gson.toJson(inputJson);
+        Storage storage = new Storage();
+        storage.open();
+        ItemDAO itemDAO = storage.getItemDAO();
+        Item item = itemDAO.get(inputJson.getId());
+        item.setDone(inputJson.getDone());
+        storage.submit();
+        String outputJson = gson.toJson(item);
         PrintWriter writer = resp.getWriter();
         writer.append(outputJson);
         writer.flush();

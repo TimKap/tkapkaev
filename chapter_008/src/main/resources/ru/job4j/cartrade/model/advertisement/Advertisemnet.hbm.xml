@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-mapping>
+    <class name="ru.job4j.cartrade.model.advertisement.Advertisement" table="advertisements">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="seller" column="user_id" unique="true" not-null="true"/>
+        <many-to-one name="product" column="car_id" unique="true" not-null="true"/>
+        <property name="sold" column="status" type="boolean"/>
+        <list name="comments" lazy="true" table="comments">
+            <key column="advertisement_id"/>
+            <index column="idx"/>
+            <element column="comment" type="string" not-null="true"/>
+        </list>
+    </class>
+
+</hibernate-mapping>

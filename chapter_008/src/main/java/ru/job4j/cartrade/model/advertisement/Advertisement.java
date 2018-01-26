@@ -110,4 +110,37 @@ public class Advertisement {
     public void setComments(List<String> comments) {
         this.comments = comments;
     }
+
+    /**
+     * Равенство объектов.
+     * @param o - сравниваемый объект
+     * @return true, объекты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Advertisement advertisement = (Advertisement) o;
+
+        if (seller != null ? !seller.equals(advertisement.seller) : advertisement.seller != null) {
+            return false;
+        }
+        return product != null ? product.equals(advertisement.product) : advertisement.product == null;
+    }
+
+    /**
+     * Хэш-функция.
+     * @return хэш-код
+     * */
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31 * result + seller.hashCode();
+        result = 31 * result + product.hashCode();
+        return result;
+    }
 }

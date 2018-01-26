@@ -110,4 +110,42 @@ public class User {
     public void setCars(Set<Car> cars) {
         this.cars = cars;
     }
+    /**
+     * Равенство объектов.
+     * @param o - сравниваемый объект
+     * @return true, объекты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+
+        if (name != null ? !name.equals(user.name) : user.name != null) {
+            return false;
+        }
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) {
+            return false;
+        }
+        return password != null ? password.equals(user.password) : user.password == null;
+
+    }
+
+    /**
+     * Хэш-функция.
+     * @return хэш-код
+     * */
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
+
+    }
 }

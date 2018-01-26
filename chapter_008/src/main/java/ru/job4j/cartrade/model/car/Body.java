@@ -57,4 +57,36 @@ public class Body {
     public void setColor(String color) {
         this.color = color;
     }
+
+    /**
+     * Равенство объектов.
+     * @param o - сравниваемый объект
+     * @return true, объекты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Body body = (Body) o;
+        if (color != null ? !color.equals(body.color) : body.color != null) {
+            return false;
+        }
+        return type != null ? type.equals(body.type) : body.type == null;
+    }
+
+    /**
+     * Хэш-функция.
+     * @return хэш-код
+     * */
+    @Override
+    public int hashCode() {
+        int result = color != null ? color.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
+
 }

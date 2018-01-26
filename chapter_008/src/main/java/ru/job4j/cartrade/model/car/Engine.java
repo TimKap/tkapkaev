@@ -40,4 +40,30 @@ public class Engine {
     public Engine() {
 
     }
+
+    /**
+     * Равенство объектов.
+     * @param o - сравниваемый объект
+     * @return true, объекты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Engine engine = (Engine) o;
+        return model != null ? model.equals(engine.model) : engine.model == null;
+    }
+
+    /**
+     * Хэш-функция.
+     * @return хэш-код
+     * */
+    @Override
+    public int hashCode() {
+        return model != null ? model.hashCode() : 0;
+    }
 }

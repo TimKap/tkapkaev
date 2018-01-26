@@ -9,7 +9,7 @@
 
         <mapping resource="ru/job4j/cartrade/model/car/Car.hbm.xml"/>
         <mapping resource="ru/job4j/cartrade/model/user/User.hbm.xml"/>
-        <mapping resource="ru/job4j/cartrade/model/advertisement/Advertisemnet.hbm.xml"/>
+        <mapping resource="ru/job4j/cartrade/model/advertisement/Advertisement.hbm.xml"/>
         <mapping resource="ru/job4j/cartrade/model/photo/Photo.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -1,1 +1,54 @@
-<web-app></web-app>
+<web-app>
+    <filter>
+        <filter-name>Authorization</filter-name>
+        <filter-class>ru.job4j.cartrade.controller.filter.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Authorization</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>Authorization</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.authorization.Authorization</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Authorization</servlet-name>
+        <url-pattern>/authorization</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MainPage</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.main.MainPage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainPage</servlet-name>
+        <url-pattern>/main</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AdvertisementRedactor</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.main.advertisementredactor.AdvertisementRedactor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdvertisementRedactor</servlet-name>
+        <url-pattern>/advertisementredactor</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangeStatus</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.main.ChangeStatus</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangeStatus</servlet-name>
+        <url-pattern>/changeStatus</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Exit</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.exit.ExitController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Exit</servlet-name>
+        <url-pattern>/exit</url-pattern>
+    </servlet-mapping>
+</web-app>

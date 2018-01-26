@@ -5,6 +5,7 @@ import ru.job4j.cartrade.model.photo.Photo;
 import ru.job4j.cartrade.model.user.User;
 
 
+
 import java.util.HashSet;
 
 import java.util.Set;
@@ -133,4 +134,44 @@ public class Car {
         this.photos = photos;
     }
 
+    /**
+     * Равенство объектов.
+     * @param o - сравниваемый объект
+     * @return true, объекты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Car car = (Car) o;
+
+        if (model != null ? !model.equals(car.model) : car.model != null) {
+            return false;
+        }
+        if (engine != null ? !engine.equals(car.engine) : car.engine != null) {
+            return false;
+        }
+        if (body != null ? !body.equals(car.body) : car.body != null) {
+            return false;
+        }
+        return photos != null ? photos.equals(car.photos) : car.photos == null;
+
+    }
+    /**
+     * Хэш-функция.
+     * @return хэш-код
+     * */
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31 * result + (model != null ? model.hashCode() : 0);
+        result = 31 * result + (engine != null ? engine.hashCode() : 0);
+        result = 31 * result + (body != null ? body.hashCode() : 0);
+        result = 31 * result + (photos != null ? photos.hashCode() : 0);
+        return result;
+    }
 }

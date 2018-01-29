@@ -7,13 +7,30 @@ package ru.job4j.todo.storage;
  * @since 23.01.2018
  * */
 public class Storage {
-    /** рвспомогательный объект работы с hibernate. */
-    private final HibernateUtil hibernateUtil = new HibernateUtil();
+    /** вспомогательный объект работы с hibernate. */
+    private static final HibernateUtil HIBERNATE_UTIL = HibernateUtil.getInstance();
+
+    /** объект хранилища. */
+    private static final Storage INSTANCE = new Storage();
+
+    /**
+     * Конструктор класса Storage.
+     * */
+    private Storage() {
+
+    }
+    /**
+     * Возвращает объект хранилища.
+     * @return экземпляр хранилища.
+     * */
+    public static Storage getInstance() {
+        return INSTANCE;
+    }
     /**
      * Открывает хранилище.
      * */
     public void open() {
-        hibernateUtil.beginTransaction();
+        HIBERNATE_UTIL.beginTransaction();
     }
 
     /**
@@ -22,8 +39,8 @@ public class Storage {
      *
      * */
     public ItemDAO getItemDAO() {
-        if (hibernateUtil.isTransactionOpen()) {
-            return new ItemDAO(hibernateUtil.getSession());
+        if (HIBERNATE_UTIL.isTransactionOpen()) {
+            return new ItemDAO(HIBERNATE_UTIL.getSession());
         }
         return null;
     }
@@ -31,14 +48,14 @@ public class Storage {
      * Потдтверждает операции.
      * */
     public void submit() {
-        hibernateUtil.commitTransaction();
-        hibernateUtil.closeSession();
+        HIBERNATE_UTIL.commitTransaction();
+        HIBERNATE_UTIL.closeSession();
     }
     /**
      * Прекращает работу с хранилищем.
      * */
     public void close() {
-        hibernateUtil.closeSessionFactory();
+        HIBERNATE_UTIL.closeSessionFactory();
     }
 
 }

@@ -36,7 +36,7 @@ public class GetItems extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         ItemDAO itemDAO = storage.getItemDAO();
         List<Item> items = itemDAO.getAll();

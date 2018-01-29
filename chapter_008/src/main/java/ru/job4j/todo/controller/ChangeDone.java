@@ -36,7 +36,7 @@ public class ChangeDone extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Gson gson = new Gson();
         Item inputJson = gson.fromJson(req.getReader(), Item.class);
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         ItemDAO itemDAO = storage.getItemDAO();
         Item item = itemDAO.get(inputJson.getId());

@@ -28,6 +28,6 @@ public class CloseStorage implements ServletContextListener {
      * */
     @Override
     public void contextDestroyed(ServletContextEvent varl) {
-        new Storage().close();
+        Storage.getInstance().close();
     }
 }

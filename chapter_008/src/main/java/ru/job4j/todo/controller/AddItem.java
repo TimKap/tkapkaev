@@ -41,7 +41,7 @@ public class AddItem extends HttpServlet {
         Item item = new Item();
         item.setDescription(descriptions[0]);
         item.setCreated(new Timestamp(System.currentTimeMillis()));
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         ItemDAO itemDAO = storage.getItemDAO();
         itemDAO.persist(item);

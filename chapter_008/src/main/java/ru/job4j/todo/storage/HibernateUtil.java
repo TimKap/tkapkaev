@@ -17,6 +17,22 @@ public class HibernateUtil {
     private static final ThreadLocal THREAD_SESSION = new ThreadLocal();
     /** объект транзакции. */
     private static final ThreadLocal THREAD_TRANSACTION = new ThreadLocal();
+    /** экземпляр HibernateUtil.*/
+    private static final HibernateUtil INSTANCE = new HibernateUtil();
+
+    /**
+     * Конструктор HibernateUtil.
+     * */
+    private HibernateUtil() {
+
+    }
+    /**
+     * Возвращает экземпляр HibernateUtil.
+     * @return экземпляр HibernateUtil
+     * */
+    public static HibernateUtil getInstance() {
+        return INSTANCE;
+    }
 
     /**
      * возвращает сессию.

@@ -51,4 +51,21 @@
         <servlet-name>Exit</servlet-name>
         <url-pattern>/exit</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetAdvertisements</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.main.GetAdvertisements</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAdvertisements</servlet-name>
+        <url-pattern>/getAdvertisements</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>GetImage</servlet-name>
+        <servlet-class>ru.job4j.cartrade.controller.main.GetImage</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetImage</servlet-name>
+        <url-pattern>/getImage</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -36,7 +36,7 @@ public class ChangeStatus extends HttpServlet {
 
         HttpSession session = req.getSession();
         UserIdentification identification = (UserIdentification) session.getAttribute("identification");
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         IUserDAO userDAO = storage.getUserDAO();
         User user = userDAO.get(identification.getId());

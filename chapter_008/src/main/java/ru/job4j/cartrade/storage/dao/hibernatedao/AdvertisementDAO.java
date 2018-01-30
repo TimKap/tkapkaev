@@ -1,6 +1,7 @@
 package ru.job4j.cartrade.storage.dao.hibernatedao;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import ru.job4j.cartrade.model.advertisement.Advertisement;
 import ru.job4j.cartrade.storage.dao.IAdvertisementDAO;
 
@@ -76,5 +77,41 @@ public class AdvertisementDAO implements IAdvertisementDAO {
     public Advertisement remove(Advertisement advertisement) {
         session.remove(advertisement);
         return advertisement;
+    }
+
+    /**
+     * Вовзращает объявление по имени продавца.
+     * @param name - имя продавца.
+     * @return список объявлений
+     * */
+    @Override
+    public List<Advertisement> getBySellerName(String name) {
+        Query query = session.createQuery("FROM Advertisement a WHERE a.seller.name = :name");
+        query.setParameter("name", name);
+        return query.list();
+    }
+
+    /**
+     * Возвращает объявления марке автомобиля.
+     * @param model - марка автомобиля
+     * @return список объявлений
+     * */
+    @Override
+    public List<Advertisement> getByModel(String model) {
+        Query query = session.createQuery("FROM Advertisement a WHERE a.product.model = :model");
+        query.setParameter("model", model);
+        return query.list();
+    }
+
+    /**
+     * Возвращает объявления по статусу.
+     * @param status - состояние объявления
+     * @return список объявлений
+     * */
+    @Override
+    public List<Advertisement> getByStatus(boolean status) {
+        Query query = session.createQuery("FROM Advertisement a WHERE a.sold = :status");
+        query.setParameter("status", status);
+        return query.list();
     }
 }

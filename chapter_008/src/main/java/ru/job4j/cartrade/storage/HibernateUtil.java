@@ -18,6 +18,8 @@ public class HibernateUtil {
     private static final ThreadLocal THREAD_SESSION;
     /** объект транзакции. */
     private static final ThreadLocal THREAD_TRANSACTION;
+    /** экземпляр HibernateUtil.*/
+    private static final HibernateUtil INSTANCE = new HibernateUtil();
 
     static {
         Configuration configuration = new Configuration();
@@ -25,6 +27,19 @@ public class HibernateUtil {
         SESSION_FACTORY = configuration.buildSessionFactory();
         THREAD_SESSION = new ThreadLocal();
         THREAD_TRANSACTION = new ThreadLocal();
+    }
+    /**
+     * Конструктор HibernateUtil.
+     * */
+    private HibernateUtil() {
+
+    }
+    /**
+     * Возвращает экземпляр HibernateUtil.
+     * @return экземпляр HibernateUtil
+     * */
+    public static HibernateUtil getInstance() {
+        return INSTANCE;
     }
     /**
      * возвращает сессию.

@@ -25,7 +25,7 @@ public class UserDAOTest {
     @Test
     public void whenPersistThenGetPersistedUser() {
         /*prepare test */
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         IUserDAO userDAO = storage.getUserDAO();
 
@@ -57,7 +57,7 @@ public class UserDAOTest {
      */
     @Test
     public void demonstrate() {
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         IUserDAO userDAO = storage.getUserDAO();
         User user = userDAO.credential("Tom", "tom");

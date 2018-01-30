@@ -46,7 +46,7 @@ public class Authorization extends HttpServlet {
 
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         IUserDAO userDAO = storage.getUserDAO();
         User user = userDAO.credential(login, password);

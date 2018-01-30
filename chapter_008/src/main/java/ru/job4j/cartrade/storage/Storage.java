@@ -17,12 +17,28 @@ import ru.job4j.cartrade.storage.dao.hibernatedao.UserDAO;
  * */
 public class Storage {
     /** рвспомогательный объект работы с hibernate. */
-    private final HibernateUtil hibernateUtil = new HibernateUtil();
+    private static final HibernateUtil HIBERNATE_UTIL = HibernateUtil.getInstance();
+    /** экземпляр Storage. */
+    private static final Storage INSTANCE = new Storage();
+
+    /**
+     * Конструктор Storage.
+     * */
+    private Storage() {
+
+    }
+    /**
+     * Возвращает экземпляр Storage.
+     * @return экземпляр Storage.
+     * */
+    public static Storage getInstance() {
+        return INSTANCE;
+    }
     /**
      * Открывает хранилище.
      * */
     public void open() {
-        hibernateUtil.beginTransaction();
+        HIBERNATE_UTIL.beginTransaction();
     }
 
     /**
@@ -31,7 +47,7 @@ public class Storage {
      *
      * */
     public IUserDAO getUserDAO() {
-        return hibernateUtil.isTransactionOpen() ? new UserDAO(hibernateUtil.getSession()) : null;
+        return HIBERNATE_UTIL.isTransactionOpen() ? new UserDAO(HIBERNATE_UTIL.getSession()) : null;
     }
     /**
      * Возвращает реализацию ICarDAO.
@@ -39,7 +55,7 @@ public class Storage {
      *
      * */
     public ICarDAO getCarDAO() {
-        return hibernateUtil.isTransactionOpen() ? new CarDAO(hibernateUtil.getSession()) : null;
+        return HIBERNATE_UTIL.isTransactionOpen() ? new CarDAO(HIBERNATE_UTIL.getSession()) : null;
     }
 
     /**
@@ -48,7 +64,7 @@ public class Storage {
      *
      * */
     public IPhotoDAO getPhotoDAO() {
-        return hibernateUtil.isTransactionOpen() ? new PhotoDAO(hibernateUtil.getSession()) : null;
+        return HIBERNATE_UTIL.isTransactionOpen() ? new PhotoDAO(HIBERNATE_UTIL.getSession()) : null;
     }
 
     /**
@@ -57,21 +73,21 @@ public class Storage {
      *
      * */
     public IAdvertisementDAO getAdvertisementDAO() {
-        return hibernateUtil.isTransactionOpen() ? new AdvertisementDAO(hibernateUtil.getSession()) : null;
+        return HIBERNATE_UTIL.isTransactionOpen() ? new AdvertisementDAO(HIBERNATE_UTIL.getSession()) : null;
     }
 
     /**
      * Потдтверждает операции.
      * */
     public void submit() {
-        hibernateUtil.commitTransaction();
-        hibernateUtil.closeSession();
+        HIBERNATE_UTIL.commitTransaction();
+        HIBERNATE_UTIL.closeSession();
     }
     /**
      * Прекращает работу с хранилищем.
      * */
     public void close() {
-        hibernateUtil.closeSessionFactory();
+        HIBERNATE_UTIL.closeSessionFactory();
     }
 
 }

@@ -29,7 +29,7 @@ public class MainPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/cartrade/view/main/main.jsp");
-        Storage storage = new Storage();
+        Storage storage = Storage.getInstance();
         storage.open();
         IAdvertisementDAO advertisementDAO = storage.getAdvertisementDAO();
         List<Advertisement> advertisements = advertisementDAO.getAll();

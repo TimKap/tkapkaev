@@ -1,10 +1,24 @@
 package ru.job4j.cartrade.model.car;
 
 
+import com.google.gson.annotations.Expose;
+
 import ru.job4j.cartrade.model.photo.Photo;
 import ru.job4j.cartrade.model.user.User;
 
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 
 import java.util.HashSet;
 
@@ -16,18 +30,42 @@ import java.util.Set;
  * @version $ID$
  * @since 16.01.2018
  * */
+@Entity
+@Table(name = "cars")
 public class Car {
     /** id. */
+    @Expose
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     /** model. */
+    @Expose
+    @Column(name = "model")
     private String model;
     /** engine.*/
+    @Expose
+    @Embedded
     private Engine engine;
     /** body. */
+    @Expose
+    @Embedded
     private Body body;
     /** owners. */
+    @ManyToMany (cascade = CascadeType.ALL)
+    @JoinTable (
+            name = "car_user",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private Set<User> owners = new HashSet<>();
     /** photos. */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable (
+            name = "car_photo",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "photo_id", unique = true)
+    )
     private Set<Photo> photos = new HashSet<>();
 
 

@@ -1,5 +1,13 @@
 package ru.job4j.cartrade.model.photo;
 
+import com.google.gson.annotations.Expose;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
 import java.util.Arrays;
 
 /**
@@ -8,10 +16,20 @@ import java.util.Arrays;
  * @version $ID$
  * @since 16.01.2018
  * */
+@Entity
+@Table(name = "photos")
 public class Photo {
+
     /** id. */
+    @Expose
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+
     /** photo's file. */
+    @Expose
+    @Column(name = "file")
     private byte[] file;
     /**
      * Конструктор класса Photo.

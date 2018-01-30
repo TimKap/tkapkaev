@@ -1,6 +1,15 @@
 package ru.job4j.cartrade.model.user;
 
+import com.google.gson.annotations.Expose;
 import ru.job4j.cartrade.model.car.Car;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.ManyToMany;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,16 +20,33 @@ import java.util.Set;
  * @version $ID$
  * @since 16.01.2018
  * */
+@Entity
+@Table(name = "users")
 public class User {
+
     /** id. */
+    @Expose
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+
     /** name. */
+    @Expose
+    @Column(name = "name")
     private String name;
+
     /** surname. */
+    @Expose
+    @Column(name = "surname")
     private String surname;
+
     /** password. */
+    @Expose
+    @Column(name = "password")
     private String password;
     /** cars. */
+    @ManyToMany(mappedBy = "owners")
     private Set<Car> cars = new HashSet<>();
 
     /**

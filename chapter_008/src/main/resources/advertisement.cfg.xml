@@ -7,9 +7,13 @@
         <property name="hibernate.connection.password">1</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL91Dialect</property>
 
-        <mapping resource="ru/job4j/cartrade/model/car/Car.hbm.xml"/>
-        <mapping resource="ru/job4j/cartrade/model/user/User.hbm.xml"/>
-        <mapping resource="ru/job4j/cartrade/model/advertisement/Advertisement.hbm.xml"/>
-        <mapping resource="ru/job4j/cartrade/model/photo/Photo.hbm.xml"/>
+        <!--<mapping resource="ru/job4j/cartrade/model/car/Car.hbm.xml"/>-->
+        <!--<mapping resource="ru/job4j/cartrade/model/user/User.hbm.xml"/>-->
+        <!--<mapping resource="ru/job4j/cartrade/model/advertisement/Advertisement.hbm.xml"/>-->
+        <!--<mapping resource="ru/job4j/cartrade/model/photo/Photo.hbm.xml"/>-->
+        <mapping class="ru.job4j.cartrade.model.car.Car"/>
+        <mapping class="ru.job4j.cartrade.model.user.User"/>
+        <mapping class="ru.job4j.cartrade.model.photo.Photo"/>
+        <mapping class="ru.job4j.cartrade.model.advertisement.Advertisement"/>
     </session-factory>
 </hibernate-configuration>

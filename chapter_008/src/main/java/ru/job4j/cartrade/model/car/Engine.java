@@ -1,14 +1,23 @@
 package ru.job4j.cartrade.model.car;
 
+import com.google.gson.annotations.Expose;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+
 /**
  * Class Engine описывает двигатель автомобиля.
  * @author Timur Kapkaev (timur.kap@yandex.ru)
  * @version $ID$
  * @since 16.01/2018
  * */
+@Embeddable
 public class Engine {
 
     /** model.*/
+    @Expose
+    @Column(name = "engine")
     private String model;
 
     /**

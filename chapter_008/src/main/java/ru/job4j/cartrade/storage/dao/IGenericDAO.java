@@ -13,7 +13,7 @@ public interface IGenericDAO<E> {
     /**
      * Возвращает сущность из хранилища по id.
      * @param id - id сущности
-     * @return сущность
+     * @return сущность (null, если сущность не найдена)
      * */
     E get(long id);
     /**

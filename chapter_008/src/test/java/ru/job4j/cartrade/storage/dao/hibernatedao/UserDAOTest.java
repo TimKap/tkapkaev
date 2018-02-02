@@ -4,10 +4,12 @@ import org.junit.Test;
 import ru.job4j.cartrade.model.car.Car;
 import ru.job4j.cartrade.model.user.User;
 import ru.job4j.cartrade.storage.Storage;
+import ru.job4j.cartrade.storage.dao.ICarDAO;
 import ru.job4j.cartrade.storage.dao.IUserDAO;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+
+import java.util.List;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -19,6 +21,8 @@ import static org.hamcrest.core.Is.is;
  * @since 24.01.2018
  * */
 public class UserDAOTest {
+    /** вспомогательный объект.*/
+    private final Auxiliary auxiliary = new Auxiliary();
     /**
      * Тест для persist и get.
      */
@@ -27,43 +31,126 @@ public class UserDAOTest {
         /*prepare test */
         Storage storage = Storage.getInstance();
         storage.open();
+        Car bmw = auxiliary.prepareBMW();
+        ICarDAO carDAO = storage.getCarDAO();
+        carDAO.persist(bmw);
+
+        /*execute test*/
         IUserDAO userDAO = storage.getUserDAO();
+        User tom = auxiliary.prepareTom();
+        userDAO.persist(tom);
+        tom.getCars().add(bmw);
+        bmw.getOwners().add(tom);
 
-        User user = new User();
-        user.setName("Tom");
-        user.setSurname("Garison");
-        user.setPassword("tom");
-        Set<Car> cars = new HashSet<>();
-        Car bmw = new Car();
-        bmw.setModel("BMW");
-        Car audi = new Car();
-        audi.setModel("Audi");
-        cars.add(bmw);
-        cars.add(audi);
-        user.setCars(cars);
-
-        /* execute test */
-        userDAO.persist(user);
         /* get result */
-        User result = userDAO.get(user.getId());
-        storage.submit();
-        storage.close();
+        User result = userDAO.get(tom.getId());
 
         /*check test*/
-        assertThat(result, is(user));
+        assertThat(result, is(tom));
+        storage.submit();
     }
     /**
-     * Demonstrate.
-     */
+     * Тест для update.
+     * */
     @Test
-    public void demonstrate() {
+    public void whenUpdateUserThenGetModifiedUser() {
+        /* prepare test */
+        Storage storage = Storage.getInstance();
+        storage.open();
+        User tom = auxiliary.prepareTom();
+        IUserDAO userDAO = storage.getUserDAO();
+        userDAO.persist(tom);
+        storage.submit();
+
+        /*execute test*/
+        tom.setName("Ann");
+        tom.setSurname("Anderson");
+        tom.setPassword("ann");
+        storage.open();
+        userDAO = storage.getUserDAO();
+        userDAO.update(tom);
+
+        /* get result*/
+        User result = userDAO.get(tom.getId());
+        /*check result*/
+        assertThat(result, is(tom));
+        storage.submit();
+    }
+
+    /**
+     * Тест для getAll.
+     * */
+    @Test
+    public void whenGetAllThenGetAllUsers() {
+        /*prepare test*/
+        Storage storage = Storage.getInstance();
+        storage.open();
+        User tom = auxiliary.prepareTom();
+        User ann = auxiliary.prepareAnn();
+        IUserDAO userDAO = storage.getUserDAO();
+        userDAO.persist(tom);
+        userDAO.persist(ann);
+        List<User> expected = new ArrayList<>();
+        expected.add(ann);
+        expected.add(tom);
+        /*get result*/
+        List<User> result = userDAO.getAll();
+        /*check result*/
+        assertThat(result.containsAll(expected), is(true));
+        storage.submit();
+    }
+    /**
+     * Тест для remove.
+     * */
+    @Test
+    public void whenRemove() {
+        /*prepare test*/
         Storage storage = Storage.getInstance();
         storage.open();
         IUserDAO userDAO = storage.getUserDAO();
-        User user = userDAO.credential("Tom", "tom");
-        System.out.println(user.getName());
-        System.out.println(user.getPassword());
+        ICarDAO carDAO = storage.getCarDAO();
+        User tom = auxiliary.prepareTom();
+        userDAO.persist(tom);
+        Car bmw = auxiliary.prepareBMW();
+        carDAO.persist(bmw);
+        tom.getCars().add(bmw);
+        bmw.getOwners().add(tom);
         storage.submit();
-        storage.close();
+
+        /*execute test*/
+        storage.open();
+        userDAO = storage.getUserDAO();
+        tom = userDAO.get(tom.getId());
+        bmw = storage.getCarDAO().get(bmw.getId());
+        bmw.getOwners().remove(tom);
+        userDAO.remove(tom);
+        /*get result*/
+        User result = userDAO.get(tom.getId());
+        /*check test*/
+        assertThat(result == null, is(true));
+        storage.submit();
     }
+    /**
+     * Тест для credential.
+     * */
+    @Test
+    public void whenCredentialThenGetUser() {
+        /*prepare test*/
+        User genry = new User();
+        genry.setName("Genry");
+        genry.setPassword("genry");
+        Storage storage = Storage.getInstance();
+        storage.open();
+        IUserDAO userDAO = storage.getUserDAO();
+        userDAO.persist(genry);
+        storage.submit();
+        /*execute test*/
+        /*get result*/
+        storage.open();
+        userDAO = storage.getUserDAO();
+        User result = userDAO.credential(genry.getName(), genry.getPassword());
+        /*check result*/
+        assertThat(result, is(genry));
+    }
+
 }

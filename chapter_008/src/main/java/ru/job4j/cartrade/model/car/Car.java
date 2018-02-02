@@ -52,7 +52,7 @@ public class Car {
     @Embedded
     private Body body;
     /** owners. */
-    @ManyToMany (cascade = CascadeType.ALL)
+    @ManyToMany ()
     @JoinTable (
             name = "car_user",
             joinColumns = @JoinColumn(name = "car_id"),

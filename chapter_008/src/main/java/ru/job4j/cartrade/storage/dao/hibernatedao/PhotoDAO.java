@@ -27,12 +27,12 @@ public class PhotoDAO implements IPhotoDAO {
     /**
      * Возвращает фотографию из хранилища по id.
      * @param id - id фотографии
-     * @return фотография
+     * @return фотография (null, если фотография не найдена)
      * */
     @Override
     public Photo get(long id) {
         List<Photo> photos = session.createQuery(String.format("FROM Photo p WHERE p.id = %d", id)).list();
-        return photos.get(0);
+        return photos.size() != 0 ? photos.get(0) : null;
     }
 
     /**

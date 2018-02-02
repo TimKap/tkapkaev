@@ -29,12 +29,12 @@ public class UserDAO implements IUserDAO {
     /**
      * Возвращает пользхователя из хранилища по id.
      * @param id - id пользователя
-     * @return пользователь
+     * @return пользователь (null, если пользователь не найден)
      * */
     @Override
     public User get(long id) {
         List<User> users = session.createQuery(String.format("FROM User u WHERE u.id =  %d", id)).list();
-        return users.get(0);
+        return users.size() != 0 ? users.get(0) : null;
     }
     /**
      * Возвращает всх пользователей из хранилища.

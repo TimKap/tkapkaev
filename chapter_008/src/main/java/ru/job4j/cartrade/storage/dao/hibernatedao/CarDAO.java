@@ -27,12 +27,12 @@ public class CarDAO implements ICarDAO {
     /**
      * Возвращает автомобиль из хранилища по id.
      * @param id - id автомобиля
-     * @return автомобиль
+     * @return автомобиль (null, если автомобиль не найден)
      * */
     @Override
     public Car get(long id) {
         List<Car> cars = session.createQuery(String.format("FROM Car c WHERE c.id = %d", id)).list();
-        return cars.get(0);
+        return cars.size() != 0 ? cars.get(0) : null;
     }
 
     /**
@@ -74,6 +74,7 @@ public class CarDAO implements ICarDAO {
      * */
     @Override
     public Car remove(Car car) {
-        return null;
+        session.remove(car);
+        return car;
     }
 }

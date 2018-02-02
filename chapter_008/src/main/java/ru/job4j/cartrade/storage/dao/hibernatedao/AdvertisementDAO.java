@@ -27,12 +27,12 @@ public class AdvertisementDAO implements IAdvertisementDAO {
     /**
      * Возвращает объявление из хранилища по id.
      * @param id - id объявления
-     * @return объявление
+     * @return объявление (null, если объявление не найдено)
      * */
     @Override
     public Advertisement get(long id) {
         List<Advertisement> advertisements = session.createQuery(String.format("FROM Advertisement a WHERE a.id = %d", id)).list();
-        return advertisements.get(0);
+        return advertisements.size() != 0 ? advertisements.get(0) : null;
     }
 
     /**

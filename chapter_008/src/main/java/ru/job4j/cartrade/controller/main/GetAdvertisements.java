@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,15 +38,9 @@ public class GetAdvertisements extends HttpServlet {
             Storage storage = Storage.getInstance();
             storage.open();
             IAdvertisementDAO advertisementDAO = storage.getAdvertisementDAO();
-            List<Advertisement> advertisements;
-            switch (req.getParameter("filter")) {
-                case "all" : advertisements =  advertisementDAO.getAll(); break;
-                case "model" : advertisements = advertisementDAO.getByModel(req.getParameter("fValue")); break;
-                case "seller" : advertisements = advertisementDAO.getBySellerName(req.getParameter("fValue")); break;
-                case "unsold" : advertisements = advertisementDAO.getByStatus(false); break;
-                default : advertisements = new ArrayList<>();
-            }
-
+            DispatchPattern dispatcher = new DispatchPattern(advertisementDAO);
+            dispatcher.init();
+            List<Advertisement> advertisements = dispatcher.extract(req.getParameter("filter"), req.getParameter("fValue"));
             String json = gson.toJson(advertisements);
             PrintWriter writer = resp.getWriter();
             writer.append(json);

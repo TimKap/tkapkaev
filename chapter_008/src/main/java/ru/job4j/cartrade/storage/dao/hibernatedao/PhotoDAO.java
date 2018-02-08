@@ -31,8 +31,9 @@ public class PhotoDAO implements IPhotoDAO {
      * */
     @Override
     public Photo get(long id) {
-        List<Photo> photos = session.createQuery(String.format("FROM Photo p WHERE p.id = %d", id)).list();
-        return photos.size() != 0 ? photos.get(0) : null;
+//        List<Photo> photos = session.createQuery(String.format("FROM Photo p WHERE p.id = %d", id)).list();
+//        return photos.size() != 0 ? photos.get(0) : null;
+        return session.get(Photo.class, id);
     }
 
     /**

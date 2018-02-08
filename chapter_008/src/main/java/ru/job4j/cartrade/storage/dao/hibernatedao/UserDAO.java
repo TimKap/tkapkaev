@@ -33,8 +33,9 @@ public class UserDAO implements IUserDAO {
      * */
     @Override
     public User get(long id) {
-        List<User> users = session.createQuery(String.format("FROM User u WHERE u.id =  %d", id)).list();
-        return users.size() != 0 ? users.get(0) : null;
+//        List<User> users = session.createQuery(String.format("FROM User u WHERE u.id =  %d", id)).list();
+//        return users.size() != 0 ? users.get(0) : null;
+        return session.get(User.class, id);
     }
     /**
      * Возвращает всх пользователей из хранилища.

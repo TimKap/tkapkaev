@@ -31,8 +31,9 @@ public class CarDAO implements ICarDAO {
      * */
     @Override
     public Car get(long id) {
-        List<Car> cars = session.createQuery(String.format("FROM Car c WHERE c.id = %d", id)).list();
-        return cars.size() != 0 ? cars.get(0) : null;
+//        List<Car> cars = session.createQuery(String.format("FROM Car c WHERE c.id = %d", id)).list();
+//        return cars.size() != 0 ? cars.get(0) : null;
+        return session.get(Car.class, id);
     }
 
     /**

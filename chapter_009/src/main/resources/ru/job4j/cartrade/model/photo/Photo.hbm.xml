@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-mapping>
+    <class name="ru.job4j.cartrade.model.photo.Photo" table="photos">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="file" column="file"/>
+    </class>
+</hibernate-mapping>

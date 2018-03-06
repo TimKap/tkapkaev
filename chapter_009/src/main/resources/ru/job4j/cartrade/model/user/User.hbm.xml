@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hibernate-mapping>
-    <class name="ru.job4j.cartrade.model.user.User" table="users">
-        <id name="id" column="id">
-            <generator class="identity"/>
-        </id>
-        <property name="name" column="name" type="string"/>
-        <property name="surname" column="surname" type="string"/>
-        <property name="password" column="password" type="string"/>
-        <set name="cars" cascade="all" table="car_user">
-            <key column="user_id"/>
-            <many-to-many column="car_id" class="ru.job4j.cartrade.model.car.Car"/>
-        </set>
-    </class>
+    <!--<class name="ru.job4j.cartrade.model.user.User" table="users">-->
+        <!--<id name="id" column="id">-->
+            <!--<generator class="identity"/>-->
+        <!--</id>-->
+        <!--<property name="name" column="name" type="string"/>-->
+        <!--<property name="surname" column="surname" type="string"/>-->
+        <!--<property name="password" column="password" type="string"/>-->
+        <!--<set name="cars" cascade="all" table="car_user">-->
+            <!--<key column="user_id"/>-->
+            <!--<many-to-many column="car_id" class="ru.job4j.cartrade.model.car.Car"/>-->
+        <!--</set>-->
+    <!--</class>-->
 </hibernate-mapping>

@@ -75,7 +75,7 @@ public class PhotoDAO implements IPhotoDAO {
      * */
     @Override
     public Photo remove(Photo photo) {
-        session.remove(photo);
+        session.delete(photo);
         return photo;
     }
 }

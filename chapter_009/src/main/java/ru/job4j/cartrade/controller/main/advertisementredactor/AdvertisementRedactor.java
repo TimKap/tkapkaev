@@ -1,5 +1,6 @@
 package ru.job4j.cartrade.controller.main.advertisementredactor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -7,22 +8,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cartrade.controller.authorization.UserIdentification;
-import ru.job4j.cartrade.model.advertisement.Advertisement;
 import ru.job4j.cartrade.model.car.Body;
 import ru.job4j.cartrade.model.car.Car;
 import ru.job4j.cartrade.model.car.Engine;
 import ru.job4j.cartrade.model.photo.Photo;
-import ru.job4j.cartrade.model.user.User;
-import ru.job4j.cartrade.storage.Storage;
-import ru.job4j.cartrade.storage.dao.IAdvertisementDAO;
-import ru.job4j.cartrade.storage.dao.ICarDAO;
-import ru.job4j.cartrade.storage.dao.IUserDAO;
+
 
 import java.io.IOException;
 
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import ru.job4j.cartrade.storage.service.AdvertisementService;
 
 /**
  * Class AdvertisementRedactor описывает контроллер редактора объявлений.
@@ -33,6 +30,9 @@ import org.apache.logging.log4j.LogManager;
 @Controller
 public class AdvertisementRedactor {
 
+    /** сервис объявлений. */
+    @Autowired
+    private AdvertisementService advertisementService;
     /** логгер. */
     private static final Logger LOGGER = LogManager.getLogger(AdvertisementRedactor.class);
     /**
@@ -60,12 +60,6 @@ public class AdvertisementRedactor {
                                    @SessionAttribute("identification") UserIdentification identification) {
 
         try {
-
-            Storage storage = Storage.getInstance();
-            storage.open();
-            IUserDAO userDAO = storage.getUserDAO();
-            User user = userDAO.get(identification.getId());
-            ICarDAO carDAO = storage.getCarDAO();
             Car car = new Car();
             car.setModel(model);
             Body body = new Body(bodyType, bodyColor);
@@ -75,16 +69,7 @@ public class AdvertisementRedactor {
             Photo photo = new Photo();
             photo.setFile(file.getBytes());
             car.getPhotos().add(photo);
-            carDAO.persist(car);
-            car.getOwners().add(user);
-            user.getCars().add(car);
-            Advertisement advertisement = new Advertisement();
-            advertisement.setProduct(car);
-            advertisement.setSeller(user);
-            advertisement.getComments().add(comment);
-            IAdvertisementDAO advertisementDAO = storage.getAdvertisementDAO();
-            advertisementDAO.persist(advertisement);
-            storage.submit();
+            advertisementService.addAdvertisement(identification, car, comment);
         } catch (IOException e) {
             LOGGER.error(e);
         }

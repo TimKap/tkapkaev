@@ -1,7 +1,7 @@
 package ru.job4j.cartrade.storage.dao.hibernatedao;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import ru.job4j.cartrade.model.user.User;
 import ru.job4j.cartrade.storage.dao.IUserDAO;
 
@@ -73,7 +73,7 @@ public class UserDAO implements IUserDAO {
      * */
     @Override
     public User remove(User user) {
-        session.remove(user);
+        session.delete(user);
         return user;
     }
 

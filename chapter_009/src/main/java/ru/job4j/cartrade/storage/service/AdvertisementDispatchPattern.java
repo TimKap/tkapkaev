@@ -1,7 +1,7 @@
-package ru.job4j.cartrade.controller.main;
+package ru.job4j.cartrade.storage.service;
 
 import ru.job4j.cartrade.model.advertisement.Advertisement;
-import ru.job4j.cartrade.storage.dao.IAdvertisementDAO;
+import ru.job4j.cartrade.storage.repositories.AdvertisementRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,24 +14,24 @@ import java.util.function.Function;
  * @version $Id$
  * @since 08.02.2018
  * */
-public class DispatchPattern {
+public class AdvertisementDispatchPattern {
     /** advertisement DAO. */
-    private final IAdvertisementDAO advertisementDAO;
+    private final AdvertisementRepository advertisementRepository;
     /** набор выполняемых задач. */
     private final Map<String, Function<String, List<Advertisement>>> tasks = new HashMap<>();
     /**
      * Конструктор AdvertisementDispatchPattern.
-     * @param advertisementDAO - advertisement DAO.
+     * @param advertisementRepository - репозиторий объявлений
      * */
-    public DispatchPattern(IAdvertisementDAO advertisementDAO) {
-        this.advertisementDAO = advertisementDAO;
+    public AdvertisementDispatchPattern(AdvertisementRepository advertisementRepository) {
+        this.advertisementRepository = advertisementRepository;
     }
     /**
      * Возвращает задачу, которая извлекает все объявления.
      * @return задача, извлекающая все объявления
      * */
     private Function<String, List<Advertisement>> getAll() {
-        return (value) -> advertisementDAO.getAll();
+        return (value) -> advertisementRepository.findAll();
     }
 
     /**
@@ -39,7 +39,7 @@ public class DispatchPattern {
      * @return задача, извлекающая все объявления с заданной моделью автомобиля
      * */
     private Function<String, List<Advertisement>> getByModel() {
-        return (value) -> advertisementDAO.getByModel(value);
+        return (value) ->advertisementRepository.findByProductModel(value);
     }
 
     /**
@@ -47,7 +47,7 @@ public class DispatchPattern {
      * @return задача, извлекающая все объявления с заданным продавцом
      * */
     private Function<String, List<Advertisement>> getBySellerName() {
-        return (value) -> advertisementDAO.getBySellerName(value);
+        return (value) -> advertisementRepository.findBySellerName(value);
     }
 
     /**
@@ -55,7 +55,7 @@ public class DispatchPattern {
      * @return задача, извлекающая все объявления с непроданным автомобилем
      * */
     private Function<String, List<Advertisement>> getByStatus() {
-        return (value) -> advertisementDAO.getByStatus(false);
+        return (value) -> advertisementRepository.findBySold(false);
     }
 
     /**

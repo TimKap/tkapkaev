@@ -1,5 +1,4 @@
 package ru.job4j.cartrade.controller.exit;
-import ru.job4j.cartrade.storage.Storage;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -27,6 +26,6 @@ public class CloseStorage implements ServletContextListener {
      * */
     @Override
     public void contextDestroyed(ServletContextEvent varl) {
-        Storage.getInstance().close();
+//        Storage.getInstance().close();
     }
 }

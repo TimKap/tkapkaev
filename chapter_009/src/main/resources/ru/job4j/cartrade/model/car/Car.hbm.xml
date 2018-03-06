@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hibernate-mapping>
-    <class name="ru.job4j.cartrade.model.car.Car" table="cars">
-        <id name="id" column="id">
-            <generator class="identity"/>
-        </id>
-        <property name="model" type="string"/>
-        <component name="body" class="ru.job4j.cartrade.model.car.Body">
-            <property name="type" column="type" type="string"/>
-            <property name="color" column="color" type="string"/>
-        </component>
-        <component name="engine" class="ru.job4j.cartrade.model.car.Engine">
-            <property name="model" column="engine" type="string"/>
-        </component>
-        <set name="owners" inverse="true" cascade="all" table="car_user">
-            <key column="car_id"/>
-            <many-to-many column="user_id"   class="ru.job4j.cartrade.model.user.User"/>
-        </set>
-        <set name="photos" cascade="all" table="car_photo">
-            <key column="car_id"/>
-            <many-to-many column="photo_id" unique="true" class="ru.job4j.cartrade.model.photo.Photo"/>
-        </set>
-    </class>
+    <!--<class name="ru.job4j.cartrade.model.car.Car" table="cars">-->
+        <!--<id name="id" column="id">-->
+            <!--<generator class="identity"/>-->
+        <!--</id>-->
+        <!--<property name="model" type="string"/>-->
+        <!--<component name="body" class="ru.job4j.cartrade.model.car.Body">-->
+            <!--<property name="type" column="type" type="string"/>-->
+            <!--<property name="color" column="color" type="string"/>-->
+        <!--</component>-->
+        <!--<component name="engine" class="ru.job4j.cartrade.model.car.Engine">-->
+            <!--<property name="model" column="engine" type="string"/>-->
+        <!--</component>-->
+        <!--<set name="owners" inverse="true" cascade="all" table="car_user">-->
+            <!--<key column="car_id"/>-->
+            <!--<many-to-many column="user_id"   class="ru.job4j.cartrade.model.user.User"/>-->
+        <!--</set>-->
+        <!--<set name="photos" cascade="all" table="car_photo">-->
+            <!--<key column="car_id"/>-->
+            <!--<many-to-many column="photo_id" unique="true" class="ru.job4j.cartrade.model.photo.Photo"/>-->
+        <!--</set>-->
+    <!--</class>-->
 </hibernate-mapping>

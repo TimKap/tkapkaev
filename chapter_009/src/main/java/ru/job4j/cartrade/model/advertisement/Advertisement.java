@@ -1,20 +1,23 @@
 package ru.job4j.cartrade.model.advertisement;
 
+
 import ru.job4j.cartrade.model.car.Car;
 import ru.job4j.cartrade.model.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
 import javax.persistence.ElementCollection;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.CollectionTable;
 import javax.persistence.OrderColumn;
-import javax.persistence.FetchType;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +40,14 @@ public class Advertisement {
 
     /** seller. */
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (
             name = "user_id"
     )
     private User seller;
 
     /** product.*/
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (
             name = "car_id",
             unique = true

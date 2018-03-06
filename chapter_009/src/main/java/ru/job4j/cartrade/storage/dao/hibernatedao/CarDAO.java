@@ -75,7 +75,7 @@ public class CarDAO implements ICarDAO {
      * */
     @Override
     public Car remove(Car car) {
-        session.remove(car);
+        session.delete(car);
         return car;
     }
 }

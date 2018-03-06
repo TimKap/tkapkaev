@@ -1,7 +1,8 @@
 package ru.job4j.cartrade.storage.dao.hibernatedao;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
+
 import ru.job4j.cartrade.model.advertisement.Advertisement;
 import ru.job4j.cartrade.storage.dao.IAdvertisementDAO;
 
@@ -76,7 +77,7 @@ public class AdvertisementDAO implements IAdvertisementDAO {
      * */
     @Override
     public Advertisement remove(Advertisement advertisement) {
-        session.remove(advertisement);
+        session.delete(advertisement);
         return advertisement;
     }
 

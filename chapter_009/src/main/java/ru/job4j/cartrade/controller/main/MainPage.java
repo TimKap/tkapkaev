@@ -1,7 +1,9 @@
 package ru.job4j.cartrade.controller.main;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,12 +14,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import ru.job4j.cartrade.controller.authorization.UserIdentification;
 import ru.job4j.cartrade.model.advertisement.Advertisement;
 import ru.job4j.cartrade.model.photo.Photo;
-import ru.job4j.cartrade.model.user.User;
-import ru.job4j.cartrade.storage.Storage;
-import ru.job4j.cartrade.storage.dao.IAdvertisementDAO;
+import ru.job4j.cartrade.storage.service.AdvertisementService;
 
 import java.util.Base64;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -28,8 +27,10 @@ import java.util.List;
  * */
 @Controller
 public class MainPage {
-    /** хранилище объявлений. */
-    private final Storage storage = Storage.getInstance();
+    /** сервис объявлений. */
+    @Autowired
+    private AdvertisementService advertisementService;
+
     /**
      * Возвращает главную страницу.
      * @return адрес страницы
@@ -48,12 +49,7 @@ public class MainPage {
     @RequestMapping(value = "/getAdvertisements", method = RequestMethod.GET)
     @ResponseBody
     public List<Advertisement> getAdvertisements(@RequestParam String filter, @RequestParam String fValue) {
-        storage.open();
-        IAdvertisementDAO advertisementDAO = storage.getAdvertisementDAO();
-        DispatchPattern dispatcher = new DispatchPattern(advertisementDAO);
-        dispatcher.init();
-        List<Advertisement> advertisements = dispatcher.extract(filter, fValue);
-        storage.submit();
+        List<Advertisement> advertisements =  advertisementService.getAdvertisements(filter, fValue);
         return advertisements;
     }
 
@@ -65,39 +61,22 @@ public class MainPage {
     @RequestMapping(value = "/getImage", method = RequestMethod.GET)
     @ResponseBody
     public String getImage(@RequestParam long advId) {
-        Storage storage = Storage.getInstance();
-        storage.open();
-        IAdvertisementDAO advertisementDAO = storage.getAdvertisementDAO();
-        Advertisement advertisement = advertisementDAO.get(advId);
-        Iterator<Photo> iterator = advertisement.getProduct().getPhotos().iterator();
-        byte[] photo = null;
-        if (iterator.hasNext()) {
-            photo = iterator.next().getFile();
+        Photo photo = advertisementService.getAdvPhoto(advId);
+        String photo64 = "";
+        if (photo != null) {
+            photo64 = Base64.getEncoder().encodeToString(photo.getFile());
         }
-        storage.submit();
-        String photo64 = Base64.getEncoder().encodeToString(photo);
         return photo64;
     }
     /**
      * Изменяет статус объявления.
      * @param identification - идентификация пользователя
-     * @param advertisement - объявление статус которого необходимо изменить
+     * @param reqAdvertisement - запрашиваемое на обновление объявление
      * @return модифицированное объявление
      * */
     @RequestMapping(value = "/changeStatus", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Advertisement changeStatus(@SessionAttribute("identification")UserIdentification identification, @RequestBody Advertisement advertisement) {
-        Storage storage = Storage.getInstance();
-        storage.open();
-        IAdvertisementDAO advertisementDAO = storage.getAdvertisementDAO();
-        Advertisement tmpAdv = advertisementDAO.get(advertisement.getId());
-        User tmpUser = tmpAdv.getSeller();
-
-        if (identification.getId() == tmpUser.getId()) {
-            tmpAdv.setSold(advertisement.getSold());
-        }
-        advertisement.setSold(tmpAdv.getSold());
-        storage.submit();
-        return advertisement;
+    public Advertisement changeStatus(@SessionAttribute("identification")UserIdentification identification, @RequestBody Advertisement reqAdvertisement) {
+        return advertisementService.changeStatus(identification, reqAdvertisement);
     }
 }

@@ -23,6 +23,8 @@ public class Authorization {
     /** сервис объявлений. */
     @Autowired
     private AdvertisementService advertisementService;
+
+
     /**
      * Возращает страницу авторизации.
      * @return путь к странице авторизации

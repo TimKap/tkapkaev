@@ -41,11 +41,11 @@
 
             <div style="margin-top:150px">
 
-                <form class="center-block" modelAttribute="userIdentification" action="${pageContext.servletContext.contextPath}/authorization" method="post">
+                <form class="center-block" modelAttribute="userIdentification" action="${pageContext.servletContext.contextPath}/check_security" method="post">
                     <div class="row">
-                        <c:if test="${error != null}">
+                        <c:if test="${param.error != null}">
                             <div class="col alert alert-danger">
-                                <c:out value="${error}"/>
+                                <c:out value="${param.error}"/>
                             </div>
                         </c:if>
                     </div>

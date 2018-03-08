@@ -114,4 +114,13 @@ public class AdvertisementService {
         return advertisement;
     }
 
+    /**
+     * Возвращает пользователя по его имени.
+     * @param username - имя пользователя.
+     * @return пользователь.
+     * */
+    public User getUser(String username) {
+        return userRepository.findByName(username);
+    }
+
 }

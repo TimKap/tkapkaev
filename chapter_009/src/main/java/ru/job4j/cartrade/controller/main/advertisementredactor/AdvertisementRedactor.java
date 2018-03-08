@@ -1,11 +1,12 @@
 package ru.job4j.cartrade.controller.main.advertisementredactor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cartrade.controller.authorization.UserIdentification;
 import ru.job4j.cartrade.model.car.Body;
@@ -19,6 +20,8 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import ru.job4j.cartrade.model.user.User;
+import ru.job4j.cartrade.security.UserPrincipal;
 import ru.job4j.cartrade.storage.service.AdvertisementService;
 
 /**
@@ -51,13 +54,11 @@ public class AdvertisementRedactor {
      * @param bodyColor - цвет кузова
      * @param eng - двигатель автомобиля
      * @param comment - комментарий
-     * @param identification - идентификация пользователя
      * @return адрес главной страницы
      * */
     @RequestMapping(value = "/advertisementredactor", method = RequestMethod.POST, consumes = "multipart/form-data")
     public String addAdvertisement(@RequestParam("photo")MultipartFile file, @RequestParam String model, @RequestParam("bodytype") String bodyType,
-                                   @RequestParam("bodycolor") String bodyColor, @RequestParam("engine") String eng, @RequestParam String comment,
-                                   @SessionAttribute("identification") UserIdentification identification) {
+                                   @RequestParam("bodycolor") String bodyColor, @RequestParam("engine") String eng, @RequestParam String comment) {
 
         try {
             Car car = new Car();
@@ -69,7 +70,10 @@ public class AdvertisementRedactor {
             Photo photo = new Photo();
             photo.setFile(file.getBytes());
             car.getPhotos().add(photo);
-            advertisementService.addAdvertisement(identification, car, comment);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            User user = principal.getUser();
+            advertisementService.addAdvertisement(new UserIdentification(user.getId(), null, user.getName(), user.getPassword()), car, comment);
         } catch (IOException e) {
             LOGGER.error(e);
         }

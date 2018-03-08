@@ -17,4 +17,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
      * @return пользователь
      * */
     User findByNameAndPassword(String name, String password);
+    /**
+     * Возвращает пользователя с заданным именем.
+     * @param name - имя пользователя.
+     * @return пользователь
+     * */
+    User findByName(String name);
+
 }

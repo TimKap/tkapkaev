@@ -94,4 +94,41 @@ public class UserIdentification {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /**
+     * Проврка на авенство объектов.
+     * @param o - сравниваемый объект
+     * @return true, если объекты равны
+     * */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        UserIdentification userIdentification = (UserIdentification) o;
+
+        if (role != null ? !role.equals(userIdentification.role) : userIdentification.role != null) {
+            return false;
+        }
+        if (login != null ? !login.equals(userIdentification.login) : userIdentification.login != null) {
+            return false;
+        }
+        return password != null ? password.equals(userIdentification.password) : userIdentification.password == null;
+    }
+
+    /**
+     * Вычисляет хэш-функцию.
+     * @return хэш-код
+     * */
+    @Override
+    public int hashCode() {
+        int result = role != null ? role.hashCode() : 0;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
+    }
 }

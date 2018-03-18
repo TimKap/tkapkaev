@@ -122,5 +122,6 @@
 		<module>chapter_008</module>
 		<module>chapter_009</module>
 		 <module>springBoot</module>
+		 <module>springBootTestTask</module>
      </modules>
 </project>

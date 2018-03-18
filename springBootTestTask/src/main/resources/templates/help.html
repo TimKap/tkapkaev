@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<h1>Installation</h1>
+1. Put shorteningUrl.jar to required directory.
+<h1>Launching</h1>
+1. Make sure that you have installed JRE and configured Path variables.
+2. Run command line
+3. Change directory to directory, where you installed shorteningUrl.jar
+4. Put into command line next string java -jar shorteningUrl.jar
+<h1>Description</h1>
+
+<h2>Registration Account</h2>
+First of all you should register account. Send POST request (header Content-Type: application/json) on http://localhost:8080/testtask/account with json object,
+that contains account id.
+Example request JSON:  { AccountId : 'myAccountId'}
+After that, you will recive response (header Content-Type: application/json), containing status, description and password from created account.
+Example response JSON:  {success: 'true', description: 'Your account is opened', password: 'xC345Fc0'}
+
+<h2>Registration long URL</h2>
+Send POST request (header Content-Type: application/json) on http://localhost:8080/testtask/register with json object,
+that contains long URL (mandatory, url that needs shortening) and redirect type (not mandatory, default 302). Redirect type can takes value 301 or 302.
+Example request JSON:   {
+                            url: 'http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1',
+                            redirectType : 301
+                        }
+In case of successful URL registration you will recive response (header Content-Type: application/json), containing shortening URL.
+Example response JSON:  { shortUrl: 'http://localhost:8080/testtask/redirect/xYswlE'}
+
+Attention: You should be a registered user (have open account) for that operation. Authentication information is transmited in request headers (Basic authentication).
+
+<h2>Get statistic information</h2>
+You can get information about number redirects to specific URL's for any account.
+Send GET request on http://localhost:8080/testtask/statistic/{AccountID}. AccountID - it's id of requested account.
+The server responds (header Content-Type:application/json) with a JSON object, key:value map, where the key is the registered URL, and the value is the number of this URL redirects..
+Example response JSON:  {
+                            'http://myweb.com/someverylongurl/thensomedirectory/:   10,
+                            'http://myweb.com/someverylongurl2/thensomedirectory2/: 4,
+                            'http://myweb.com/someverylongurl3/thensomedirectory3/: 91,
+                        }
+Attention: You should be a registered user (have open account) for that operation. Authentication information is transmited in request headers (Basic authentication).
+
+
+
+<h2>Redirect on long URL</h2>
+Use recived short URL to redirect on long URL.
+Example: Send GET request http://localhost:8080/testtask/redirect/xYswlE and you will be redirected to http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1;
+</body>
+</html>
